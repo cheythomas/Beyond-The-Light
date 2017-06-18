@@ -1,3 +1,10 @@
+//Modified by: Karen Salinas
+//Date: 6/18/2017
+
+//This program is from rainforest frameworks, but this is a head 
+//to creating the framework for BeyondTheLight
+//most of the prototypes have been changed to the names
+//we will be using for the project.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
