@@ -20,7 +20,7 @@
 #include "log.h"
 #include "ppm.h"
 #include "fonts.h"
-
+//
 //defined types
 typedef double Flt;
 typedef double Vec[3];
