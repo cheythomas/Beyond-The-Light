@@ -1,5 +1,4 @@
 // modified by: cheyenne thomas
-//
 
 #include <stdio.h>
 #include <stdlib.h>

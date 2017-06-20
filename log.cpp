@@ -1,6 +1,6 @@
-//log.c
+//log.cpp
 //Author:  Gordon Griesel
-//Date:    Summer 2013
+//Date:    Summer 2014
 //Purpose: Allow logging of messages to a file during program execution.
 //
 #include <stdio.h>
