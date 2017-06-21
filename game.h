@@ -42,6 +42,7 @@ public:
     void draw();
 };
 
+//added class Timers
 class Timers {
 public:
     	double physicsRate;
