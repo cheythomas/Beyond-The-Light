@@ -18,6 +18,7 @@
 #include "log.h"
 #include "ppm.h"
 #include "fonts.h"
+//#include "game.h"
 
 //defined types
 typedef double Flt;
@@ -52,6 +53,7 @@ void checkKeys(XEvent *e);
 void init();
 void physics(void);
 void render(void);
+void initCharacterSprites();
 
 //-----------------------------------------------------------------------------
 //Setup timers
@@ -208,6 +210,7 @@ int main(void)
 {
 	initXWindows();
 	initOpengl();
+        initCharacterSprites(); //aH function call inside initOpenGl
 	init();
 	while (!gl.done) {
 		while (XPending(dpy)) {
