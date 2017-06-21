@@ -1,4 +1,3 @@
-
 #ifndef GAME_H
 #define GAME_H
 
@@ -7,6 +6,9 @@
 
 //All function and class prototypes go here
 
+//function prototypes
+void renderBackground(void); //render prototype
+void applyBackgroundMovement(void);
 
 /**
  * Sprite animation class
@@ -39,6 +41,13 @@ public:
    
     void draw();
 };
+
+class Timers {
+public:
+    	double physicsRate;
+	double oobillion;
+} timers;
+
 
 #endif /* GAME_H */
 
