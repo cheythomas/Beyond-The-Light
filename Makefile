@@ -6,7 +6,27 @@ all: walk
 walk: walk.cpp ppm.cpp log.cpp
 	g++ $(CFLAGS) walk.cpp ppm.cpp log.cpp libggfonts.a -Wall -Wextra $(LFLAGS) -owalk
 
+auroraH.o: auroraH.cpp game.h
+	g++ $(FLAGS) -wall -Wextra -c auroraH.cpp -o auroraH.o
+	
+cheyenneT.o: cheyenneT.cpp game.h
+	g++ $(CFLAGS) -Wall -Wextra -c cheyenneT.cpp -o cheyenneT.o
+
+KarenS.o: karenS.cpp game.h
+	g++ $(CFLAGS) -Wall -Wextra -c karenS.cpp -o karenS.o
+	
+ppm.o: ppm.cpp
+	g++ $(CFLAGS) -Wall -Wextra -c ppm.cpp -o ppm.o
+
+log.o: log.cpp
+	g++ $(CFLAGS) -Wall -Wextra -c log.cpp -o log.o	
+	
+btl: walk.o auroraH.o cheyenneT.o karenS.o game.h
+	g++ $(CFLAGS) $(LFLAGS) ppm.o log.o walk.o auroraH.o cheyenneT.o karenS.o libggfonts.a -Wall -Wextra -o btl
+
+	
+
 clean:
-	rm -f walk
+	rm -f blt
 	rm -f *.o
 
