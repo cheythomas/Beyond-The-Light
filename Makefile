@@ -1,10 +1,10 @@
 CFLAGS = -I ./include
 LFLAGS = -lrt -lX11 -lGLU -lGL -pthread -lm #-lXrandr
 
-all: walk
+all: game
 
-walk: walk.cpp ppm.cpp log.cpp
-	g++ $(CFLAGS) walk.cpp ppm.cpp log.cpp libggfonts.a -Wall -Wextra $(LFLAGS) -owalk
+game: game.cpp ppm.cpp log.cpp
+	g++ $(CFLAGS) game.cpp ppm.cpp log.cpp libggfonts.a -Wall -Wextra $(LFLAGS) -owalk
 
 auroraH.o: auroraH.cpp game.h
 	g++ $(FLAGS) -wall -Wextra -c auroraH.cpp -o auroraH.o
@@ -21,12 +21,11 @@ ppm.o: ppm.cpp
 log.o: log.cpp
 	g++ $(CFLAGS) -Wall -Wextra -c log.cpp -o log.o	
 	
-btl: walk.o auroraH.o cheyenneT.o karenS.o game.h
+btl: game.o auroraH.o cheyenneT.o karenS.o game.h
 	g++ $(CFLAGS) $(LFLAGS) ppm.o log.o walk.o auroraH.o cheyenneT.o karenS.o libggfonts.a -Wall -Wextra -o btl
 
-	
 
 clean:
-	rm -f blt
+	rm -f btl
 	rm -f *.o
 
