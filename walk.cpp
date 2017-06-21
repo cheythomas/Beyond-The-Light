@@ -219,6 +219,7 @@ int main(void)
 		}
 		physics();
 		render();
+		extern void drawLight();
 		glXSwapBuffers(dpy, win);
 	}
 	cleanupXWindows();
@@ -668,7 +669,7 @@ void physics(void)
 
 void render(void)
 {
-	Rect r;
+    	Rect r;
 	//Clear the screen
 	glClearColor(0.1, 0.1, 0.1, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -878,6 +879,9 @@ void render(void)
 	if (gl.movie) {
 		screenCapture();
 	}
+
+	extern void drawLight(void);
+	drawLight();
 }
 
 
