@@ -4,7 +4,7 @@ LFLAGS = -lrt -lX11 -lGLU -lGL -pthread -lm #-lXrandr
 all: game
 
 game: game.cpp ppm.cpp log.cpp
-	g++ $(CFLAGS) game.cpp ppm.cpp log.cpp libggfonts.a -Wall -Wextra $(LFLAGS) -owalk
+	g++ $(CFLAGS) game.cpp ppm.cpp log.cpp libggfonts.a -Wall -Wextra $(LFLAGS) -ogame
 
 auroraH.o: auroraH.cpp game.h
 	g++ $(FLAGS) -wall -Wextra -c auroraH.cpp -o auroraH.o
