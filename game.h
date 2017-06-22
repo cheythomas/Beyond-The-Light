@@ -10,6 +10,7 @@
 void renderBackground(void); //render prototype
 void applyBackgroundMovement(void);
 void initCharacterSprites(); // for Sprite characters
+void drawLight(void);
 /**
  * Sprite animation class
  */
@@ -60,6 +61,30 @@ struct GlobalSprite {
     Sprite* characterGirl;
 } globalSprite;
 
+#define MAX_LIGHT 40
+
+//typedef float Vec[5];
+
+struct Shape {
+    float width, height;
+    float radius;
+    Vec center;
+};
+
+struct Light { //particle
+    Shape s;   
+    Vec velocity;
+};
+
+class Game {
+    public:
+    Shape box;
+    Light light[MAX_LIGHT];
+    int n;
+    Game(){
+        n = 0;
+    }
+};
 
 #endif /* GAME_H */
 
