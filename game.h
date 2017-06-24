@@ -71,6 +71,7 @@ public:
     Vec ball_vel;
     Vec box[20];
     double delay;
+    int walk;
     struct timespec timeCurrent;
     ~Global()
     {
