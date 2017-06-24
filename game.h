@@ -70,7 +70,6 @@ public:
     Vec ball_pos;
     Vec ball_vel;
     struct timespec timeCurrent;
-
     ~Global()
     {
         logClose();
@@ -142,30 +141,34 @@ struct GlobalSprite {
 extern GlobalSprite globalSprite;
 
 
-
-//typedef float Vec[5];
-
-struct Shape {
-    float width, height;
-    float radius;
-    Vec center;
-};
-
-struct Light { //particle
-    Shape s;
-    Vec velocity;
-};
-
 class Game {
 public:
-    Shape box;
-    Light light[MAX_LIGHT];
+    // Shape box;
+    // Light light[MAX_LIGHT];
     int n;
 
     Game()
     {
         n = 0;
     }
+};
+
+class Battery {
+	public:
+		int arr[3];
+		int points;
+		Battery () {
+			//int points = 0;
+			arr[3] = 540;
+		}
+		void grabObject();
+		void deleteBattery();
+		void drawBattery(void);
+		void drawFlashlight();
+} b;
+
+class gameOver {
+	//
 };
 
 
