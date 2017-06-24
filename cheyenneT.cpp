@@ -1,6 +1,6 @@
-// Author: Cheyenne Thomas
+// Modified by: Cheyenne Thomas
 // Date: 6-20-17
-// Purpose: Create flashlight/spotlight
+// Purpose: Create flashlight, battery, endgame, etc
 //
 // Week 4:
 // draw battery and flashlight and
@@ -22,6 +22,38 @@
 #include "fonts.h"
 #include "game.h"
 
+void grabObject(int k)
+{
+	Rect r;
+	r.bot = 580;
+	r.left = 10;
+	r.center = 0;
+	//bool bat = false;
+	unsigned int c = 0x00ffff44;
+	ggprint8b(&r, 16, c, "Hit a to collect");
+
+	switch (k) {
+		case 'a':
+		break;
+	}
+}
+
+void deleteBattery()
+{
+	if (b.points > 500) {	
+		 b.arr[0] = 0; // fix later
+	}
+
+	if (b.points > 1000) {	
+		// delete [1]
+	}
+	if (b.points > 1500) {	
+		// delete [2]
+	}
+	if (b.points > 2000) {	
+		 // delete [3]
+	}
+}
 
 void drawBattery(void)
 {
@@ -105,6 +137,7 @@ void drawBattery(void)
     	glEnd();
     	glPopMatrix();
 		y -= 35; // y-axis
+		b.arr[i] = y;
 	}
 }
 
