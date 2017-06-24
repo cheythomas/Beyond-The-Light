@@ -195,6 +195,10 @@ void initCharacterSprites(); // for Sprite characters
 void renderCharacterSprites(); // for Sprite characters
 void physicsCharacterSprites(); //Temporary test function for moving sprites
 void drawLight(void);
+void FlashlightPower(); //Displays power left for the flashlight
+void drawFlashlightPower(float); //Displays power bar left for flashlight
+void displayColors(); //Displays background colors/textures
+
 
 
 
