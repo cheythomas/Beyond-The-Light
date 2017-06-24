@@ -164,7 +164,7 @@ class Battery {
 			//int points = 0;
 			arr[3] = 540;
 		}
-		void grabObject();
+		void grabObject(int);
 		void deleteBattery();
 		void drawBattery(void);
 		void drawFlashlight();
