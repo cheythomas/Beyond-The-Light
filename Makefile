@@ -15,7 +15,7 @@ auroraH.o: auroraH.cpp game.h
 cheyenneT.o: cheyenneT.cpp game.h
 	g++ $(CFLAGS) -Wall -Wextra -c cheyenneT.cpp -o cheyenneT.o
 
-KarenS.o: karenS.cpp game.h
+karenS.o: karenS.cpp game.h
 	g++ $(CFLAGS) -Wall -Wextra -c karenS.cpp -o karenS.o
 
 ppm.o: ppm.cpp
