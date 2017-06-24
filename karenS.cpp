@@ -51,14 +51,14 @@ void renderBackground(void) {
         glColor3f(0.2, 0.2, 0.2);
         glVertex2i(0,   200);
         glVertex2i(gl.xres,200);
-        glVertex2i(0.4,0.4,0.4);
+       // glVertex2i(0.4,0.4,0.4);
         glVertex2i(gl.xres,0);
         glVertex2i(0,   0);
     glEnd();
     //show boxes as background
    
     }
-}
+//}
 //Will display background color variation
 void displayColors() {
         glClear(GL_COLOR_BUFFER_BIT);
