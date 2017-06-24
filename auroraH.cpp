@@ -56,25 +56,28 @@ unsigned char *buildAlphaData(Ppmimage *img)
     return newdata;
 }
 
-double timeDiff(struct timespec *start, struct timespec *end)
-{
-    return (double) (end->tv_sec - start->tv_sec) +
-            (double) (end->tv_nsec - start->tv_nsec) * (1e-9);
-}
-
-
-Sprite::Sprite(const std::string & filename,
+Sprite::Sprite(
+        const std::string & filename,
         int frameCountValue,
         int rowsValue,
         int colsValue,
-        double delayValue
-        ) : frameCount(frameCountValue), rows(rowsValue), cols(colsValue),
-delay(delayValue)
-{
+        double delayValue,
+        float h,
+        float w
+        ) : glTexture(),
+            frameCount(frameCountValue),
+            rows(rowsValue), cols(colsValue),
+            origHeight(), origWidth(),
+            height(h), width(w),
+            currentFrame(0),
+            posX(), posY(),
+            delay(delayValue),
+            time() {
     // convert to ppm automatically
     string inputFile = "./images/" + filename;
     string outputFile = "./images/converted/" + filename + ".ppm";
-    system(("convert  " + inputFile + " " + outputFile).c_str());
+    printf("Converting: %s to %s...\n", inputFile.c_str(), outputFile.c_str());
+    system(("mkdir -p ./images/converted && convert  " + inputFile + " " + outputFile).c_str());
 
     //create openGL IMAGE
     //use build AlphaData to convert transparent
@@ -82,8 +85,8 @@ delay(delayValue)
 
 
     Ppmimage *ppmImage = ppm6GetImage(outputFile.c_str());
-    height = ppmImage->height;
-    width = ppmImage->width;
+    origHeight = ppmImage->height;
+    origWidth = ppmImage->width;
     glGenTextures(1, &glTexture);
     glBindTexture(GL_TEXTURE_2D, glTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -92,17 +95,18 @@ delay(delayValue)
     unsigned char *imageData = buildAlphaData(ppmImage);
     // unsigned buildAlphaData(gl.explosiveImage);//***********
     glTexImage2D(
-            GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
-            GL_RGBA, GL_UNSIGNED_BYTE, imageData
-            );
+        GL_TEXTURE_2D, 0, GL_RGBA, origWidth, origHeight, 0,
+        GL_RGBA, GL_UNSIGNED_BYTE, imageData
+    );
 
     free(imageData);
     ppm6CleanupImage(ppmImage);
+    unlink(outputFile.c_str());
+    recordTime(&time);
 }
 
 Sprite::~Sprite()
 {
-
 }
 
 void Sprite::draw()
@@ -111,28 +115,30 @@ void Sprite::draw()
     //render appropriate sprite
 
     struct timespec current;
-    clock_gettime(CLOCK_REALTIME, &current);
+    recordTime(&current);
 
     double timeSpan = timeDiff(&time, &current);
     if (timeSpan > delay) {
         //next frame
         ++currentFrame;
-        if (delay >= frameCount)
-            frameCount = 0;
-        clock_gettime(CLOCK_REALTIME, &time);
+        if (currentFrame >= frameCount)
+            currentFrame = 0;
+        recordTime(&time);
     }
-
 
     //Calculate the sprite frame and size
     //and location
     float cx = posX;
     float cy = posY;
-    float h = height / rows;
-    float w = width / cols;
+    float h = height;
+    float w = width;
     int ix = currentFrame % frameCount;
     int iy = currentFrame / cols;
     float tx = (float) ix / cols;
     float ty = (float) iy / rows;
+    float tw = 1.0f / cols;
+    float th = 1.0f / rows;
+    
     glPushMatrix();
     glColor3f(1.0, 1.0, 1.0);
     glBindTexture(GL_TEXTURE_2D, glTexture);
@@ -144,21 +150,75 @@ void Sprite::draw()
 
 
     glBegin(GL_QUADS);
-    glTexCoord2f(tx, ty + .5);
+    glTexCoord2f(tx, ty + th);
     glVertex2i(cx - w, cy - h);
     glTexCoord2f(tx, ty);
-    glVertex2i(cx - w, cy + h);
-    glTexCoord2f(tx + .125, ty);
+    glVertex2i(cx - w, cy + w);
+    glTexCoord2f(tx + tw, ty);
     glVertex2i(cx + w, cy + h);
-    glTexCoord2f(tx + .125, ty + .5);
+    glTexCoord2f(tx + tw, ty + th);
     glVertex2i(cx + w, cy - h);
-
+    
     glEnd();
     glPopMatrix();
 }
 
-void Sprite::setPosition(float x, float y)
+void Sprite::setPos(float x, float y)
 {
     posX = x;
     posY = y;
+}
+void Sprite::setSize(float height, float width)
+{
+    this->height = height;
+    this->width = width;
+}
+
+float Sprite::getWidth()
+{
+    return width;
+}
+
+float Sprite::getHeight()
+{
+    return height;
+}
+
+double Sprite::getDelay()
+{
+    return delay;
+}
+
+float Sprite::getPosX()
+{
+    return posX;
+}
+
+float Sprite::getPosY()
+{
+    return posY;
+}
+
+
+void initCharacterSprites()
+{
+    globalSprite.characterGirl = new Sprite("girl1.gif", 11, 1, 11, 1.0f / 8.0f, 113, 128);
+    globalSprite.characterGirl->setPos(gl.xres / 2, gl.yres / 2);    
+}
+
+
+void renderCharacterSprites() {
+    globalSprite.characterGirl->draw();
+
+}
+
+
+void physicsCharacterSprites() {
+    static float pos = 0;
+    Sprite* sp = globalSprite.characterGirl;
+    if(pos > gl.xres + sp->getWidth()) {        
+        pos = -sp->getWidth();
+    }
+    sp->setPos(pos, gl.yres / 2);
+    pos += 10;
 }
