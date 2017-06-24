@@ -40,12 +40,12 @@ void applyBackgroundMovement(void) {
 
 //rendering the Background
 void renderBackground(void) {
-     Rect r;
+    //Rect r;
     //Clear the screen
     glClearColor(0.2, 0.2, 0.1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    float cx = gl.xres/2.0;
-    float cy = gl.yres/2.0;
+    //float cx = gl.xres/2.0;
+    //float cy = gl.yres/2.0;
     
     glBegin(GL_QUADS);
         glColor3f(0.2, 0.2, 0.2);
@@ -59,6 +59,7 @@ void renderBackground(void) {
    
     }
 }
+//Will display background color variation
 void displayColors() {
         glClear(GL_COLOR_BUFFER_BIT);
         glBegin(GL_QUADS);
@@ -88,7 +89,7 @@ void displayColors() {
 }
 
 void FlashlightPower() {
-    //Connected to drawFlashlight to display the words
+    //Displays the text for amount of power flashlight currently has
     Rect r;
     ggprint8b(&r, 16, 0x00ffff44, "Battery Power");
 }
