@@ -5,25 +5,28 @@
 // Week 4:
 // draw battery and flashlight and
 //
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <time.h>
-#include <math.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <X11/keysym.h>
-#include <GL/glx.h>
-#include "log.h"
-#include "ppm.h"
-#include "fonts.h"
 #include "game.h"
 
 void Battery::grabObject(int k)
 {
+    // a battery on the ground
+    float w, h, z, x, y;
+    w = 34; // width size
+    h = 12; // length size
+    z = 0.0;
+    x = 750; // x-axis
+    y = 50; // y-axis
+    glColor3ub(40, 230, 90); 
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    glBegin(GL_QUADS);
+       	glVertex2i(-w, -h);
+        glVertex2i(-w,  h);
+        glVertex2i( w,  h);
+        glVertex2i( w, -h);
+    glEnd();
+    glPopMatrix();
+    
     Rect r;
     r.bot = 580;
     r.left = 10;
