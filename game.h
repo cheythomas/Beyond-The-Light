@@ -10,6 +10,9 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
+#include <GL/glu.h>
+#include <GL/gl.h>
+
 #include <string>
 
 
@@ -57,39 +60,6 @@ inline void recordTime(struct timespec *t)
 {
     clock_gettime(CLOCK_REALTIME, t);
 }
-
-class Global {
-public:
-    Display *dpy;
-    Window win;
-    unsigned char keys[65536];
-    int done;
-    int xres, yres;
-    //camera is centered at (0,0) lower-left of screen. 
-    Flt camera[2];
-    Vec ball_pos;
-    Vec ball_vel;
-    double delay;
-    Vec box[20];
-    int walk;
-    struct timespec timeCurrent;
-    ~Global()
-    {
-        logClose();
-    }
-
-    Global()
-    {
-        logOpen();
-        camera[0] = camera[1] = 0.0;
-        done = 0;
-        xres = 800;
-        yres = 600;
-        memset(keys, 0, 65536);
-    }
-};
-
-extern Global gl;
 
 /**
  * Sprite animation class
@@ -157,24 +127,55 @@ public:
 };
 
 class Battery {
-	public:
-		int arr[3];
-		int points;
-		Battery () {
-			//int points = 0;
-			arr[3] = 540;
-		}
-		void grabObject(int);
-		void deleteBattery();
-		void drawBattery(void);
-		void drawFlashlight();
-} b;
+public:
+    int arr[3];
+    int points;
+    Battery () {
+            //int points = 0;
+            arr[3] = 540;
+    }
+    void grabObject(int k);
+    void deleteBattery();
+    void drawBattery(void);
+    void drawFlashlight();
+};
 
 class gameOver {
 	//
 };
 
 
+class Global {
+public:
+    Display *dpy;
+    Window win;
+    unsigned char keys[65536];
+    int done;
+    int xres, yres;
+    //camera is centered at (0,0) lower-left of screen. 
+    Flt camera[2];
+    Vec ball_pos;
+    Vec ball_vel;
+    Battery batt;    
+    struct timespec timeCurrent;
+    
+    ~Global()
+    {
+        logClose();
+    }
+
+    Global()
+    {
+        logOpen();
+        camera[0] = camera[1] = 0.0;
+        done = 0;
+        xres = 800;
+        yres = 600;
+        memset(keys, 0, 65536);
+    }
+};
+
+extern Global gl;
 
 //function prototypes
 void initXWindows(void);
@@ -198,12 +199,8 @@ void initCharacterSprites(); // for Sprite characters
 void renderCharacterSprites(); // for Sprite characters
 void physicsCharacterSprites(); //Temporary test function for moving sprites
 void drawLight(void);
-void FlashlightPower(); //Displays power left for the flashlight
-void drawFlashlightPower(float); //Displays power bar left for flashlight
-void displayColors(); //Displays background colors/textures
-
+void LightCollision();
 
 
 
 #endif /* GAME_H */
-
