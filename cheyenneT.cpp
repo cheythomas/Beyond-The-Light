@@ -70,7 +70,7 @@ void Battery::drawBattery(void)
     glPushMatrix();
     glTranslatef(x, y, z);
     glBegin(GL_QUADS);
-		glVertex2i(-w, -h);
+    	glVertex2i(-w, -h);
     	glVertex2i(-w,  h);
     	glVertex2i( w,  h);
     	glVertex2i( w, -h);
@@ -113,8 +113,8 @@ void Battery::drawBattery(void)
     glTranslatef(x, y, z);
     glBegin(GL_LINES);
     	glVertex2i(-w, -h);
-   		glVertex2i(-w,  h);
-   		glVertex2i( w,  h);
+    	glVertex2i(-w,  h);
+    	glVertex2i( w,  h);
     	glVertex2i( w, -h);
     glEnd();
     glPopMatrix();
