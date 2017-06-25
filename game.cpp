@@ -4,11 +4,11 @@ int main(void)
 {
     initXWindows();
     initOpengl();
-    initCharacterSprites(); //aH function call inside initOpenGl
+    initCharacterSprites(); // function call inside initOpenGl
     init();
     struct timespec now, last;
     recordTime(&last);
-    
+
     const double physicsRate = 1.0f / 60.0f;
     while (!gl.done) {
         while (XPending(gl.dpy)) {
@@ -18,16 +18,16 @@ int main(void)
             checkMouse(&e);
             checkKeys(&e);
         }
-        
+
         //Run physics at a fixed interval (60 times per second)
         recordTime(&now);
         double physicsCountDown = timeDiff(&last, &now);
         timeCopy(&last, &now);
-        while(physicsCountDown >= physicsRate) {            
+        while (physicsCountDown >= physicsRate) {
             physics();
             physicsCountDown -= physicsRate;
         }
-        
+
         render();
         glXSwapBuffers(gl.dpy, gl.win);
     }
@@ -250,11 +250,12 @@ void render(void)
     //Clear the screen
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    
+
     // if put draw before sprite it appears for 1 sec
     // and disappears. Texture mapping might need
     // to be fixed
     // gl.batt.drawBattery(); 
+    renderBackground();
     renderCharacterSprites();
     gl.batt.drawBattery(); // does not appear at all
     gl.batt.drawFlashlight(); // does not appear

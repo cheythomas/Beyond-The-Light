@@ -113,7 +113,6 @@ struct GlobalSprite {
 
 extern GlobalSprite globalSprite;
 
-
 class Game {
 public:
     // Shape box;
@@ -130,9 +129,11 @@ class Battery {
 public:
     int arr[3];
     int points;
-    Battery () {
-            //int points = 0;
-            arr[3] = 540;
+
+    Battery()
+    {
+        //int points = 0;
+        arr[3] = 540;
     }
     void grabObject(int k);
     void deleteBattery();
@@ -141,9 +142,8 @@ public:
 };
 
 class gameOver {
-	//
+    //
 };
-
 
 class Global {
 public:
@@ -165,7 +165,7 @@ public:
 
 
     struct timespec timeCurrent;
-    
+
     ~Global()
     {
         logClose();
@@ -207,9 +207,9 @@ void renderCharacterSprites(); // for Sprite characters
 void physicsCharacterSprites(); //Temporary test function for moving sprites
 void drawLight(void);
 void LightCollision();
-void displayColors();//different colors for background
-void FlashlightPower();//Displays how much power battery has
-void drawFlashlightPower(float);//displays the bar of battery life
+void displayColors(); //different colors for background
+void FlashlightPower(); //Displays how much power battery has
+void drawFlashlightPower(float); //displays the bar of battery life
 
 
 

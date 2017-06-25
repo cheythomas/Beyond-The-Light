@@ -2,6 +2,19 @@
 // Date: 06/17/17
 // Purpose: sprite animations
 
+//Week 4:
+//Added initialization, physics and render funcs for Sprite
+//Added first sprite
+//characterGirl credit: 
+//http://hordana.deviantart.com/art/Anime-girl-Walk-486317319
+//Tested main character sprite
+/**/
+//Week 5
+// Start on main menu/start up menu
+// Allow for collection of points
+// Allow for new game
+// Settings
+// Exit game
 
 
 #include <stdio.h>
@@ -65,19 +78,22 @@ Sprite::Sprite(
         float h,
         float w
         ) : glTexture(),
-            frameCount(frameCountValue),
-            rows(rowsValue), cols(colsValue),
-            origHeight(), origWidth(),
-            height(h), width(w),
-            currentFrame(0),
-            posX(), posY(),
-            delay(delayValue),
-            time() {
+frameCount(frameCountValue),
+rows(rowsValue), cols(colsValue),
+origHeight(), origWidth(),
+height(h), width(w),
+currentFrame(0),
+posX(), posY(),
+delay(delayValue),
+time()
+{
     // convert to ppm automatically
     string inputFile = "./images/" + filename;
     string outputFile = "./images/converted/" + filename + ".ppm";
-    printf("Converting: %s to %s...\n", inputFile.c_str(), outputFile.c_str());
-    system(("mkdir -p ./images/converted && convert  " + inputFile + " " + outputFile).c_str());
+    printf("Converting: %s to %s...\n", inputFile.c_str(),
+            outputFile.c_str());
+    system(("mkdir -p ./images/converted && convert  " + inputFile +
+            " " + outputFile).c_str());
 
     //create openGL IMAGE
     //use build AlphaData to convert transparent
@@ -95,9 +111,9 @@ Sprite::Sprite(
     unsigned char *imageData = buildAlphaData(ppmImage);
     // unsigned buildAlphaData(gl.explosiveImage);//***********
     glTexImage2D(
-        GL_TEXTURE_2D, 0, GL_RGBA, origWidth, origHeight, 0,
-        GL_RGBA, GL_UNSIGNED_BYTE, imageData
-    );
+            GL_TEXTURE_2D, 0, GL_RGBA, origWidth, origHeight, 0,
+            GL_RGBA, GL_UNSIGNED_BYTE, imageData
+            );
 
     free(imageData);
     ppm6CleanupImage(ppmImage);
@@ -138,7 +154,7 @@ void Sprite::draw()
     float ty = (float) iy / rows;
     float tw = 1.0f / cols;
     float th = 1.0f / rows;
-    
+
     glPushMatrix();
     glColor3f(1.0, 1.0, 1.0);
     glBindTexture(GL_TEXTURE_2D, glTexture);
@@ -158,7 +174,7 @@ void Sprite::draw()
     glVertex2i(cx + w, cy + h);
     glTexCoord2f(tx + tw, ty + th);
     glVertex2i(cx + w, cy - h);
-    
+
     glEnd();
     glPopMatrix();
 }
@@ -168,6 +184,7 @@ void Sprite::setPos(float x, float y)
     posX = x;
     posY = y;
 }
+
 void Sprite::setSize(float height, float width)
 {
     this->height = height;
@@ -199,24 +216,24 @@ float Sprite::getPosY()
     return posY;
 }
 
-
 void initCharacterSprites()
 {
-    globalSprite.characterGirl = new Sprite("girl1.gif", 11, 1, 11, 1.0f / 8.0f, 113, 128);
-    globalSprite.characterGirl->setPos(gl.xres / 2, gl.yres / 2);    
+    globalSprite.characterGirl = new Sprite
+            ("girl1.gif", 11, 1, 11, 1.0f / 8.0f, 113, 128);
+    globalSprite.characterGirl->setPos(gl.xres / 2, gl.yres / 2);
 }
 
-
-void renderCharacterSprites() {
+void renderCharacterSprites()
+{
     globalSprite.characterGirl->draw();
 
 }
 
-
-void physicsCharacterSprites() {
+void physicsCharacterSprites()
+{
     static float pos = 0;
     Sprite* sp = globalSprite.characterGirl;
-    if(pos > gl.xres + sp->getWidth()) {        
+    if (pos > gl.xres + sp->getWidth()) {
         pos = -sp->getWidth();
     }
     sp->setPos(pos, gl.yres / 2);
