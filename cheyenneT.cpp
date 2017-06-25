@@ -61,7 +61,7 @@ void Battery::drawBattery(void)
     w = 40; // width size
     h = 70; // length size
     z = 0.0;
-    x = 50; // x-axis
+    x = 750; // x-axis
     y = 490; // y-axis
 
     /**draw battery**/
@@ -93,7 +93,7 @@ void Battery::drawBattery(void)
     w = 20; // width size
     h = 15; // length size
     z = 0.0;
-    x = 49; // x-axis
+    x = 749; // x-axis
     y = 575; // y-axis
     glColor3ub(0, 0, 0);
     glPushMatrix();
@@ -123,7 +123,7 @@ void Battery::drawBattery(void)
     w = 34; // width size
     h = 12; // length size
     z = 0.0;
-    x = 50; // x-axis
+    x = 750; // x-axis
     y = 540; // y-axis
     for (int i = 0; i < 4; i++) {
         glColor3ub(40, 230, 90); // make brighter
