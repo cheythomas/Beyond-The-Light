@@ -250,20 +250,10 @@ void render(void)
     //Clear the screen
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-
-    // if put draw before sprite it appears for 1 sec
-    // and disappears. Texture mapping might need
-    // to be fixed
-    // gl.batt.drawBattery(); 
+    
     renderBackground();
+    gl.batt.drawBattery(); 
+    gl.batt.drawFlashlight(); 
     renderCharacterSprites();
-    gl.batt.drawBattery(); // does not appear at all
-    gl.batt.drawFlashlight(); // does not appear
 }
-
-
-
-
-
-
 
