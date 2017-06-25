@@ -147,11 +147,11 @@ class gameOver {
 /**
  * Menu classes
  */
+// class for sub menu items
 class MenuItem {
 public:
     MenuItem(std::string txt, int x, int y, int w, int h);
-    void draw();
-
+    void draw(); 
 
 private:
     std::string text;
@@ -176,6 +176,7 @@ public:
 
 
 protected:
+    //stores the menu items
     std::vector<MenuItem> menuItems;
 };
 
@@ -185,6 +186,7 @@ public:
 
     void keyboardInput(int key);
 };
+/**/
 
 class Global {
 public:

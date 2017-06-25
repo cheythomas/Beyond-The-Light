@@ -21,6 +21,7 @@
 using namespace std;
 
 //This prototype allows background movement
+//Added some of the background color, and fonts
 void applyBackgroundMovement(void) {
 
     if (gl.walk || gl.keys[XK_Right] || gl.keys[XK_Left]) {
