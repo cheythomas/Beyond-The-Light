@@ -156,7 +156,11 @@ public:
     Flt camera[2];
     Vec ball_pos;
     Vec ball_vel;
-    Battery batt;    
+    Battery batt;
+    int walk;
+    Vec box[20];
+    double delay;
+
     struct timespec timeCurrent;
     
     ~Global()
