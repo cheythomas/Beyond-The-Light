@@ -157,9 +157,12 @@ public:
     Vec ball_pos;
     Vec ball_vel;
     Battery batt;
+    int walkFrame;
     int walk;
     Vec box[20];
     double delay;
+    GLuint walkTexture;
+
 
     struct timespec timeCurrent;
     
@@ -204,6 +207,10 @@ void renderCharacterSprites(); // for Sprite characters
 void physicsCharacterSprites(); //Temporary test function for moving sprites
 void drawLight(void);
 void LightCollision();
+void displayColors();//different colors for background
+void FlashlightPower();//Displays how much power battery has
+void drawFlashlightPower(float);//displays the bar of battery life
+
 
 
 
