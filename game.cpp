@@ -190,6 +190,14 @@ void checkKeys(XEvent *e)
     } else {
         return;
     }
+
+    if (e->type == KeyPress) {
+        //if button is pressed down and the main menu is open
+        if (gl.mainMenuOpen) {
+            gl.mainMenu.keyboardInput(key);
+        }
+    }
+
     if (shift) {
     }
     switch (key) {
@@ -250,10 +258,15 @@ void render(void)
     //Clear the screen
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-    renderBackground();
-    gl.batt.drawBattery(); 
-    gl.batt.drawFlashlight(); 
-    renderCharacterSprites();
+
+    // menuBackground(); //*
+    if (gl.mainMenuOpen) {
+        gl.mainMenu.draw();
+    } else {
+        renderBackground();
+        gl.batt.drawBattery();
+        gl.batt.drawFlashlight();
+        renderCharacterSprites();
+    }
 }
 

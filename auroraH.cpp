@@ -31,6 +31,7 @@
 #include "fonts.h"
 
 #include <string>
+#include <vector>
 #include "game.h"
 
 // Facilitating sprite animations for team members
@@ -238,4 +239,85 @@ void physicsCharacterSprites()
     }
     sp->setPos(pos, gl.yres / 2);
     pos += 10;
+}
+//**
+// Menu
+//**
+
+MenuItem::MenuItem(std::string txt, int x, int y, int w, int h)
+: text(txt), posX(x), posY(y), width(w), height(h)
+{
+
+}
+
+void MenuItem::draw()
+{
+
+    glPushMatrix();
+
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor3ub(255, 255, 255);
+    glRectf(
+            posX,
+            posY,
+            posX + width,
+            posY + height
+            );
+    //glDisable(GL_BLEND);
+    Rect r;
+    r.center = 0;
+    r.bot = posY + 15;
+    r.left = posX + 50;
+    ggprint16(&r, 0, (255 << 16) | (0 << 8) | 0, this->text.c_str());
+
+
+    glPopMatrix();
+}
+
+void Menu::draw()
+{
+    //draw any background
+
+    //loop through menuitems...
+    for (size_t i = 0; i < this->menuItems.size(); i++) {
+        MenuItem& mi = this->menuItems[i];
+        mi.draw();
+    }
+}
+
+Menu::Menu() : menuItems()
+{
+    //empty constructor
+}
+
+Menu::~Menu()
+{
+    //empty virtual destructor
+}
+
+void Menu::add(MenuItem item)
+{
+    this->menuItems.push_back(item);
+}
+
+MainMenu::MainMenu()
+{
+    ////add all menu items    
+    add(MenuItem("Play", 300, 400, 200, 60));
+    add(MenuItem("High Scores", 300, 330, 200, 60));
+    add(MenuItem("Credits", 300, 260, 200, 60));
+    add(MenuItem("Exit", 300, 190, 200, 60));
+}
+
+void MainMenu::keyboardInput(int key)
+{
+
+    switch (key) {
+    case XK_p:
+    case XK_P:
+        gl.mainMenuOpen = false;
+        break;
+    }
+
 }

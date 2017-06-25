@@ -14,7 +14,7 @@
 #include <GL/gl.h>
 
 #include <string>
-
+#include <vector>
 
 #include "log.h"
 #include "ppm.h"
@@ -98,7 +98,6 @@ public:
     double getDelay();
     float getPosY();
     float getPosX();
-
     void draw();
 };
 
@@ -145,6 +144,48 @@ class gameOver {
     //
 };
 
+/**
+ * Menu classes
+ */
+class MenuItem {
+public:
+    MenuItem(std::string txt, int x, int y, int w, int h);
+    void draw();
+
+
+private:
+    std::string text;
+
+    int posX;
+    int posY;
+
+    int width;
+    int height;
+
+};
+
+class Menu {
+public:
+    Menu();
+
+    virtual ~Menu();
+
+    void add(MenuItem item);
+
+    void draw();
+
+
+protected:
+    std::vector<MenuItem> menuItems;
+};
+
+class MainMenu : public Menu {
+public:
+    MainMenu();
+
+    void keyboardInput(int key);
+};
+
 class Global {
 public:
     Display *dpy;
@@ -162,8 +203,8 @@ public:
     Vec box[20];
     double delay;
     GLuint walkTexture;
-
-
+    MainMenu mainMenu;
+    bool mainMenuOpen;
     struct timespec timeCurrent;
 
     ~Global()
@@ -179,6 +220,7 @@ public:
         xres = 800;
         yres = 600;
         memset(keys, 0, 65536);
+        mainMenuOpen = true;
     }
 };
 
@@ -210,6 +252,7 @@ void LightCollision();
 void displayColors(); //different colors for background
 void FlashlightPower(); //Displays how much power battery has
 void drawFlashlightPower(float); //displays the bar of battery life
+//void menuBackground(); //menu background
 
 
 
