@@ -249,8 +249,10 @@ Flt VecNormalize(Vec vec)
 
 void physics(void)
 {
-    //no physics calculations yet
-    physicsCharacterSprites();
+    //Only run physics when not in main menu
+    if(!gl.mainMenuOpen) {
+        physicsCharacterSprites();
+    }
 }
 
 void render(void)
@@ -259,7 +261,7 @@ void render(void)
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // menuBackground(); //*
+    // Menu and menu item must open first then the rest will be rendered
     if (gl.mainMenuOpen) {
         gl.mainMenu.draw();
     } else {

@@ -249,14 +249,12 @@ MenuItem::MenuItem(std::string txt, int x, int y, int w, int h)
 {
 
 }
+// draw out menu items
 
 void MenuItem::draw()
 {
-
+    // rendering boxes 
     glPushMatrix();
-
-    //glEnable(GL_BLEND);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor3ub(255, 255, 255);
     glRectf(
             posX,
@@ -264,12 +262,13 @@ void MenuItem::draw()
             posX + width,
             posY + height
             );
-    //glDisable(GL_BLEND);
+    // rendering text
     Rect r;
     r.center = 0;
     r.bot = posY + 15;
     r.left = posX + 50;
-    ggprint16(&r, 0, (255 << 16) | (0 << 8) | 0, this->text.c_str());
+    // hex for color white
+    ggprint16(&r, 0, 0xFF0000, this->text.c_str());
 
 
     glPopMatrix();
@@ -314,6 +313,7 @@ void MainMenu::keyboardInput(int key)
 {
 
     switch (key) {
+        //checks key input if lower or uppercase, turns menu off
     case XK_p:
     case XK_P:
         gl.mainMenuOpen = false;
