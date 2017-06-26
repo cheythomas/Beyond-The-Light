@@ -303,10 +303,10 @@ void Menu::add(MenuItem item)
 MainMenu::MainMenu()
 {
     ////add all menu items    
-    add(MenuItem("Play", 300, 400, 200, 60));
-    add(MenuItem("High Scores", 300, 330, 200, 60));
-    add(MenuItem("Credits", 300, 260, 200, 60));
-    add(MenuItem("Exit", 300, 190, 200, 60));
+    add(MenuItem("[P] lay", 300, 400, 200, 60));
+    add(MenuItem("[H] igh Scores", 300, 330, 200, 60));
+    add(MenuItem("[C] redits", 300, 260, 200, 60));
+    add(MenuItem("[E] xit", 300, 190, 200, 60));
 }
 
 void MainMenu::keyboardInput(int key)
