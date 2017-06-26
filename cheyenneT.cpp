@@ -3,10 +3,15 @@
 // Purpose: Create flashlight, battery, endgame, etc
 //
 // Week 4:
-// draw battery and flashlight and
+// draw the battery and its battery bars, 4. 
+// write a function that shows the flashlight running out of bars
+// draw flashlight
+//
+// Week 5: figure out how to create spotlight effect
 //
 #include "game.h"
 
+// not being called yet, need to figure out keys
 void Battery::grabObject(int k)
 {
     // a battery on the ground
@@ -41,6 +46,7 @@ void Battery::grabObject(int k)
     }
 }
 
+// not being called yet, still needs work
 void Battery::deleteBattery()
 {
     if (points > 500) {
@@ -157,6 +163,7 @@ void Battery::drawFlashlight()
     glPopMatrix();
 }
 
+// not using till light works
 void LightCollison()
 {
     //   
