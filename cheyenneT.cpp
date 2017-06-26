@@ -154,6 +154,7 @@ void Battery::drawFlashlight()
 {
     float cx = 800 / 2.0;
     glColor3f(1, 1, 1);
+    // dont forget to fix magic numbers
     glBegin(GL_QUADS);
     	glVertex2i(cx - 60, 550);
     	glVertex2i(cx + 50, 550);
