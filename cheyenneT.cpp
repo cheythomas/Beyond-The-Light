@@ -12,14 +12,14 @@
 #include "game.h"
 
 // not being called yet, need to figure out keys
-void Battery::grabObject(int k)
+void Battery::battbarAppear()
 {
     // a battery on the ground
     float w, h, z, x, y;
     w = 34; // width size
     h = 12; // length size
     z = 0.0;
-    x = 750; // x-axis
+    x = 740; // x-axis
     y = 50; // y-axis
     glColor3ub(40, 230, 90); 
     glPushMatrix();
@@ -33,17 +33,27 @@ void Battery::grabObject(int k)
     glPopMatrix();
     
     Rect r;
-    r.bot = 580;
-    r.left = 10;
+    r.bot = 70; // y-axis
+    r.left = 700; // x-axis
     r.center = 0;
-    //bool bat = false;
     unsigned int c = 0x00ffff44;
-    ggprint8b(&r, 16, c, "Hit a to collect");
+    ggprint8b(&r, 16, c, "Hit A to collect");
+}
 
-    switch (k) {
-    case 'a':
-        break;
-    }
+void Battery::grabBattery()
+{
+    Rect r;
+   	r.bot = 90; // y-axis
+   	r.left = 700; // x-axis
+   	r.center = 0;
+    unsigned int c = 0x00ffff44;
+	if (bcount == 4) {
+    	ggprint8b(&r, 16, c, "Already full");
+	}
+	
+	if (bcount < 4) {
+    	ggprint8b(&r, 16, c, "nice!");
+	}
 }
 
 // not being called yet, still needs work
@@ -147,21 +157,49 @@ void Battery::drawBattery(void)
         glPopMatrix();
         y -= 35; // y-axis
         arr[i] = y;
+		bcount++;
     }
 }
 
 void Battery::drawFlashlight()
 {
-    float cx = 800 / 2.0;
-    glColor3f(1, 1, 1);
+    float cx = 800 / 8.0;
+    float w, h, z, x, y;
+	z = 0;
+    
+	glColor3f(0, 0, 0);
     // dont forget to fix magic numbers
+    glPushMatrix();
     glBegin(GL_QUADS);
-    	glVertex2i(cx - 60, 550);
-    	glVertex2i(cx + 50, 550);
-    	glVertex2i(cx + 50, 530);
-    	glVertex2i(cx - 60, 530);
+    	glVertex2i(cx - 60, 178);
+    	glVertex2i(cx + 50, 178);
+    	glVertex2i(cx + 50, 158);
+    	glVertex2i(cx - 60, 158);
     glEnd();
     glPopMatrix();
+
+	/*light coming out*/	
+    w = 85; // width size
+    h = 80; // length size
+    z = 0.0;
+    x = 260; // x-axis
+    y = 162; // y-axis
+    //glColor3f(1, 1, 1); 
+    glPushMatrix();
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glColor4f(1.0, 1.0, 1.0, 0.4);
+	glTranslatef(x, y, z);
+    glRotatef(313,0.0,0,1);
+    glBegin(GL_TRIANGLES);
+       	glVertex2i(-w, -h);
+        glVertex2i(-w,  h);
+        //glVertex2i( w,  h);
+        glVertex2i( w, -h);
+    glEnd();
+	glDisable(GL_BLEND);
+    glPopMatrix();
+
 }
 
 // not using till light works
@@ -170,3 +208,73 @@ void LightCollison()
     //   
 }
 
+
+void gameOver()
+{
+
+}
+
+
+
+/*
+// Light values and coordinates
+GLfloat  lightPos[] = { 0.0f, 0.0f, 75.0f, 1.0f };
+GLfloat  specular[] = { 1.0f, 1.0f, 1.0f, 1.0f};
+GLfloat  specref[] =  { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat  ambientLight[] = { 0.5f, 0.5f, 0.5f, 1.0f};
+GLfloat  spotDir[] = { 0.0f, 0.0f, -1.0f };
+
+// This function does any needed initialization on the rendering
+// context.  Here it sets up and initializes the lighting for
+// the scene.
+//void Battery::drawFlashlight()
+void SetupRC()
+{
+        glEnable(GL_DEPTH_TEST);   // Hidden surface removal
+        glFrontFace(GL_CCW);       // Counterclockwise polygons face out
+        glEnable(GL_CULL_FACE);    // Do not try to display the back sides
+
+        // Enable lighting
+        glEnable(GL_LIGHTING);
+
+        // Set up and enable light 0
+        // Supply a slight ambient light so the objects can be seen
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+
+        // The light is composed of just diffuse and specular components
+        glLightfv(GL_LIGHT0,GL_DIFFUSE,ambientLight);
+        glLightfv(GL_LIGHT0,GL_SPECULAR,specular);
+        glLightfv(GL_LIGHT0,GL_POSITION,lightPos);
+
+        // Specific spot effects
+        // Cut off angle is 60 degrees
+        glLightf(GL_LIGHT0,GL_SPOT_CUTOFF,60.0f);
+
+        // Fairly shiny spot
+        glLightf(GL_LIGHT0,GL_SPOT_EXPONENT,100.0f);
+
+        // Enable this light in particular
+        glEnable(GL_LIGHT0);
+
+        // Enable color tracking
+        glEnable(GL_COLOR_MATERIAL);
+
+        // Set Material properties to follow glColor values
+        glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+        // All materials hereafter have full specular reflectivity
+        // with a high shine
+        glMaterialfv(GL_FRONT, GL_SPECULAR,specref);
+        glMateriali(GL_FRONT, GL_SHININESS,128);
+
+        // Black background
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
+
+	// Specific spot effects
+	// Cut off angle is 60 degrees
+	glLightf(GL_LIGHT0,GL_SPOT_CUTOFF,60.0f);
+
+	// Fairly shiny spot
+	glLightf(GL_LIGHT0,GL_SPOT_EXPONENT,100.0f);
+}
+*/
