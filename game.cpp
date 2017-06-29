@@ -205,6 +205,9 @@ void checkKeys(XEvent *e)
         break;
     case XK_m:
         break;
+    case XK_a:
+			gl.batt.grabBattery();
+        break;
     case XK_w:
         break;
     case XK_e:
@@ -269,6 +272,7 @@ void render(void)
         renderBackground();
         gl.batt.drawBattery();
         gl.batt.drawFlashlight();
+        gl.batt.battbarAppear();
         renderCharacterSprites();
     }
 }
