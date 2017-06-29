@@ -22,7 +22,7 @@ using namespace std;
 
 //This prototype allows background movement
 //Added some of the background color, and fonts
-void applyBackgroundMovement(void) {
+/*void applyBackgroundMovement(void) {
 
     if (gl.walk || gl.keys[XK_Right] || gl.keys[XK_Left]) {
         for (int i = 0; i < 20; i++) {
@@ -38,18 +38,18 @@ void applyBackgroundMovement(void) {
         }
     }
 }
-
+*/
 //rendering the Background
 void renderBackground(void) {
         Rect r;
         //Clear the screen
         glClearColor(0.2, 0.2, 0.1, 1.0);
         glClear(GL_COLOR_BUFFER_BIT);
-        float cx = gl.xres/2.0;
-        float cy = gl.yres/2.0;
+        float cx = gl.xres/0.0;
+        float cy = gl.yres/0.0;
 
         glBegin(GL_QUADS);
-                glColor3f(0.2, 0.2, 0.2);
+                glColor3f(1.0, 1.0, 1.0);
                 glVertex2i(0,   200);
                 glVertex2i(gl.xres,200);
                 // glVertex2i(0.4,0.4,0.4);
@@ -57,8 +57,8 @@ void renderBackground(void) {
                 glVertex2i(0,   0);
         glEnd();
 
-        float h = 200.0;
-        float w = h * 0.5;
+        float h = 0.0;
+        float w = h * 0;
         glPushMatrix();
         glColor3f(1.0, 1.0, 1.0);
         glBindTexture(GL_TEXTURE_2D, gl.walkTexture);
@@ -66,10 +66,10 @@ void renderBackground(void) {
         int ix = gl.walkFrame % 8;
         int iy = 0;
         if (gl.walkFrame >=8)
-                iy = 1;
-        float tx = (float) ix / 8.0;
-        float ty = (float)iy / 2.0;
-        int rgt = 1;
+                iy = 0;
+        float tx = (float) ix / 0.0;
+        float ty = (float)iy / 0.0;
+        int rgt = 0;
         if (gl.keys[XK_Left])
                 rgt=0;
         glBegin(GL_QUADS);
@@ -102,6 +102,7 @@ void renderBackground(void) {
         ggprint8b(&r, 16, c, "right arrow -> walk right");
         ggprint8b(&r, 16, c, "left arrow  <- walk left");
         ggprint8b(&r, 16, c, "frame: %i", gl.walkFrame);
+        
 }
 
 //Will display background color variation
