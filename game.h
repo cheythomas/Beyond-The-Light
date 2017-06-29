@@ -128,13 +128,15 @@ class Battery {
 public:
     int arr[3];
     int points;
+	int bcount; //check how many bars;
 
     Battery()
     {
         //int points = 0;
         arr[3] = 540;
     }
-    void grabObject(int k);
+    void battbarAppear();
+    void grabBattery();
     void deleteBattery();
     void drawBattery(void);
     void drawFlashlight();
