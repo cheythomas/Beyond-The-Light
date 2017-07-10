@@ -15,6 +15,7 @@
 
 #include <string>
 #include <vector>
+#include <cmath>
 
 #include "log.h"
 #include "ppm.h"
@@ -22,7 +23,7 @@
 
 
 //macros
-#define MAX_BARS 3
+#define MAX_LIGHT 40
 
 typedef double Flt;
 typedef double Vec[3];
@@ -98,6 +99,7 @@ public:
     double getDelay();
     float getPosY();
     float getPosX();
+    //virtual void draw();
     void draw();
 };
 
@@ -108,12 +110,15 @@ public:
  */
 struct GlobalSprite {
     Sprite* characterGirl;
+    Sprite* background[5];
 };
 
 extern GlobalSprite globalSprite;
 
 class Game {
 public:
+    // Shape box;
+    // Light light[MAX_LIGHT];
     int n;
 
     Game()
@@ -123,23 +128,31 @@ public:
 };
 
 class Battery {
-    public:
-        int arr[MAX_BARS];
-        int points;
-	    int bcount; //check how many bars;
+public:
+    //int arr[3];
+    int arr[MAX_BARS];
+    int points;
+	int bcount; //check how many bars;
 
-        Battery() {
-            arr[MAX_BARS] = 540;
-			bcount = 0;
-        }
-        void battbarAppear();
-        void drawBattery(void);
-        void drawFlashlight();
-        void grabBattery();
-        bool deleteBattery();
-		void gameOver();
+    Battery()
+    {
+        //int points = 0;
+        //arr[3] = 540;
+        arr[MAX_BARS] = 540;
+		bcount = 0;
+    }
+    void battbarAppear();
+    void grabBattery();
+    void drawBattery(void);
+    void drawFlashlight();
+    void grabBattery();
+    void deleteBattery();
+    	void gameOver();
 };
 
+class gameOver {
+    //
+};
 
 /**
  * Menu classes
@@ -197,14 +210,10 @@ public:
     Vec ball_pos;
     Vec ball_vel;
     Battery batt;
-	int keyCount;
     int walkFrame;
     int walk;
-    int shock;
-    int shockFrame;
     Vec box[20];
     double delay;
-    double shockDelay;
     GLuint walkTexture;
     //Gluint shockTexture;
     Ppmimage *shockImage;
@@ -220,16 +229,16 @@ public:
 
     Global()
     {
-        logOpen();
+	logOpen();
         camera[0] = camera[1] = 0.0;
         done = 0;
         xres = 800;
         yres = 600;
 		keyCount = 0;
-        shock = 0;
-        shockFrame = 0;
-        shockImage = NULL;
-        shockDelay = 0.1; // for now
+	shock = 0;
+	shockFrame = 0;
+	ShockImage = NULL;
+	shockDelay = 0.1;
         memset(keys, 0, 65536);
         mainMenuOpen = true;
     }
@@ -248,13 +257,16 @@ void init();
 void physics(void);
 void render(void);
 void initCharacterSprites();
+void initBackgroundSprites();
 unsigned char *buildAlphaData(Ppmimage *img);
+
 
 //All function and class prototypes go here
 
 //function prototypes
 void renderBackground(void); //render prototype
 void applyBackgroundMovement(void);
+void renderBackgroundSprites(); //render background sprite
 void initCharacterSprites(); // for Sprite characters
 void renderCharacterSprites(); // for Sprite characters
 void physicsCharacterSprites(); //Temporary test function for moving sprites
