@@ -5,6 +5,7 @@ int main(void)
     initXWindows();
     initOpengl();
     initCharacterSprites(); // function call inside initOpenGl
+    initBackgroundSprites();
     init();
     struct timespec now, last;
     recordTime(&last);
@@ -136,6 +137,8 @@ void checkResize(XEvent *e)
     if (xce.width != gl.xres || xce.height != gl.yres) {
         //Window size did change.
         reshapeWindow(xce.width, xce.height);
+        gl.xres = xce.width;
+        gl.yres = xce.height;
     }
 }
 
@@ -206,6 +209,7 @@ void checkKeys(XEvent *e)
     case XK_m:
         break;
     case XK_a:
+			gl.batt.grabBattery();
         break;
     case XK_w:
         break;
@@ -256,6 +260,8 @@ void physics(void)
     if(!gl.mainMenuOpen) {
         physicsCharacterSprites();
     }
+    
+    gl.camera[0] = -globalSprite.characterGirl->getPosX() + gl.xres/2;
 }
 
 void render(void)
@@ -268,18 +274,15 @@ void render(void)
     if (gl.mainMenuOpen) {
         gl.mainMenu.draw();
     } else {
-        renderBackground();
-        gl.batt.drawBattery();
-        gl.batt.drawFlashlight();
-        gl.batt.battbarAppear();
-		if (gl.keys[XK_f]) {
-			gl.keyCount++;
-			printf("keyCount: %d\n", gl.keyCount);
-		}
-		gl.batt.gameOver();
-		gl.batt.deleteBattery();
+        glPushMatrix();
+        //renderBackground();
+        glTranslatef(gl.camera[0], 0, 0);
+        renderBackgroundSprites();
+        //gl.batt.drawBattery();
+        //gl.batt.drawFlashlight();
+        //gl.batt.battbarAppear();
         renderCharacterSprites();
-
+        glPopMatrix();
     }
 }
 
