@@ -22,7 +22,7 @@
 
 
 //macros
-#define MAX_LIGHT 40
+#define MAX_BARS 3
 
 typedef double Flt;
 typedef double Vec[3];
@@ -114,8 +114,6 @@ extern GlobalSprite globalSprite;
 
 class Game {
 public:
-    // Shape box;
-    // Light light[MAX_LIGHT];
     int n;
 
     Game()
@@ -125,26 +123,23 @@ public:
 };
 
 class Battery {
-public:
-    int arr[3];
-    int points;
-	int bcount; //check how many bars;
+    public:
+        int arr[MAX_BARS];
+        int points;
+	    int bcount; //check how many bars;
 
-    Battery()
-    {
-        //int points = 0;
-        arr[3] = 540;
-    }
-    void battbarAppear();
-    void grabBattery();
-    void deleteBattery();
-    void drawBattery(void);
-    void drawFlashlight();
+        Battery() {
+            arr[MAX_BARS] = 540;
+			bcount = 0;
+        }
+        void battbarAppear();
+        void drawBattery(void);
+        void drawFlashlight();
+        void grabBattery();
+        bool deleteBattery();
+		void gameOver();
 };
 
-class gameOver {
-    //
-};
 
 /**
  * Menu classes
@@ -202,14 +197,21 @@ public:
     Vec ball_pos;
     Vec ball_vel;
     Battery batt;
+	int keyCount;
     int walkFrame;
     int walk;
+    int shock;
+    int shockFrame;
     Vec box[20];
     double delay;
+    double shockDelay;
     GLuint walkTexture;
+    //Gluint shockTexture;
+    Ppmimage *shockImage;
     MainMenu mainMenu;
     bool mainMenuOpen;
     struct timespec timeCurrent;
+    struct timespec shockTime;
 
     ~Global()
     {
@@ -223,6 +225,11 @@ public:
         done = 0;
         xres = 800;
         yres = 600;
+		keyCount = 0;
+        shock = 0;
+        shockFrame = 0;
+        shockImage = NULL;
+        shockDelay = 0.1; // for now
         memset(keys, 0, 65536);
         mainMenuOpen = true;
     }

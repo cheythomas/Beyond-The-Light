@@ -206,7 +206,6 @@ void checkKeys(XEvent *e)
     case XK_m:
         break;
     case XK_a:
-			gl.batt.grabBattery();
         break;
     case XK_w:
         break;
@@ -273,7 +272,14 @@ void render(void)
         gl.batt.drawBattery();
         gl.batt.drawFlashlight();
         gl.batt.battbarAppear();
+		if (gl.keys[XK_f]) {
+			gl.keyCount++;
+			printf("keyCount: %d\n", gl.keyCount);
+		}
+		gl.batt.gameOver();
+		gl.batt.deleteBattery();
         renderCharacterSprites();
+
     }
 }
 
