@@ -1,5 +1,5 @@
 //Modified by: Karen Salinas
-//Modified Date: 6/24/2017
+//Modified Date: 7/10/2017
 //Week 4
 //On this program, I am in charge of the background.
 #include <stdio.h>
@@ -39,6 +39,77 @@ using namespace std;
     }
 }
 */
+
+#include <iostream>
+class SpriteWrapAround : public Sprite {
+public:
+
+    SpriteWrapAround(
+            const std::string & filename,
+            float height,
+            float width) : Sprite(filename, 1, 1, 1, 1, height, width)
+    {
+    }
+
+    void draw()
+    {
+        Sprite::draw();
+        //std::cout << "Camera location: (" << gl.camera[0] << "," << gl.camera[1] << ")\n";
+        //std::cout << "Sprite location: (" << getPosX() << "," << getPosY() << ")\n";
+        //std::cout << "Sprite Dim: (" <<getWidth() << "," << getHeight() << ")\n";
+        //std::cout << "resolution: (" << gl.xres << "," << gl.yres << ")\n";
+        float oldx = getPosX();        
+        float times = std::floor((-gl.camera[0]+gl.xres) / getWidth());
+        //std::cout << "times: (" << times<< ")\n";
+        setPos(oldx + times * getWidth(), getPosY());
+        //std::cout << "setPos1: (" << oldx + times * getWidth() << ")\n";
+        Sprite::draw();
+        //Then at this position so it wraps around
+        setPos(oldx - gl.xres + (times+1) * getWidth(), getPosY());
+        //std::cout << "setPos2: (" << (oldx - gl.xres + (times+1) * getWidth()) << ")\n";
+        Sprite::draw();
+        setPos(oldx, getPosY());
+    }
+};
+
+void initBackgroundSprites()
+{
+    globalSprite.background[0] = new Sprite("bg.png", 1, 1, 1, 1, 1200, 5000);
+    globalSprite.background[1] = new Sprite("moon.png", 1, 1, 1, 1, 100, 100);
+    //globalSprite.background[1]->setPos(5000 / 2, 0.8 * gl.yres);
+    globalSprite.background[2] = new SpriteWrapAround("mountain-bg.png", 513, 5000);
+    //globalSprite.background[2]->setPos(5000 / 2, 360);
+    globalSprite.background[3] = new SpriteWrapAround("mountain-fg.png", 703, 5000);
+    //globalSprite.background[3]->setPos(5000 / 2, 360);
+    globalSprite.background[4] = new SpriteWrapAround("treeline.png", 770, 5000);
+    globalSprite.background[4]->setPos(5000 / 2, 200);
+}
+
+void renderBackgroundSprites()
+{
+    for (int i = 1; i < 5; i++) {
+        if (i == 0) {
+            globalSprite.background[i]->setPos(-gl.camera[0], 600);
+        } else if (i == 1) {
+            globalSprite.background[i]->setPos(-gl.camera[0] + gl.xres * 0.66, gl.yres * 0.8);
+        } else if (i == 2) {
+            globalSprite.background[i]->setPos(-gl.camera[0]*0.85, 360);
+        } else if (i == 3) {
+            globalSprite.background[i]->setPos(-gl.camera[0]*0.95, 360);
+        }
+        globalSprite.background[i]->draw();
+    }
+}
+
+void applyBackgroundMovement(void)
+{
+
+    //float gx = globalSprite.characterGirl->getPosX();
+    //float gy = globalSprite.characterGirl->getPosY();
+
+    //globalSprite.background[0]->setPos()
+}
+
 //rendering the Background
 void renderBackground(void) {
         Rect r;
@@ -149,3 +220,4 @@ void drawFlashlightPower(float power) {
                 glVertex2f(0, power);
         glEnd();
 }
+
