@@ -15,7 +15,7 @@
 
 #include <string>
 #include <vector>
-
+#include <cmath>
 #include "log.h"
 #include "ppm.h"
 #include "fonts.h"
@@ -108,6 +108,7 @@ public:
  */
 struct GlobalSprite {
     Sprite* characterGirl;
+    Sprite* background[5];
 };
 
 extern GlobalSprite globalSprite;
@@ -248,6 +249,7 @@ void init();
 void physics(void);
 void render(void);
 void initCharacterSprites();
+void initBackgroundSprites();
 unsigned char *buildAlphaData(Ppmimage *img);
 
 //All function and class prototypes go here
@@ -257,6 +259,7 @@ void renderBackground(void); //render prototype
 void applyBackgroundMovement(void);
 void initCharacterSprites(); // for Sprite characters
 void renderCharacterSprites(); // for Sprite characters
+void renderBackgroundSprites(); // for Sprite characters
 void physicsCharacterSprites(); //Temporary test function for moving sprites
 void drawLight(void);
 void LightCollision();
