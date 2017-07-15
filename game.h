@@ -111,6 +111,71 @@ struct GlobalSprite {
     Sprite* background[5];
 };
 
+
+
+
+class Level {
+public:
+    unsigned char arr[16][180];
+    int nrows, ncols;
+    int tilesize[2];
+    Flt ftsz[2];
+    Flt tile_base;
+    int dynamicHeight[180];
+    void renderBackground(void);
+
+    Level() {
+        for (int i = 0; i < 180; i++) {
+            dynamicHeight[i] = -1;
+            //lev = 0;
+        }      
+        tilesize[0] = 32;
+        tilesize[1] = 32;
+        ftsz[0] = (Flt)tilesize[0];
+        ftsz[1] = (Flt)tilesize[1];
+        tile_base = 220.0;
+    
+    FILE *fpi = fopen("level1.txt", "r");
+    if (fpi) {
+        nrows = 0;
+        char line[100];
+        while(fgets(line, 100, fpi) !=NULL) {
+            removeCrLf(line);
+            int slen = strlen(line);
+            ncols = slen;
+            
+            for(int j = 0; j < slen; j++) {
+                arr[nrows][j] = line[j];
+            }
+            ++nrows;
+        }
+        fclose(fpi);
+        
+    }
+    
+    
+    for (int i = 0; i < nrows; i++) {
+        for (int j = 0; j < ncols; j++) {
+            printf("%c", arr[i][j]);
+        }
+        printf("\n");
+    }
+    }
+
+
+void removeCrLf(char *str) {
+    char *p = str;
+    while (*p) {
+        if (*p == 10 || *p==13) {
+            *p = '\0';
+            break;
+        }
+        ++p;
+    }
+}
+
+};
+
 extern GlobalSprite globalSprite;
 
 class Game {
@@ -198,6 +263,7 @@ public:
     Vec ball_pos;
     Vec ball_vel;
     Battery batt;
+    Level lev;
 	int keyCount;
     int walkFrame;
     int walk;

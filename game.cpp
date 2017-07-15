@@ -286,6 +286,7 @@ void render(void)
 		    printf("keyCount: %d\n", gl.keyCount);
 		}
 	gl.batt.gameOver();
+    gl.lev.renderBackground();
 	gl.batt.deleteBattery();
         renderCharacterSprites();
         glPopMatrix();

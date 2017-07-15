@@ -1,5 +1,5 @@
 //Modified by: Karen Salinas
-//Modified Date: 7/10/2017
+//Modified Date: 6/24/2017
 //Week 4
 //On this program, I am in charge of the background.
 #include <stdio.h>
@@ -39,7 +39,6 @@ using namespace std;
     }
 }
 */
-
 #include <iostream>
 class SpriteWrapAround : public Sprite {
 public:
@@ -54,19 +53,19 @@ public:
     void draw()
     {
         Sprite::draw();
-        //std::cout << "Camera location: (" << gl.camera[0] << "," << gl.camera[1] << ")\n";
-        //std::cout << "Sprite location: (" << getPosX() << "," << getPosY() << ")\n";
-        //std::cout << "Sprite Dim: (" <<getWidth() << "," << getHeight() << ")\n";
-        //std::cout << "resolution: (" << gl.xres << "," << gl.yres << ")\n";
+        std::cout << "Camera location: (" << gl.camera[0] << "," << gl.camera[1] << ")\n";
+        std::cout << "Sprite location: (" << getPosX() << "," << getPosY() << ")\n";
+        std::cout << "Sprite Dim: (" <<getWidth() << "," << getHeight() << ")\n";
+        std::cout << "resolution: (" << gl.xres << "," << gl.yres << ")\n";
         float oldx = getPosX();        
         float times = std::floor((-gl.camera[0]+gl.xres) / getWidth());
-        //std::cout << "times: (" << times<< ")\n";
+        std::cout << "times: (" << times<< ")\n";
         setPos(oldx + times * getWidth(), getPosY());
-        //std::cout << "setPos1: (" << oldx + times * getWidth() << ")\n";
+        std::cout << "setPos1: (" << oldx + times * getWidth() << ")\n";
         Sprite::draw();
         //Then at this position so it wraps around
         setPos(oldx - gl.xres + (times+1) * getWidth(), getPosY());
-        //std::cout << "setPos2: (" << (oldx - gl.xres + (times+1) * getWidth()) << ")\n";
+        std::cout << "setPos2: (" << (oldx - gl.xres + (times+1) * getWidth()) << ")\n";
         Sprite::draw();
         setPos(oldx, getPosY());
     }
@@ -83,6 +82,7 @@ void initBackgroundSprites()
     //globalSprite.background[3]->setPos(5000 / 2, 360);
     globalSprite.background[4] = new SpriteWrapAround("treeline.png", 770, 5000);
     globalSprite.background[4]->setPos(5000 / 2, 200);
+    
 }
 
 void renderBackgroundSprites()
@@ -97,9 +97,10 @@ void renderBackgroundSprites()
         } else if (i == 3) {
             globalSprite.background[i]->setPos(-gl.camera[0]*0.95, 360);
         }
-        globalSprite.background[i]->draw();
+        globalSprite.background[i]->draw(); 
     }
 }
+
 
 void applyBackgroundMovement(void)
 {
@@ -109,6 +110,68 @@ void applyBackgroundMovement(void)
 
     //globalSprite.background[0]->setPos()
 }
+
+void Level::renderBackground(void) {
+    Flt dd = ftsz[0];
+    Flt offy = tile_base;
+    int ncols_to_render = gl.xres / tilesize[0] + 2;
+    int col = (int)(gl.camera[0] / dd);
+    col = col % ncols;
+    
+    Flt cdd = gl.camera[0] /dd;
+    
+    Flt flo = floor(cdd);
+    
+    Flt dec = (cdd - flo);
+    
+    Flt offx = -dec * dd;
+    
+    for(int j = 0; j < ncols_to_render; j++) {
+        int row = nrows-1;
+        for(int i = 0; i < nrows; i++) {
+            if(arr[row][col] == 'w') {
+                glColor3f(0.8, 0.8, 0.6);
+                glPushMatrix();
+                Vec tr = {(Flt)j*dd+offx, (Flt)i* ftsz[1]+offy, 0};
+                glTranslated(tr[0], tr[1], tr[2]);
+                int tx = tilesize[0];
+                int ty = tilesize[1];
+                glBegin(GL_QUADS);
+                glVertex2i(0,0);
+                glVertex2i(0, ty);
+                glVertex2i(tx, ty);
+                glVertex2i(tx, 0);
+                glEnd();
+                glPopMatrix();
+            }
+            
+            if(arr[row][col] == 'b') {
+                glColor3f(0.9, 0.2, 0.2);
+                glPushMatrix();
+                Vec tr = { (Flt)j*dd+offx, (Flt)i*ftsz[i]+offy, 0};
+                glTranslated(tr[0],tr[1],tr[2]);
+                int tx = tilesize[0];
+                int ty = tilesize[1];
+                glBegin(GL_QUADS);
+                glVertex2i( 0,  0);
+                glVertex2i( 0, ty);
+                glVertex2i(tx, ty);
+                glVertex2i(tx,  0);
+                glEnd();
+                glPopMatrix();
+            }
+            --row;
+            
+        }
+        ++col;
+        col = col % ncols;
+    }
+}
+
+
+
+
+
 
 //rendering the Background
 void renderBackground(void) {
@@ -220,4 +283,3 @@ void drawFlashlightPower(float power) {
                 glVertex2f(0, power);
         glEnd();
 }
-
