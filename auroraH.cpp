@@ -17,6 +17,12 @@
 // Exit game
 
 
+//Week 7-8
+// Add movement, keys to Mortana
+//Left and right keys should allow Mortana to walk left and right
+// Up and down keys allows to jump up and down
+// Add some work in the main menu
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -61,6 +67,7 @@ unsigned char *buildAlphaData(Ppmimage *img)
         *(ptr + 1) = b;
         *(ptr + 2) = c;
         *(ptr + 3) = 1;
+        //float distance = (a-t0) + (b-t1)
         if (a == t0 && b == t1 && c == t2)
             *(ptr + 3) = 0;
         //-----------------------------------------------
@@ -84,7 +91,7 @@ rows(rowsValue), cols(colsValue),
 origHeight(), origWidth(),
 height(h), width(w),
 currentFrame(0),
-posX(), posY(),
+posX(w/2.0f), posY(h/2.0f),
 delay(delayValue),
 time()
 {
@@ -93,7 +100,7 @@ time()
     string outputFile = "./images/converted/" + filename + ".ppm";
     printf("Converting: %s to %s...\n", inputFile.c_str(),
             outputFile.c_str());
-    system(("mkdir -p ./images/converted && convert  " + inputFile +
+    system(("mkdir -p ./images/converted && convert -quality 100 " + inputFile +
             " " + outputFile).c_str());
 
     //create openGL IMAGE
@@ -118,7 +125,7 @@ time()
 
     free(imageData);
     ppm6CleanupImage(ppmImage);
-    unlink(outputFile.c_str());
+    //unlink(outputFile.c_str());
     recordTime(&time);
 }
 
@@ -131,24 +138,26 @@ void Sprite::draw()
     //calculate time elapsed, update frame
     //render appropriate sprite
 
-    struct timespec current;
-    recordTime(&current);
+    if(frameCount > 1) {
+        struct timespec current;
+        recordTime(&current);
 
-    double timeSpan = timeDiff(&time, &current);
-    if (timeSpan > delay) {
-        //next frame
-        ++currentFrame;
-        if (currentFrame >= frameCount)
-            currentFrame = 0;
-        recordTime(&time);
+        double timeSpan = timeDiff(&time, &current);
+        if (timeSpan > delay) {
+            //next frame
+            ++currentFrame;
+            if (currentFrame >= frameCount)
+                currentFrame = 0;
+            recordTime(&time);
+        }
     }
 
     //Calculate the sprite frame and size
     //and location
     float cx = posX;
     float cy = posY;
-    float h = height;
-    float w = width;
+    float h = height/2;
+    float w = width/2;
     int ix = currentFrame % frameCount;
     int iy = currentFrame / cols;
     float tx = (float) ix / cols;
@@ -170,7 +179,7 @@ void Sprite::draw()
     glTexCoord2f(tx, ty + th);
     glVertex2i(cx - w, cy - h);
     glTexCoord2f(tx, ty);
-    glVertex2i(cx - w, cy + w);
+    glVertex2i(cx - w, cy + h);
     glTexCoord2f(tx + tw, ty);
     glVertex2i(cx + w, cy + h);
     glTexCoord2f(tx + tw, ty + th);
@@ -221,7 +230,7 @@ void initCharacterSprites()
 {
     globalSprite.characterGirl = new Sprite
             ("girl1.gif", 11, 1, 11, 1.0f / 8.0f, 113, 128);
-    globalSprite.characterGirl->setPos(gl.xres / 2, gl.yres / 2);
+    globalSprite.characterGirl->setPos(gl.xres / 2, 113/2 + 25);
 }
 
 void renderCharacterSprites()
@@ -234,11 +243,8 @@ void physicsCharacterSprites()
 {
     static float pos = 0;
     Sprite* sp = globalSprite.characterGirl;
-    if (pos > gl.xres + sp->getWidth()) {
-        pos = -sp->getWidth();
-    }
-    sp->setPos(pos, gl.yres / 2);
-    pos += 10;
+    sp->setPos(pos, 113/2 + 25);
+    pos += 50;
 }
 //**
 // Menu
