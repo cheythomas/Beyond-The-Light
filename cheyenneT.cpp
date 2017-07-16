@@ -306,7 +306,7 @@ class GameOver : public Sprite {
 
 	void draw() {
 		Sprite::draw();
-		/* 
+		 
 		float cx = gl.xres/2.0;
 		float cy = gl.yres/2.0;
 		float w = 200*.5;
@@ -324,7 +324,7 @@ class GameOver : public Sprite {
 			glVertex2i(cx + w, cy - h);
 		glEnd();
 		glPopMatrix();
-		*/
+		
 	}
 };
 
@@ -399,13 +399,7 @@ void renderLightSprite()
 
 void physicsLightSprite()
 {
-    static float pos = 0;
-    Sprite* sp = globalSprite.light;
-    if (pos > gl.xres + sp->getWidth()) {
-        pos = -sp->getWidth();
-    }
-    sp->setPos(pos, gl.yres / 2);
-    pos += 10;
+    // 
 }
 
 
