@@ -87,7 +87,8 @@ class energyBar : public Sprite {
 	
 	public:
 	// Note: height = makes it skinnier or thicker
-	energyBar (const std::string & filename, float height, float width) :			Sprite(filename, 1, 1, 1, 1, height, width) { }
+	energyBar (const std::string & filename, float height, float width) :
+		Sprite(filename, 1, 1, 1, 1, height, width) { }
 
 	void draw() {
 		Sprite::draw();
@@ -280,7 +281,8 @@ class GameOver : public Sprite {
 	
 	public:
 	// (file, frameCount, row, col, delay, h, w)
-	GameOver (const std::string & filename, float height, float width) :			Sprite(filename, 1, 1, 1, 1, height, width) { }
+	GameOver (const std::string & filename, float height, float width) :
+		Sprite(filename, 1, 1, 1, 1, height, width) { }
 
 	void draw() {
 		Sprite::draw();
@@ -354,7 +356,8 @@ class Lightning : public Sprite {
 	
 	public:
 	// Note: height = makes it skinnier or thicker
-	Lightning (const std::string & filename, float height, float width) :			Sprite(filename, 1, 1, 1, 1, height, width) { }
+	Lightning (const std::string & filename, float height, float width) :
+		Sprite(filename, 1, 1, 1, 1, height, width) { }
 
 	void draw() {
 		Sprite::draw();
