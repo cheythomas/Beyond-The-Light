@@ -14,7 +14,7 @@
 #include "game.h"
 
 // not being called yet
-void Battery::battbarAppear()
+void Battery::chargeUp()
 {
 	// a battery on the ground
 	float w, h, z, x, y;
@@ -39,10 +39,11 @@ void Battery::battbarAppear()
 	r.left = 700; // x-axis
 	r.center = 0;
 	unsigned int c = 0x00ffff44;
-	ggprint8b(&r, 16, c, "Hit A to collect");
+	ggprint8b(&r, 16, c, "");
 }
 
-void Battery::grabBattery()
+// needs to be fixed
+void Battery::grabCharge()
 {
 	Rect r;
 	r.bot = 90; // y-axis
@@ -58,12 +59,12 @@ void Battery::grabBattery()
 	}
 }
 
+// old version
 // the more key press to kill ghost, battery drains
-bool Battery::deleteBattery()
+// function not in use, will be deleted
+void Battery::healthBar()
 {	
-	bool empty = false;
 	if (gl.keyCount > 10) {
-		//arr[0] = 0; // fix later
 		bcount = bcount - 1;
 	}
 
@@ -78,11 +79,75 @@ bool Battery::deleteBattery()
 	else if (gl.keyCount > 40) {
 		// delete 4 
 		bcount = bcount - 1;
-		empty = true;
 	}
-	return empty;
 }
 
+// new version
+class energyBar : public Sprite {
+	
+	public:
+	// Note: height = makes it skinnier or thicker
+	energyBar (const std::string & filename, float height, float width) :			Sprite(filename, 1, 1, 1, 1, height, width) { }
+
+	void draw() {
+		Sprite::draw();
+	}
+};
+
+void initLifeBarSprite()
+{
+	globalSprite.life[0] = new Sprite("10.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[1] = new Sprite("9.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[2] = new Sprite("8.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[3] = new Sprite("7.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[4] = new Sprite("6.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[5] = new Sprite("5.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[6] = new Sprite("4.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[7] = new Sprite("3.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[8] = new Sprite("2.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[9] = new Sprite("1.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[10] = new Sprite("0.png", 1, 1, 1, 1, 38, 378);
+}
+
+void renderLifeBarSprite()
+{        
+	// full to empty
+	if (gl.keyCount > 10) 
+		globalSprite.life[0]->draw();
+	
+	if (gl.keyCount > 20) 
+		globalSprite.life[1]->draw();
+	
+	if (gl.keyCount > 30) 
+		globalSprite.life[2]->draw();
+	
+	if (gl.keyCount > 40) 
+		globalSprite.life[3]->draw();
+	
+	if (gl.keyCount > 50) 
+		globalSprite.life[4]->draw();
+	
+	if (gl.keyCount > 60) 
+		globalSprite.life[5]->draw();
+	
+	if (gl.keyCount > 70) 
+		globalSprite.life[6]->draw();
+	
+	if (gl.keyCount > 80) 
+		globalSprite.life[7]->draw();
+	
+	if (gl.keyCount > 90) 
+		globalSprite.life[8]->draw();
+	
+	if (gl.keyCount > 100) 
+		globalSprite.life[9]->draw();
+	
+	if (gl.keyCount > 110) 
+		globalSprite.life[10]->draw();
+}
+
+
+// old version
 void Battery::drawBattery(void)
 {
 	float w, h, z, x, y;
@@ -209,95 +274,65 @@ void Battery::drawFlashlight()
 	glDisable(GL_BLEND);
 	glPopMatrix();
 
-
-	//Sprite(shock.gif,5,1,1,1,10,20);
-
 }
 
-void initShock(void)
-{
-	system("convert ./images/shock.gif ./images/shock.ppm");
-	gl.shockImage = ppm6GetImage("./images/shock.ppm");
-
-	int w2 = gl.shockImage->width;
-	int h2 = gl.shockImage->height;
- 
-//	glGenTextures(1, &gl.shockTexture);
-//	glBindTexture(GL_TEXTURE_2D, gl.shockTexture);
-	unsigned char *shockData = buildAlphaData(gl.shockImage); 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w2, h2, 0,
-				GL_RGBA, GL_UNSIGNED_BYTE, shockData);
-
-	free(shockData);
-	unlink("./images/shock.ppm");
-}
-
-void physicsShock(void)
-{
-	if (gl.shock || gl.keys[XK_e]) {
-//		timers.recordTime(&timers.timeCurrent);
-//		double timeSpan = 
-//			timers.timeDiff(&timers.walkTime, &timers.timeCurrent);
-		if (0 > gl.delay) {
-			//advance
-			++gl.shockFrame;
-			if (gl.shockFrame >= 9) {
-				gl.shockFrame = 0;
-				gl.shock = 0;
-			}
-//			timers.recordTime(&timers.shockTime);
-		}
-	}
-}
-
-void renderShock(void)
-{
-	float cx = gl.xres/2.0;
-	float cy = gl.yres/2.0;
+class GameOver : public Sprite {
 	
-	if (gl.keys[XK_e]) {
-		float h2 = 200.0;
-		float w2 = 200 * 0.5;
+	public:
+	// (file, frameCount, row, col, delay, h, w)
+	GameOver (const std::string & filename, float height, float width) :			Sprite(filename, 1, 1, 1, 1, height, width) { }
+
+	void draw() {
+		Sprite::draw();
+	  
+		float cx = gl.xres/2.0;
+		float cy = gl.yres/2.0;
+		float w = 200*.5;
+		float h = 200.0;
+
 		glPushMatrix();
 		glColor3f(1.0, 1.0, 1.0);
-//		glBindTexture(GL_TEXTURE_2D, gl.shockTexture);
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.0f);
-		glColor4ub(255,255,255,255);
-		int ix = gl.shockFrame % 9;
-		int iy = 0;
-//		if (gl.shockFrame >= 9)
-//			iy = 1;
-		float tx2 = (float)ix / 8.0;
-		float ty2 = (float)iy / 2.0;
+		glColor4ub(255, 255, 255, 255);
 		glBegin(GL_QUADS);
-		if (gl.keys[XK_e]) {
-			glTexCoord2f(tx2,      ty2+.5); glVertex2i(cx-w2, cy-h2);
-			glTexCoord2f(tx2,      ty2);    glVertex2i(cx-w2, cy+h2);
-			glTexCoord2f(tx2+.125, ty2);    glVertex2i(cx+w2, cy+h2);
-			glTexCoord2f(tx2+.125, ty2+.5); glVertex2i(cx+w2, cy-h2);
-		}
+			glVertex2i(cx - w, cy - h);
+			glVertex2i(cx - w, cy + w);
+			glVertex2i(cx + w, cy + h);
+			glVertex2i(cx + w, cy - h);
 		glEnd();
 		glPopMatrix();
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glDisable(GL_ALPHA_TEST);
+	}
+};
+
+
+void initGameOverSprite()
+{
+	globalSprite.gameover = new Sprite("go.png", 1, 1, 1, 1, 127, 430);
+	globalSprite.gameover->setPos(gl.xres/2, gl.yres/2); 
+}
+
+void renderGameOverSprite()
+{     
+	if (gl.keyCount > 110) {
+		globalSprite.gameover->draw();
 	}
 }
 
- 
+// old version/background
 void Battery::gameOver()
 {
 	Rect r;
 	float h, w;
 	//if (bcount == 0 /* || collisionWithGhost */) {
 	// testing to get screen to popup
-	if (gl.keyCount > 200) {
-		h = 100.0;
-		w = 200.0;
+	if (gl.keyCount > 110) {
+		h = 600.0;
+		w = 800.0;
 		glPushMatrix();
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4f(1.0, 1.0, 0.0, 0.8);
+		glColor4f(1.0, 1.0, 1.0, 0.7);
 		glTranslated(gl.xres/2, gl.yres/2, 0);
 		glBegin(GL_QUADS);
 			glVertex2i(-w, -h);
@@ -308,17 +343,45 @@ void Battery::gameOver()
 		glDisable(GL_BLEND);
 		glPopMatrix();
 		// unsigned int c = 0x00ffff44;
-		r.bot = gl.yres/2 + 80;
+		r.bot = 100;  // y axis
 		r.left = gl.xres/2;
 		r.center = 1;
-		ggprint8b(&r, 16, 0, "GAME OVER");
+		ggprint8b(&r, 16, 0, "ESC to quit");
 	}
 }
 
-// not using yet
-void LightCollison()
+class Lightning : public Sprite {
+	
+	public:
+	// Note: height = makes it skinnier or thicker
+	Lightning (const std::string & filename, float height, float width) :			Sprite(filename, 1, 1, 1, 1, height, width) { }
+
+	void draw() {
+		Sprite::draw();
+	}
+};
+
+void initLightSprite()
 {
-    //   
+	globalSprite.light = new Sprite("electricity.png", 1, 1, 1, 1, 200, 600);
+	//globalSprite.light->setPos(gl.xres / 2, gl.yres / 2);
+}
+
+void renderLightSprite()
+{        
+	//globalSprite.light->setPos(-gl.camera[0], 100);
+	globalSprite.light->draw();
+}
+
+void physicsLightSprite()
+{
+    static float pos = 0;
+    Sprite* sp = globalSprite.light;
+    if (pos > gl.xres + sp->getWidth()) {
+        pos = -sp->getWidth();
+    }
+    sp->setPos(pos, gl.yres / 2);
+    pos += 10;
 }
 
 

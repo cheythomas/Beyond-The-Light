@@ -12,7 +12,7 @@
 #include <GL/glx.h>
 #include <GL/glu.h>
 #include <GL/gl.h>
-
+#include <iostream>
 #include <string>
 #include <vector>
 #include <cmath>
@@ -109,6 +109,10 @@ public:
 struct GlobalSprite {
     Sprite* characterGirl;
     Sprite* background[5];
+    Sprite* light;
+    Sprite* life[10];
+    Sprite* gameover;
+
 };
 
 
@@ -178,7 +182,7 @@ void removeCrLf(char *str) {
 
 extern GlobalSprite globalSprite;
 
-class Game {
+/*class Game {
 public:
     int n;
 
@@ -186,7 +190,7 @@ public:
     {
         n = 0;
     }
-};
+};*/
 
 class Battery {
     public:
@@ -195,15 +199,15 @@ class Battery {
 	int bcount; //check how many bars;
 
         Battery() {
-            arr[MAX_BARS] = 540;
+        arr[MAX_BARS] = 540;
 	    bcount = 0;
         }
-        void battbarAppear();
+        void chargeUp(); //was battappear
         void drawBattery(void);
         void drawFlashlight();
-        void grabBattery();
-        bool deleteBattery();
-	void gameOver();
+        void grabCharge(); //was grabBatt
+        void healthBar(); //was delete, notetoMe: is not calling
+        void gameOver();
 };
 
 
@@ -334,6 +338,13 @@ void FlashlightPower(); //Displays how much power battery has
 void drawFlashlightPower(float); //displays the bar of battery life
 //void menuBackground(); //menu background
 
+void initLightSprite(); // for light/electicity to kill ghosts
+void initLifeBarSprite(); // 
+void initGameOverSprite(); // 
+void renderLightSprite(); // for light/electricity to kill ghosts
+void renderLifeBarSprite(); // 
+void renderGameOverSprite(); // 
+void physicsLightSprite();
 
 
 

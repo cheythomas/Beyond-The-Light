@@ -6,6 +6,9 @@ int main(void)
     initOpengl();
     initCharacterSprites(); // function call inside initOpenGl
     initBackgroundSprites(); 
+    initLightSprite(); 
+    initLifeBarSprite(); 
+    initGameOverSprite(); 
     init();
     struct timespec now, last;
     recordTime(&last);
@@ -209,7 +212,6 @@ void checkKeys(XEvent *e)
     case XK_m:
         break;
     case XK_a:
-	gl.batt.grabBattery();
         break;
     case XK_w:
         break;
@@ -278,16 +280,17 @@ void render(void)
         //renderBackground();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
-        gl.batt.drawBattery();
-        gl.batt.drawFlashlight();
-        gl.batt.battbarAppear();
+        renderLifeBarSprite(); //new
+        gl.batt.drawBattery(); //old
+        gl.batt.chargeUp();
 		if (gl.keys[XK_f]) {
+            renderLightSprite();
 		    gl.keyCount++;
-		    printf("keyCount: %d\n", gl.keyCount);
+            printf("keyCount: %d\n", gl.keyCount); //debugger
 		}
-	gl.batt.gameOver();
-    gl.lev.renderBackground();
-	gl.batt.deleteBattery();
+	    gl.batt.gameOver();
+        renderGameOverSprite();
+        gl.lev.renderBackground();
         renderCharacterSprites();
         glPopMatrix();
     }
