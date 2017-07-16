@@ -99,7 +99,14 @@ public:
     float getPosY();
     float getPosX();
     void draw();
+    void physics();
 };
+/*enum State {
+    STATE_STARTUP,
+    STATE_GAMEPLAY,
+    STATE_GAMEOVER, 
+    STATE_GAMEPAUSE
+}; */
 
 /*
  * This creates a class called GlobalSprite, has one variable of type Sprite*,
@@ -115,9 +122,6 @@ struct GlobalSprite {
 
 };
 
-
-
-
 class Level {
 public:
     unsigned char arr[16][180];
@@ -128,76 +132,78 @@ public:
     int dynamicHeight[180];
     void renderBackground(void);
 
-    Level() {
+    Level()
+    {
         for (int i = 0; i < 180; i++) {
             dynamicHeight[i] = -1;
             //lev = 0;
-        }      
+        }
         tilesize[0] = 32;
         tilesize[1] = 32;
-        ftsz[0] = (Flt)tilesize[0];
-        ftsz[1] = (Flt)tilesize[1];
+        ftsz[0] = (Flt) tilesize[0];
+        ftsz[1] = (Flt) tilesize[1];
         tile_base = 220.0;
-    
-    FILE *fpi = fopen("level1.txt", "r");
-    if (fpi) {
-        nrows = 0;
-        char line[100];
-        while(fgets(line, 100, fpi) !=NULL) {
-            removeCrLf(line);
-            int slen = strlen(line);
-            ncols = slen;
-            
-            for(int j = 0; j < slen; j++) {
-                arr[nrows][j] = line[j];
+
+        FILE *fpi = fopen("level1.txt", "r");
+        if (fpi) {
+            nrows = 0;
+            char line[100];
+            while (fgets(line, 100, fpi) != NULL) {
+                removeCrLf(line);
+                int slen = strlen(line);
+                ncols = slen;
+
+                for (int j = 0; j < slen; j++) {
+                    arr[nrows][j] = line[j];
+                }
+                ++nrows;
             }
-            ++nrows;
+            fclose(fpi);
+
         }
-        fclose(fpi);
-        
-    }
-    
-    
-    for (int i = 0; i < nrows; i++) {
-        for (int j = 0; j < ncols; j++) {
-            printf("%c", arr[i][j]);
-        }
-        printf("\n");
-    }
-    }
 
 
-void removeCrLf(char *str) {
-    char *p = str;
-    while (*p) {
-        if (*p == 10 || *p==13) {
-            *p = '\0';
-            break;
+        for (int i = 0; i < nrows; i++) {
+            for (int j = 0; j < ncols; j++) {
+                printf("%c", arr[i][j]);
+            }
+            printf("\n");
         }
-        ++p;
     }
-}
+
+    void removeCrLf(char *str)
+    {
+        char *p = str;
+        while (*p) {
+            if (*p == 10 || *p == 13) {
+                *p = '\0';
+                break;
+            }
+            ++p;
+        }
+    }
 
 };
 
 extern GlobalSprite globalSprite;
 
 class Battery {
-    public:
-        int arr[MAX_BARS];
-        int points;
-        int bcount; 
+public:
+    int arr[MAX_BARS];
+    int points;
+    int bcount;
 
-        Battery() {
+    Battery()
+    {
         arr[MAX_BARS] = 540;
-	    bcount = 0;
-        }
-        void chargeObject(); //was battappear
-        void drawBattery(void);
-        void drawFlashlight();
-        void grabCharge(); //was grabBatt
-        void healthBar(); //was delete
-        void gameOver();
+        bcount = 0;
+    }
+    void chargeObject(); //was battappear
+    void drawBattery(void);
+    void drawFlashlight();
+    void grabCharge(); //was grabBatt
+    void healthBar(); //was delete
+    void gameOver();
 };
 
 
@@ -205,10 +211,11 @@ class Battery {
  * Menu classes
  */
 // class for sub menu items
+
 class MenuItem {
 public:
     MenuItem(std::string txt, int x, int y, int w, int h);
-    void draw(); 
+    void draw();
 
 private:
     std::string text;
@@ -229,7 +236,7 @@ public:
 
     void add(MenuItem item);
 
-    void draw();
+    virtual void draw();
 
 
 protected:
@@ -241,9 +248,19 @@ class MainMenu : public Menu {
 public:
     MainMenu();
 
+    void draw();
+
     void keyboardInput(int key);
 };
+
 /**/
+enum State {
+    //STATE_NONE,
+    STATE_STARTUP,
+    STATE_GAMEPLAY,
+    STATE_GAMEOVER,
+    STATE_GAMEPAUSE
+};
 
 class Global {
 public:
@@ -271,9 +288,10 @@ public:
     //Gluint shockTexture;
     Ppmimage *shockImage;
     MainMenu mainMenu;
-    bool mainMenuOpen;
+    //bool mainMenuOpen;
     struct timespec timeCurrent;
     struct timespec shockTime;
+    State state; //*
 
     ~Global()
     {
@@ -283,18 +301,18 @@ public:
     Global()
     {
         logOpen();
+        state = STATE_STARTUP; //*
         camera[0] = camera[1] = 0.0;
         done = 0;
         xres = 800;
         yres = 600;
-		keyCount = 0;
-		keepTrack = 0;
+        keyCount = 0;
+        keepTrack = 0;
         shock = 0;
         shockFrame = 0;
         shockImage = NULL;
         shockDelay = 0.1; // for now
         memset(keys, 0, 65536);
-        mainMenuOpen = true;
     }
 };
 

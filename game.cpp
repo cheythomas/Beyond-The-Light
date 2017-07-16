@@ -5,10 +5,10 @@ int main(void)
     initXWindows();
     initOpengl();
     initCharacterSprites(); // function call inside initOpenGl
-    initBackgroundSprites(); 
-    initLightSprite(); 
-    initLifeBarSprite(); 
-    initGameOverSprite(); 
+    initBackgroundSprites();
+    initLightSprite();
+    initLifeBarSprite();
+    initGameOverSprite();
     init();
     struct timespec now, last;
     recordTime(&last);
@@ -199,10 +199,9 @@ void checkKeys(XEvent *e)
     }
 
     if (e->type == KeyPress) {
-        //if button is pressed down and the main menu is open
-        if (gl.mainMenuOpen) {
-            gl.mainMenu.keyboardInput(key);
-        }
+        //Always checked because it opens the menu
+        //it checks if main menu is open
+        gl.mainMenu.keyboardInput(key);
     }
 
     if (shift) {
@@ -259,11 +258,23 @@ Flt VecNormalize(Vec vec)
 void physics(void)
 {
     //Only run physics when not in main menu
-    if(!gl.mainMenuOpen) {
+    //if(!gl.mainMenuOpen) {
+    //   physicsCharacterSprites();
+    if (gl.state != STATE_STARTUP && gl.state != STATE_GAMEPAUSE) {
         physicsCharacterSprites();
+        gl.camera[0] = -globalSprite.characterGirl->getPosX() + gl.xres / 2;
+
+        //When game is not paused, sprite physics must be updated
+        for (int i = 0; i < 5; i++) {
+            globalSprite.background[i]->physics();
+        }
+        globalSprite.gameover->physics();
+        globalSprite.characterGirl->physics();
+        for (int i = 0; i < 10; i++) {
+            globalSprite.life[i]->physics();
+        }
+        globalSprite.light->physics();
     }
-    
-    gl.camera[0] = -globalSprite.characterGirl->getPosX() + gl.xres/2;
 }
 
 void render(void)
@@ -273,9 +284,7 @@ void render(void)
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Menu and menu item must open first then the rest will be rendered
-    if (gl.mainMenuOpen) {
-        gl.mainMenu.draw();
-    } else {
+    if (gl.state != STATE_STARTUP) {
         glPushMatrix();
         //renderBackground();
         glTranslatef(gl.camera[0], 0, 0);
@@ -287,13 +296,16 @@ void render(void)
             gl.keyCount++;
             printf("keyCount: %d\n", gl.keyCount); //debugger
         }
-	    gl.batt.gameOver();
+        gl.batt.gameOver();
         renderGameOverSprite();
         //gl.batt.drawBattery(); 
-        renderLifeBarSprite(); 
+        renderLifeBarSprite();
         gl.lev.renderBackground();
         renderCharacterSprites();
         glPopMatrix();
+    }
+    if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {
+        gl.mainMenu.draw();
     }
 }
 

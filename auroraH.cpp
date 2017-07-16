@@ -18,10 +18,11 @@
 
 
 //Week 7-8
-// Add movement, keys to Mortana
+// Game paused option, pauses game 
+//Add movement, keys to Mortana
 //Left and right keys should allow Mortana to walk left and right
 // Up and down keys allows to jump up and down
-// Add some work in the main menu
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,6 +39,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 #include "game.h"
 
 // Facilitating sprite animations for team members
@@ -91,7 +93,7 @@ rows(rowsValue), cols(colsValue),
 origHeight(), origWidth(),
 height(h), width(w),
 currentFrame(0),
-posX(w/2.0f), posY(h/2.0f),
+posX(w / 2.0f), posY(h / 2.0f),
 delay(delayValue),
 time()
 {
@@ -133,12 +135,11 @@ Sprite::~Sprite()
 {
 }
 
-void Sprite::draw()
+void Sprite::physics()
 {
     //calculate time elapsed, update frame
     //render appropriate sprite
-
-    if(frameCount > 1) {
+    if (frameCount > 1) {
         struct timespec current;
         recordTime(&current);
 
@@ -151,13 +152,18 @@ void Sprite::draw()
             recordTime(&time);
         }
     }
+}
+
+void Sprite::draw()
+{
+
 
     //Calculate the sprite frame and size
     //and location
     float cx = posX;
     float cy = posY;
-    float h = height/2;
-    float w = width/2;
+    float h = height / 2;
+    float w = width / 2;
     int ix = currentFrame % frameCount;
     int iy = currentFrame / cols;
     float tx = (float) ix / cols;
@@ -230,7 +236,7 @@ void initCharacterSprites()
 {
     globalSprite.characterGirl = new Sprite
             ("girl1.gif", 11, 1, 11, 1.0f / 8.0f, 113, 128);
-    globalSprite.characterGirl->setPos(gl.xres / 2, 113/2 + 25);
+    globalSprite.characterGirl->setPos(gl.xres / 2, 113 / 2 + 25);
 }
 
 void renderCharacterSprites()
@@ -243,9 +249,10 @@ void physicsCharacterSprites()
 {
     static float pos = 0;
     Sprite* sp = globalSprite.characterGirl;
-    sp->setPos(pos, 113/2 + 25);
+    sp->setPos(pos, 113 / 2 + 25);
     pos += 50;
 }
+
 //**
 // Menu
 //**
@@ -286,8 +293,8 @@ void Menu::draw()
 
     //loop through menuitems...
     for (size_t i = 0; i < this->menuItems.size(); i++) {
-        MenuItem& mi = this->menuItems[i];
-        mi.draw();
+        MenuItem& menuitem = this->menuItems[i];
+        menuitem.draw();
     }
 }
 
@@ -315,15 +322,26 @@ MainMenu::MainMenu()
     add(MenuItem("[E] xit", 300, 190, 200, 60));
 }
 
+void MainMenu::draw()
+{
+    if (gl.state == STATE_GAMEPAUSE) {
+        MenuItem menuitem("Game Paused", 300, 450, 200, 60);
+        menuitem.draw();
+    }
+    Menu::draw();
+}
+
 void MainMenu::keyboardInput(int key)
 {
-
     switch (key) {
         //checks key input if lower or uppercase, turns menu off
     case XK_p:
     case XK_P:
-        gl.mainMenuOpen = false;
+        if (gl.state == STATE_GAMEPLAY) {
+            gl.state = STATE_GAMEPAUSE;
+        } else {
+            gl.state = STATE_GAMEPLAY;
+        }
         break;
     }
-
 }
