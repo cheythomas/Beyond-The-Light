@@ -281,15 +281,15 @@ void render(void)
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
         gl.batt.chargeUp();
-		if (gl.keys[XK_f]) {
+        if (gl.keys[XK_f]) {
             renderLightSprite();
-		    gl.keyCount++;
+            gl.keyCount++;
             printf("keyCount: %d\n", gl.keyCount); //debugger
-		}
+        }
 	    gl.batt.gameOver();
         renderGameOverSprite();
-        //gl.batt.drawBattery(); //old
-        renderLifeBarSprite(); //new
+        //gl.batt.drawBattery(); 
+        renderLifeBarSprite(); 
         gl.lev.renderBackground();
         renderCharacterSprites();
         glPopMatrix();

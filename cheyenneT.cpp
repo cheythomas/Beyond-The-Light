@@ -42,7 +42,6 @@ void Battery::chargeUp()
 	ggprint8b(&r, 16, c, "");
 }
 
-// needs to be fixed
 void Battery::grabCharge()
 {
 	Rect r;
@@ -59,9 +58,7 @@ void Battery::grabCharge()
 	}
 }
 
-// old version
-// the more key press to kill ghost, battery drains
-// function not in use, will be deleted
+//
 void Battery::healthBar()
 {	
 	if (gl.keyCount > 10) {
@@ -82,7 +79,6 @@ void Battery::healthBar()
 	}
 }
 
-// new version
 class energyBar : public Sprite {
 	
 	public:
@@ -173,7 +169,7 @@ void renderLifeBarSprite()
 }
 
 
-// old version
+// old 
 void Battery::drawBattery(void)
 {
 	float w, h, z, x, y;
@@ -268,7 +264,6 @@ void Battery::drawFlashlight()
 	z = 0;
 
 	glColor3f(0, 0, 0);
-	// fix magic numbers
 	glPushMatrix();
 	glBegin(GL_QUADS);
 		glVertex2i(cx - 60, 178);
@@ -355,7 +350,6 @@ void Battery::gameOver()
 	Rect r;
 	float h, w;
 	//if (bcount == 0 /* || collisionWithGhost */) {
-	// testing to get screen to popup
 	if (gl.keyCount > 110) {
 		h = 600.0;
 		w = 800.0;
@@ -383,7 +377,6 @@ void Battery::gameOver()
 class Lightning : public Sprite {
 	
 	public:
-	// Note: height = makes it skinnier or thicker
 	Lightning (const std::string & filename, float height, float width) :
 		Sprite(filename, 1, 1, 1, 1, height, width) { }
 
