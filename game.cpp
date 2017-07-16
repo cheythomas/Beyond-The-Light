@@ -280,7 +280,8 @@ void render(void)
         //renderBackground();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
-        gl.batt.chargeUp();
+        gl.batt.chargeObject();
+        gl.batt.grabCharge();
         if (gl.keys[XK_f]) {
             renderLightSprite();
             gl.keyCount++;

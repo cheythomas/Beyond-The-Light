@@ -182,16 +182,6 @@ void removeCrLf(char *str) {
 
 extern GlobalSprite globalSprite;
 
-/*class Game {
-public:
-    int n;
-
-    Game()
-    {
-        n = 0;
-    }
-};*/
-
 class Battery {
     public:
         int arr[MAX_BARS];
@@ -202,7 +192,7 @@ class Battery {
         arr[MAX_BARS] = 540;
 	    bcount = 0;
         }
-        void chargeUp(); //was battappear
+        void chargeObject(); //was battappear
         void drawBattery(void);
         void drawFlashlight();
         void grabCharge(); //was grabBatt
@@ -268,7 +258,8 @@ public:
     Vec ball_vel;
     Battery batt;
     Level lev;
-	int keyCount;
+    int keepTrack;
+    int keyCount;
     int walkFrame;
     int walk;
     int shock;
@@ -297,6 +288,7 @@ public:
         xres = 800;
         yres = 600;
 		keyCount = 0;
+		keepTrack = 0;
         shock = 0;
         shockFrame = 0;
         shockImage = NULL;
