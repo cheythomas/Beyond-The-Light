@@ -196,7 +196,7 @@ class Battery {
     public:
         int arr[MAX_BARS];
         int points;
-	int bcount; //check how many bars;
+        int bcount; 
 
         Battery() {
         arr[MAX_BARS] = 540;
@@ -206,7 +206,7 @@ class Battery {
         void drawBattery(void);
         void drawFlashlight();
         void grabCharge(); //was grabBatt
-        void healthBar(); //was delete, notetoMe: is not calling
+        void healthBar(); //was delete
         void gameOver();
 };
 

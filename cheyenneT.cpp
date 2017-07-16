@@ -97,54 +97,79 @@ class energyBar : public Sprite {
 
 void initLifeBarSprite()
 {
-	globalSprite.life[0] = new Sprite("10.png", 1, 1, 1, 1, 38, 378);
-	globalSprite.life[1] = new Sprite("9.png", 1, 1, 1, 1, 38, 378);
-	globalSprite.life[2] = new Sprite("8.png", 1, 1, 1, 1, 38, 378);
-	globalSprite.life[3] = new Sprite("7.png", 1, 1, 1, 1, 38, 378);
-	globalSprite.life[4] = new Sprite("6.png", 1, 1, 1, 1, 38, 378);
-	globalSprite.life[5] = new Sprite("5.png", 1, 1, 1, 1, 38, 378);
-	globalSprite.life[6] = new Sprite("4.png", 1, 1, 1, 1, 38, 378);
-	globalSprite.life[7] = new Sprite("3.png", 1, 1, 1, 1, 38, 378);
-	globalSprite.life[8] = new Sprite("2.png", 1, 1, 1, 1, 38, 378);
-	globalSprite.life[9] = new Sprite("1.png", 1, 1, 1, 1, 38, 378);
-	globalSprite.life[10] = new Sprite("0.png", 1, 1, 1, 1, 38, 378);
+	globalSprite.life[0] = new Sprite("10.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[1] = new Sprite("9.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[2] = new Sprite("8.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[3] = new Sprite("7.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[4] = new Sprite("6.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[5] = new Sprite("5.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[6] = new Sprite("4.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[7] = new Sprite("3.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[8] = new Sprite("2.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[9] = new Sprite("1.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[10] = new Sprite("0.png", 1, 10, 1, 1, 15, 105);
 }
 
 void renderLifeBarSprite()
-{        
+{       
+	int x = gl.xres-72; //800 
+	int y = gl.yres-20;  //600
+	
 	// full to empty
-	if (gl.keyCount > 10) 
+	if (gl.keyCount == 0 || 21 > gl.keyCount) {
 		globalSprite.life[0]->draw();
-	
-	if (gl.keyCount > 20) 
+		globalSprite.life[0]->setPos(-gl.camera[0] + x, y);
+	}
+
+	if (gl.keyCount > 20) {
 		globalSprite.life[1]->draw();
+		globalSprite.life[1]->setPos(-gl.camera[0] + x, y);
+	}
 	
-	if (gl.keyCount > 30) 
+	if (gl.keyCount > 30) {
 		globalSprite.life[2]->draw();
+		globalSprite.life[2]->setPos(-gl.camera[0] + x, y);
+	}
 	
-	if (gl.keyCount > 40) 
+	if (gl.keyCount > 40) {
 		globalSprite.life[3]->draw();
+		globalSprite.life[3]->setPos(-gl.camera[0] + x, y);
+	}
 	
-	if (gl.keyCount > 50) 
+	if (gl.keyCount > 50) {
 		globalSprite.life[4]->draw();
+		globalSprite.life[4]->setPos(-gl.camera[0] + x, y);
+	}
 	
-	if (gl.keyCount > 60) 
+	if (gl.keyCount > 60) {
 		globalSprite.life[5]->draw();
+		globalSprite.life[5]->setPos(-gl.camera[0] + x, y);
+	}
 	
-	if (gl.keyCount > 70) 
+	if (gl.keyCount > 70) {
 		globalSprite.life[6]->draw();
+		globalSprite.life[6]->setPos(-gl.camera[0] + x, y);
+	}
 	
-	if (gl.keyCount > 80) 
+	if (gl.keyCount > 80) {
 		globalSprite.life[7]->draw();
+		globalSprite.life[7]->setPos(-gl.camera[0] + x, y);
+	}
 	
-	if (gl.keyCount > 90) 
+	if (gl.keyCount > 90) {
 		globalSprite.life[8]->draw();
+		globalSprite.life[8]->setPos(-gl.camera[0] + x, y);
+	}
 	
-	if (gl.keyCount > 100) 
+	if (gl.keyCount > 100) {
 		globalSprite.life[9]->draw();
+		globalSprite.life[9]->setPos(-gl.camera[0] + x, y);
+	}
 	
-	if (gl.keyCount > 110) 
+	if (gl.keyCount > 110) { 
 		globalSprite.life[10]->draw();
+		globalSprite.life[10]->setPos(-gl.camera[0] + x, y);
+	}
 }
 
 
@@ -232,7 +257,7 @@ void Battery::drawBattery(void)
 		glPopMatrix();
 		y -= 35; // y-axis
 		arr[i] = y;
-		bcount++;
+		//bcount++;
 	}
 }
 
@@ -286,7 +311,7 @@ class GameOver : public Sprite {
 
 	void draw() {
 		Sprite::draw();
-	  
+		/* 
 		float cx = gl.xres/2.0;
 		float cy = gl.yres/2.0;
 		float w = 200*.5;
@@ -304,24 +329,27 @@ class GameOver : public Sprite {
 			glVertex2i(cx + w, cy - h);
 		glEnd();
 		glPopMatrix();
+		*/
 	}
 };
 
-
 void initGameOverSprite()
 {
-	globalSprite.gameover = new Sprite("go.png", 1, 1, 1, 1, 127, 430);
-	globalSprite.gameover->setPos(gl.xres/2, gl.yres/2); 
+	globalSprite.gameover = new Sprite("go.png", 1, 1, 1, 1, 200, 400);
 }
 
+//why showing twice
 void renderGameOverSprite()
 {     
+	int x = gl.xres-370; //800 
+	int y = gl.yres-300;  //600
+
 	if (gl.keyCount > 110) {
 		globalSprite.gameover->draw();
+		globalSprite.gameover->setPos(-gl.camera[0] + x, y);
 	}
 }
 
-// old version/background
 void Battery::gameOver()
 {
 	Rect r;

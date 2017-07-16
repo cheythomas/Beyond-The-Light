@@ -280,8 +280,6 @@ void render(void)
         //renderBackground();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
-        renderLifeBarSprite(); //new
-        gl.batt.drawBattery(); //old
         gl.batt.chargeUp();
 		if (gl.keys[XK_f]) {
             renderLightSprite();
@@ -290,6 +288,8 @@ void render(void)
 		}
 	    gl.batt.gameOver();
         renderGameOverSprite();
+        //gl.batt.drawBattery(); //old
+        renderLifeBarSprite(); //new
         gl.lev.renderBackground();
         renderCharacterSprites();
         glPopMatrix();
