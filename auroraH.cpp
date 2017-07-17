@@ -373,7 +373,7 @@ void physicsMortana()
 //*
 void initEnemySprites(){
      globalSprite.pinkghost = new Sprite
-            ("pinkghost.gif", 5, 2, 5, 1.0f / 8.0f, 113, 128);
+            ("ghostPink.gif", 4, 1, 4, 1.0f / 8.0f, 113, 128);
     globalSprite.pinkghost->setPos(gl.xres / 2, 200);
 
     
