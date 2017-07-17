@@ -97,7 +97,8 @@ height(h), width(w),
 currentFrame(0),
 posX(w / 2.0f), posY(h / 2.0f),
 delay(delayValue),
-time()
+time(),
+visible(true)
 {
     // convert to ppm automatically
     string inputFile = "./images/" + filename;
@@ -159,42 +160,43 @@ void Sprite::physics()
 void Sprite::draw()
 {
 
+    if (visible) {
+        //Calculate the sprite frame and size
+        //and location
+        float cx = posX;
+        float cy = posY;
+        float h = height / 2;
+        float w = width / 2;
+        int ix = currentFrame % frameCount;
+        int iy = currentFrame / cols;
+        float tx = (float) ix / cols;
+        float ty = (float) iy / rows;
+        float tw = 1.0f / cols;
+        float th = 1.0f / rows;
 
-    //Calculate the sprite frame and size
-    //and location
-    float cx = posX;
-    float cy = posY;
-    float h = height / 2;
-    float w = width / 2;
-    int ix = currentFrame % frameCount;
-    int iy = currentFrame / cols;
-    float tx = (float) ix / cols;
-    float ty = (float) iy / rows;
-    float tw = 1.0f / cols;
-    float th = 1.0f / rows;
+        glPushMatrix();
+        glColor3f(1.0, 1.0, 1.0);
+        glBindTexture(GL_TEXTURE_2D, glTexture);
 
-    glPushMatrix();
-    glColor3f(1.0, 1.0, 1.0);
-    glBindTexture(GL_TEXTURE_2D, glTexture);
-
-    //
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, 0.0f);
-    glColor4ub(255, 255, 255, 255);
+        //
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.0f);
+        glColor4ub(255, 255, 255, 255);
 
 
-    glBegin(GL_QUADS);
-    glTexCoord2f(tx, ty + th);
-    glVertex2i(cx - w, cy - h);
-    glTexCoord2f(tx, ty);
-    glVertex2i(cx - w, cy + h);
-    glTexCoord2f(tx + tw, ty);
-    glVertex2i(cx + w, cy + h);
-    glTexCoord2f(tx + tw, ty + th);
-    glVertex2i(cx + w, cy - h);
+        glBegin(GL_QUADS);
+        glTexCoord2f(tx, ty + th);
+        glVertex2i(cx - w, cy - h);
+        glTexCoord2f(tx, ty);
+        glVertex2i(cx - w, cy + h);
+        glTexCoord2f(tx + tw, ty);
+        glVertex2i(cx + w, cy + h);
+        glTexCoord2f(tx + tw, ty + th);
+        glVertex2i(cx + w, cy - h);
 
-    glEnd();
-    glPopMatrix();
+        glEnd();
+        glPopMatrix();
+    }
 }
 
 void Sprite::setPos(float x, float y)
@@ -234,22 +236,37 @@ float Sprite::getPosY()
     return posY;
 }
 
+bool Sprite::getVisible()
+{
+    return visible;
+}
+
+void Sprite::setVisible(bool value)
+{
+    visible = value;
+}
+
+void Sprite::reset()
+{
+    currentFrame = 0;
+}
+
 void initCharacterSprites()
 {
-    globalSprite.characterGirl = new Sprite
+    globalSprite.mortana = new Sprite
             ("girl1.gif", 11, 1, 11, 1.0f / 8.0f, 113, 128);
-    globalSprite.characterGirl->setPos(gl.xres / 2, 113 / 2 + 25);
+    globalSprite.mortana->setPos(gl.xres / 2, 100);
 
 
     //Mortana Jump Sprite
     globalSprite.mortanaJump = new Sprite
             ("jumpMortana.gif", 13, 1, 13, 1.0f / 8.0f, 113, 128);
-    globalSprite.mortanaJump->setPos(gl.xres / 2, 113 / 2 + 25);
+    globalSprite.mortanaJump->setPos(gl.xres / 2, 100);
 }
 
 void renderCharacterSprites()
 {
-    globalSprite.characterGirl->draw();
+    globalSprite.mortana->draw();
     globalSprite.mortanaJump->draw();
 
 }
@@ -266,17 +283,57 @@ void physicsCharacterSprites()
 void physicsMortana()
 {
     if (gl.state == STATE_GAMEPLAY) {
-        if (gl.keys[XK_Right]) {
-            // mortana walking right
-            Sprite* cg = globalSprite.characterGirl;
-            cg->setPos(cg->getPosX() + 3, cg->getPosY());
-            globalSprite.characterGirl->physics();
-        } else if (gl.keys[XK_Left]) {
-            // mortana walking left
-            Sprite* cg = globalSprite.characterGirl;
-            cg->setPos(cg->getPosX() - 3, cg->getPosY());
-            globalSprite.characterGirl->physics();
+        Sprite* m = globalSprite.mortana;
+        Sprite* mj = globalSprite.mortanaJump;
+        m->setVisible(false);
+        mj->setVisible(false);
+        float cx = gl.mortanaPos[0],
+                cy = gl.mortanaPos[1],
+                velY = gl.mortanaVelY;
+        //printf("Pos(X: %f, Y: %f)\n", cx, cy);
+        if (cy <= 100) { //If on the ground check (tiles??)
+            m->setVisible(true);
+            if (gl.keys[XK_Up]) {
+                velY += 100;
+                cy += 1;
+                printf("Jump!\n");
+                mj->reset();
+                m->reset();
+            } else if (gl.keys[XK_Right]) {
+                // mortana walking right
+                globalSprite.mortana->physics();
+                cx += 3;
+                if (/* if oritented to the left */ true) {
+                    //fix it
+                }
+            } else if (gl.keys[XK_Left]) {
+                // mortana walking left
+                m->setVisible(true);
+                m->physics();
+                if (/* if oriented to the right*/ true) {
+                    //fix it
+                }
+                cx -= 3;
+            }
+        } else {
+            //in the air            
+            globalSprite.mortanaJump->physics();
+            printf("Flying(VelY: %f, Y: %f)!\n", velY, cy);
+            velY -= 9.81;
+            cy += 0.25 * velY;
+            if (cy <= 100) {
+                velY = 0;
+                cy = 100;
+            }
+            mj->setVisible(true);
         }
+
+
+        m->setPos(cx, cy);
+        mj->setPos(cx, cy);
+        gl.mortanaPos[0] = cx;
+        gl.mortanaPos[1] = cy;
+        gl.mortanaVelY = velY;
     }
 }
 
@@ -406,7 +463,8 @@ void renderTutorial()
     ggprint8b(&r, 20, c, "INSTRUCTIONS");
     ggprint8b(&r, 16, c, "Right arrow -> walk right");
     ggprint8b(&r, 16, c, "Left arrow  <- walk left");
-    ggprint8b(&r, 16, c, "'P' Game Pause/Resume ");
+    ggprint8b(&r, 16, c, "'P/p' Game Pause/Resume ");
+    ggprint8b(&r, 16, c, "'F/f' Attack ");
 
 }
 

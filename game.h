@@ -78,6 +78,7 @@ class Sprite {
     float posY;
     double delay;
     struct timespec time;
+    bool visible;
 public:
     Sprite(
             const std::string & filename,
@@ -100,6 +101,9 @@ public:
     float getPosX();
     void draw();
     void physics();
+    void setVisible(bool value);
+    bool getVisible();
+    void reset();
 };
 /*enum State {
     STATE_STARTUP,
@@ -114,7 +118,7 @@ public:
  *  by the name of globalSprite
  */
 struct GlobalSprite {
-    Sprite* characterGirl;
+    Sprite* mortana;
     Sprite* mortanaJump;
     Sprite* background[5];
     Sprite* light;
@@ -307,8 +311,9 @@ public:
     struct timespec timeCurrent;
     struct timespec shockTime;
     State state; //*
-    //keyboard input
-    int inputMortana;
+    //Physics variables for mortana 
+    float mortanaVelY;
+    Vec mortanaPos;
 
     ~Global()
     {
@@ -330,6 +335,8 @@ public:
         shockImage = NULL;
         shockDelay = 0.1; // for now
         memset(keys, 0, 65536);
+        mortanaPos[0] = xres / 2;
+        mortanaPos[1] = 100;
     }
 };
 
