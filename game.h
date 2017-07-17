@@ -115,6 +115,7 @@ public:
  */
 struct GlobalSprite {
     Sprite* characterGirl;
+    Sprite* mortanaJump;
     Sprite* background[5];
     Sprite* light;
     Sprite* life[11];
@@ -347,6 +348,8 @@ void render(void);
 void initCharacterSprites();
 void initBackgroundSprites();
 void physicsMortana();
+//instructions for user
+void renderTutorial(); 
 unsigned char *buildAlphaData(Ppmimage *img);
 
 //All function and class prototypes go here

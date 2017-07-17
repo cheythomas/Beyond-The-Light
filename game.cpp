@@ -268,6 +268,7 @@ void physics(void)
             globalSprite.background[i]->physics();
         }
         globalSprite.gameover->physics();
+        globalSprite.characterGirl->physics();
         for (int i = 0; i < 10; i++) {
 
             globalSprite.life[i]->physics();
@@ -285,7 +286,8 @@ void render(void)
     // Menu and menu item must open first then the rest will be rendered
     if (gl.state != STATE_STARTUP) {
         glPushMatrix();
-        //renderBackground();
+       //renderBackground();
+        renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
         gl.batt.chargeObject();
@@ -298,9 +300,10 @@ void render(void)
         gl.batt.gameOver();
         renderGameOverSprite();
         //gl.batt.drawBattery(); 
-        renderLifeBarSprite();
+        renderLifeBarSprite(); 
         gl.lev.renderBackground();
         renderCharacterSprites();
+       
         glPopMatrix();
     }
     if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {
