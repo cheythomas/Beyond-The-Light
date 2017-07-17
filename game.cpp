@@ -290,13 +290,13 @@ void render(void)
         renderBackgroundSprites();
         gl.batt.chargeObject();
         gl.batt.grabCharge();
-        if (gl.keys[XK_f]) {
+        if (gl.keys[XK_f] || gl.keys[XK_F]) {
             renderLightSprite();
             gl.keyCount++;
             printf("keyCount: %d\n", gl.keyCount); //debugger
         }
-        gl.batt.gameOver();
-        renderGameOverSprite();
+        //gl.batt.gameOver();
+        //renderGameOverSprite();
         //gl.batt.drawBattery(); 
         renderLifeBarSprite();
         gl.lev.renderBackground();
