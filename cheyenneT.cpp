@@ -351,7 +351,7 @@ void renderGameOverSprite()
 	int x = gl.xres-370; //800 
 	int y = gl.yres-300;  //600
 
-	if (gl.keyCount > 110) {
+	if (gl.keepTrack == 10) {
 		globalSprite.gameover->draw();
 		globalSprite.gameover->setPos(-gl.camera[0] + x, y);
 	}
@@ -362,7 +362,7 @@ void Battery::gameOver()
 	Rect r;
 	float h, w;
 	//if (bcount == 0 /* || collisionWithGhost */) {
-	if (gl.keyCount > 110) {
+	if (gl.keepTrack == 10) {
 		h = 600.0;
 		w = 800.0;
 		glPushMatrix();
@@ -382,7 +382,7 @@ void Battery::gameOver()
 		r.bot = 100;  // y axis
 		r.left = gl.xres/2;
 		r.center = 1;
-		ggprint8b(&r, 16, 0, "ESC to quit");
+		ggprint8b(&r, 16, 0, "");
 	}
 }
 
