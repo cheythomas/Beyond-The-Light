@@ -371,39 +371,58 @@ void physicsMortana()
 //*
 // ENEMY
 //*
-void initEnemySprites(){
+
+void initEnemySprites()
+{
     //Pink ghost
-     globalSprite.pinkghost = new Sprite
+    globalSprite.pinkghost = new Sprite
             ("ghostPink.gif", 4, 1, 4, 1.0f / 8.0f, 113, 128);
     globalSprite.pinkghost->setPos(gl.xres / 2, 200);
-    
-//blanket ghost
-     globalSprite.blanketghost = new Sprite
+
+    //blanket ghost
+    globalSprite.blanketghost = new Sprite
             ("blanketghost.gif", 3, 3, 3, 1.0f / 8.0f, 113, 128);
     globalSprite.blanketghost->setPos(gl.xres / 2, 300);
 
- // White pac ghost
+    // White pac ghost
     globalSprite.pacghost = new Sprite
             ("pacghost.gif", 9, 6, 9, 1.0f / 8.0f, 113, 128);
     globalSprite.pacghost->setPos(gl.xres / 2, 400);
-    
-//    // White pac ghost part 2
-//    globalSprite.pacghost01 = new Sprite
-//            ("pacghost01.gif", 3, 4, 3, 1.0f / 8.0f, 113, 128);
-//    globalSprite.pacghost01->setPos(gl.xres / 2, 500);
-    
+
+    //black cat
+    globalSprite.blkcat = new Sprite
+            ("catsprites.gif", 5, 3, 5, 1.0f / 8.0f, 113, 128);
+    globalSprite.blkcat->setPos(gl.xres / 2, 500);
+
+
 }
-void physicsEnemySprites(){
-   
-    
-}
-void renderEnemySprites(){
+
+void renderEnemySprites()
+{
     globalSprite.pinkghost->draw();
     globalSprite.blanketghost->draw();
     globalSprite.pacghost->draw();
-    //globalSprite.pacghost01->draw();
-    
+    globalSprite.blkcat->draw();
+
 }
+
+void physicsEnemySprites()
+{
+
+    physicsPinkghost();
+}
+
+void physicsPinkghost()
+{
+    if (gl.state == STATE_GAMEPLAY) {
+        Sprite* pghost = globalSprite.pinkghost;
+       
+        pghost->setVisible(false);
+      
+        
+    }
+}
+
 
 
 
@@ -412,7 +431,6 @@ void renderEnemySprites(){
 //**
 // Menu
 //**
-
 
 MenuItem::MenuItem(std::string txt, int x, int y, int w, int h)
 : text(txt), posX(x), posY(y), width(w), height(h), highlight(false)

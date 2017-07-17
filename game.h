@@ -126,6 +126,7 @@ struct GlobalSprite {
     Sprite* pinkghost;
     Sprite* blanketghost;
     Sprite* pacghost;
+    Sprite* blkcat;
     //Sprite* pacghost01;
 
 };
@@ -319,6 +320,11 @@ public:
     Vec mortanaPos;
     Vec lightPos;
     
+    //Physics variable for pink ghost
+    float pinkghost;
+    Vec pinkghostPos;
+    
+    
     float lightVelY;
 
     ~Global()
@@ -345,6 +351,9 @@ public:
         mortanaPos[1] = 100;
         lightPos[0] = xres / 2;
         lightPos[1] = 100;
+        // pink ghost
+        pinkghostPos[0] = xres / 2;
+        pinkghostPos[1] = 100;
     }
 };
 
@@ -363,6 +372,8 @@ void render(void);
 void initCharacterSprites();
 void initBackgroundSprites();
 void physicsMortana();
+// enemy
+void physicsPinkghost();
 //instructions for user
 void renderTutorial();
 unsigned char *buildAlphaData(Ppmimage *img);
