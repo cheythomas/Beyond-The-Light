@@ -211,8 +211,12 @@ public:
  * Menu classes
  */
 // class for sub menu items
+//forward declare menu
+class Menu;
 
 class MenuItem {
+    //Menu is friend of MenuItem
+    friend Menu;
 public:
     MenuItem(std::string txt, int x, int y, int w, int h);
     void draw();
@@ -226,10 +230,12 @@ private:
     int width;
     int height;
 
+    bool highlight;
 };
 
 class Menu {
 public:
+
     Menu();
 
     virtual ~Menu();
@@ -238,10 +244,16 @@ public:
 
     virtual void draw();
 
+    bool setSelectedIndex(unsigned int index);
+
+    unsigned int getSelectedIndex();
+
+    unsigned int getSize();
 
 protected:
     //stores the menu items
     std::vector<MenuItem> menuItems;
+    int selectedItemIndex;
 };
 
 class MainMenu : public Menu {
@@ -255,11 +267,13 @@ public:
 
 /**/
 enum State {
-    //STATE_NONE,
     STATE_STARTUP,
     STATE_GAMEPLAY,
     STATE_GAMEOVER,
-    STATE_GAMEPAUSE
+    STATE_GAMEPAUSE,
+    STATE_HIGHSCORE,
+    STATE_CREDITS,
+    STATE_EXIT
 };
 
 class Global {
