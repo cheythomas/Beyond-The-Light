@@ -18,7 +18,9 @@
 
 
 //Week 7-8
-// Game paused option, pauses game 
+//Main menu: Game paused option, pauses game 
+//Main menu: Highlight option ready
+//Main menu: add enums for menu options
 //Add movement, keys to Mortana
 //Left and right keys should allow Mortana to walk left and right
 // Up and down keys allows to jump up and down
@@ -258,7 +260,7 @@ void physicsCharacterSprites()
 //**
 
 MenuItem::MenuItem(std::string txt, int x, int y, int w, int h)
-: text(txt), posX(x), posY(y), width(w), height(h)
+: text(txt), posX(x), posY(y), width(w), height(h), highlight(false)
 {
 
 }
@@ -268,7 +270,11 @@ void MenuItem::draw()
 {
     // rendering boxes 
     glPushMatrix();
-    glColor3ub(255, 255, 255);
+    if (highlight) {
+        glColor3ub(255, 255, 0);
+    } else {
+        glColor3ub(255, 255, 255);
+    }
     glRectf(
             posX,
             posY,
@@ -298,9 +304,35 @@ void Menu::draw()
     }
 }
 
-Menu::Menu() : menuItems()
+Menu::Menu() : menuItems(), selectedItemIndex(0)
 {
     //empty constructor
+}
+
+bool Menu::setSelectedIndex(unsigned int index)
+{
+    //valdate input
+    if (index < menuItems.size()) {
+        //turn the previous highlighting off
+        menuItems[selectedItemIndex].highlight = false;
+        //and highlight the new index
+        menuItems[index].highlight = true;
+        //save new index
+        selectedItemIndex = index;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+unsigned int Menu::getSelectedIndex()
+{
+    return selectedItemIndex;
+}
+
+unsigned int Menu::getSize()
+{
+    return menuItems.size();
 }
 
 Menu::~Menu()
@@ -310,6 +342,9 @@ Menu::~Menu()
 
 void Menu::add(MenuItem item)
 {
+    if (menuItems.empty()) {
+        item.highlight = true;
+    }
     this->menuItems.push_back(item);
 }
 
@@ -342,6 +377,46 @@ void MainMenu::keyboardInput(int key)
         } else {
             gl.state = STATE_GAMEPLAY;
         }
+        break;
+    case XK_Escape:
+        if (gl.state == STATE_GAMEPAUSE) {
+            gl.state = STATE_GAMEPLAY;
+        } else {
+            gl.state = STATE_GAMEPAUSE;
+        }
+    case XK_Up:
+        if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
+            gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex() - 1 % gl.mainMenu.getSize());
+        }
+        break;
+    case XK_Down:
+        if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
+            gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex() + 1 % gl.mainMenu.getSize());
+        }
+        break;
+    case XK_Return:
+        if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
+            switch (gl.mainMenu.getSelectedIndex()) {
+                // This is not ready, goes back to play mode
+            case 0:
+                gl.state = STATE_GAMEPLAY;
+                break;
+            case 1:
+                gl.state = STATE_HIGHSCORE;
+                break;
+            case 2:
+                gl.state = STATE_CREDITS;
+
+                break;
+            case 3:
+                gl.state = STATE_EXIT;
+                break;
+
+            }
+        }
+        break;
+        // gl.done = 1;
+
         break;
     }
 }

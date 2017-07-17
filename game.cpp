@@ -230,9 +230,7 @@ void checkKeys(XEvent *e)
         break;
     case XK_minus:
         break;
-    case XK_Escape:
-        gl.done = 1;
-        break;
+
     }
 }
 
@@ -252,6 +250,7 @@ Flt VecNormalize(Vec vec)
     vec[0] = xlen * tlen;
     vec[1] = ylen * tlen;
     vec[2] = zlen * tlen;
+
     return (len);
 }
 
@@ -271,6 +270,7 @@ void physics(void)
         globalSprite.gameover->physics();
         globalSprite.characterGirl->physics();
         for (int i = 0; i < 10; i++) {
+
             globalSprite.life[i]->physics();
         }
         globalSprite.light->physics();
