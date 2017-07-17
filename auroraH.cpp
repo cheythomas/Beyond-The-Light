@@ -409,7 +409,8 @@ void MainMenu::keyboardInput(int key)
 
                 break;
             case 3:
-                gl.state = STATE_EXIT;
+                    gl.done = 1;
+              
                 break;
 
             }
