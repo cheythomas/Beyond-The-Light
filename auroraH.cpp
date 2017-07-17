@@ -249,21 +249,22 @@ void renderCharacterSprites()
 
 void physicsCharacterSprites()
 {
-//    static float pos = 0;
-//    Sprite* sp = globalSprite.characterGirl;
-//    sp->setPos(pos, 113 / 2 + 25);
-//    pos += 50;
+    //    static float pos = 0;
+    //    Sprite* sp = globalSprite.characterGirl;
+    //    sp->setPos(pos, 113 / 2 + 25);
+    //    pos += 50;
     physicsMortana();
 }
 
-void physicsMortana(){
+void physicsMortana()
+{
     if (gl.state == STATE_GAMEPLAY) {
         if (gl.keys[XK_Right]) {
             // mortana walking right
             Sprite* cg = globalSprite.characterGirl;
             cg->setPos(cg->getPosX() + 3, cg->getPosY());
             globalSprite.characterGirl->physics();
-        } else if(gl.keys[XK_Left]) {
+        } else if (gl.keys[XK_Left]) {
             // mortana walking left
             Sprite* cg = globalSprite.characterGirl;
             cg->setPos(cg->getPosX() - 3, cg->getPosY());
@@ -404,13 +405,13 @@ void MainMenu::keyboardInput(int key)
     case XK_Up:
         if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
             gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex()
-            - 1 % gl.mainMenu.getSize());
+                    - 1 % gl.mainMenu.getSize());
         }
         break;
     case XK_Down:
         if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
             gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex()
-            + 1 % gl.mainMenu.getSize());
+                    + 1 % gl.mainMenu.getSize());
         }
         break;
     case XK_Return:
@@ -428,15 +429,12 @@ void MainMenu::keyboardInput(int key)
 
                 break;
             case 3:
-                    gl.done = 1;
-              
+                gl.done = 1;
+
                 break;
 
             }
         }
         break;
-        
-
-       
     }
 }

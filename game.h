@@ -273,7 +273,7 @@ enum State {
     STATE_GAMEPAUSE,
     STATE_HIGHSCORE,
     STATE_CREDITS
-    
+
 };
 
 class Global {
@@ -307,7 +307,7 @@ public:
     struct timespec shockTime;
     State state; //*
     //keyboard input
-    int inputMortana; 
+    int inputMortana;
 
     ~Global()
     {
