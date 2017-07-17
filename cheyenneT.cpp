@@ -407,12 +407,12 @@ void renderLightSprite()
 {       
 	//int x = gl.xres-200; //800 
 	//int y = gl.yres-520;  //600 
-	//if (gl.keepTrack == 10) {
+	if (gl.keepTrack == 10) {
 		//do nothing
-	//} else {
+	} else {
 		globalSprite.light->draw();
 		//globalSprite.light->setPos(-gl.camera[0] + x, y);
-	//}
+	}
 }
 
 void physicsLightSprite()
