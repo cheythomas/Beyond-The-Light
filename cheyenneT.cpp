@@ -362,7 +362,7 @@ void Battery::gameOver()
 	Rect r;
 	float h, w;
 	//if (bcount == 0 /* || collisionWithGhost */) {
-	if (gl.keepTrack == 10) {
+	if (gl.keepTrack == 1000) {
 		h = gl.yres;
 		w = gl.xres;
 		glPushMatrix();
@@ -399,7 +399,7 @@ class Lightning : public Sprite {
 
 void initLightSprite()
 {
-	globalSprite.light = new Sprite("electricity.png", 8, 4, 8, 9.0f/16.0f, 512, 256);
+	globalSprite.light = new Sprite("electricity.gif", 8, 4, 8, 9.0f/16.0f, 512, 256);
 	globalSprite.light->setPos(gl.xres/1.4 , 100);
 }
 
@@ -407,12 +407,12 @@ void renderLightSprite()
 {       
 	//int x = gl.xres-200; //800 
 	//int y = gl.yres-520;  //600 
-	if (gl.keepTrack == 10) {
+	//if (gl.keepTrack == 10) {
 		//do nothing
-	} else {
+	//} else {
 		globalSprite.light->draw();
 		//globalSprite.light->setPos(-gl.camera[0] + x, y);
-	}
+	//}
 }
 
 void physicsLightSprite()
