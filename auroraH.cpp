@@ -372,19 +372,36 @@ void physicsMortana()
 // ENEMY
 //*
 void initEnemySprites(){
+    //Pink ghost
      globalSprite.pinkghost = new Sprite
             ("ghostPink.gif", 4, 1, 4, 1.0f / 8.0f, 113, 128);
     globalSprite.pinkghost->setPos(gl.xres / 2, 200);
-
     
+//blanket ghost
+     globalSprite.blanketghost = new Sprite
+            ("blanketghost.gif", 3, 3, 3, 1.0f / 8.0f, 113, 128);
+    globalSprite.blanketghost->setPos(gl.xres / 2, 300);
+
+ // White pac ghost
+    globalSprite.pacghost = new Sprite
+            ("pacghost.gif", 9, 6, 9, 1.0f / 8.0f, 113, 128);
+    globalSprite.pacghost->setPos(gl.xres / 2, 400);
+    
+//    // White pac ghost part 2
+//    globalSprite.pacghost01 = new Sprite
+//            ("pacghost01.gif", 3, 4, 3, 1.0f / 8.0f, 113, 128);
+//    globalSprite.pacghost01->setPos(gl.xres / 2, 500);
     
 }
 void physicsEnemySprites(){
-    //globalSprite.pinkghost->draw();
+   
     
 }
 void renderEnemySprites(){
     globalSprite.pinkghost->draw();
+    globalSprite.blanketghost->draw();
+    globalSprite.pacghost->draw();
+    //globalSprite.pacghost01->draw();
     
 }
 

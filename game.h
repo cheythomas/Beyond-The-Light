@@ -122,7 +122,11 @@ struct GlobalSprite {
     Sprite* light;
     Sprite* life[11];
     Sprite* gameover;
+    //Enemy sprites
     Sprite* pinkghost;
+    Sprite* blanketghost;
+    Sprite* pacghost;
+    //Sprite* pacghost01;
 
 };
 
