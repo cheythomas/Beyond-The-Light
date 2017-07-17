@@ -117,7 +117,7 @@ struct GlobalSprite {
     Sprite* characterGirl;
     Sprite* background[5];
     Sprite* light;
-    Sprite* life[10];
+    Sprite* life[11];
     Sprite* gameover;
 
 };
