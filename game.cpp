@@ -268,7 +268,6 @@ void physics(void)
             globalSprite.background[i]->physics();
         }
         globalSprite.gameover->physics();
-        globalSprite.characterGirl->physics();
         for (int i = 0; i < 10; i++) {
 
             globalSprite.life[i]->physics();
