@@ -346,7 +346,6 @@ void initGameOverSprite()
 	globalSprite.gameover = new Sprite("go.png", 1, 1, 1, 1, 200, 400);
 }
 
-//why showing twice
 void renderGameOverSprite()
 {     
 	int x = gl.xres-370; //800 
