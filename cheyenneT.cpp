@@ -417,7 +417,27 @@ void renderLightSprite()
 
 void physicsLightSprite()
 {
-    // 
+/*
+	if (gl.state == STATE_GAMEPLAY) {
+		Sprite* l = globalSprite.light;
+		l->setVisible(false);
+		float cx = gl.lightPos[0],
+		cy = gl.lightPos[1],
+		velY = gl.lightVelY;
+	}
+ 
+	if (cy <= 100) { //If on the ground check (tiles??)
+		m->setVisible(true);
+		if (gl.keys[XK_Up]) {
+			velY += 100;
+			cy += 1;
+			printf("Jump!\n");
+			//reset animation
+			mj->reset();
+			m->reset();
+	}
+*/
 }
+
 
 
