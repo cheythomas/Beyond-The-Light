@@ -174,7 +174,7 @@ void renderLifeBarSprite()
 		gl.keepTrack = 9;
 	}
 	
-	if (gl.keyCount > 110) { 
+	if (gl.keyCount == 110 || gl.keyCount > 110) { 
 		globalSprite.life[10]->draw();
 		globalSprite.life[10]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 10;
