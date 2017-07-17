@@ -312,7 +312,7 @@ void physicsMortana()
                 cy = gl.mortanaPos[1],
                 velY = gl.mortanaVelY;
         //printf("Pos(X: %f, Y: %f)\n", cx, cy);
-        if (cy <= 100) { //If on the ground check (tiles??)
+        if (cy <= 100) { //If on the ground check 
             m->setVisible(true);
             if (gl.keys[XK_Up]) {
                 velY += 100;
@@ -337,9 +337,6 @@ void physicsMortana()
                     m->setDireciont(0);
                     mj->setDireciont(0);
                 }
-                // if (gl.keys[XK_Left])
-
-                // }
                 cx -= 3;
             }
         } else {

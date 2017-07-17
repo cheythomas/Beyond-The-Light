@@ -8,8 +8,9 @@ int main(void)
     initBackgroundSprites();
     initLightSprite();
     initLifeBarSprite();
+    //initEnemySprites();
     initGameOverSprite();
-    init();
+     init();
     struct timespec now, last;
     recordTime(&last);
 
@@ -301,6 +302,9 @@ void render(void)
         renderLifeBarSprite();
         gl.lev.renderBackground();
         renderCharacterSprites();
+        //renderEnemySprites();
+        
+        
 
         glPopMatrix();
     }

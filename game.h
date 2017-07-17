@@ -107,8 +107,9 @@ public:
     void reset();
     // Mortana direction
     int getDirection();
-    void setDireciont(int );
+    void setDireciont(int);
 };
+
 /*
  * This creates a class called GlobalSprite, has one variable of type Sprite*,
  * named characterGirl. It also at the same time makes it accessible globally 
@@ -355,6 +356,14 @@ void physicsMortana();
 //instructions for user
 void renderTutorial();
 unsigned char *buildAlphaData(Ppmimage *img);
+
+//*
+// ENEMY
+//*
+void initEnemySprites();
+void physicsEnemySprites();
+void renderEnemySprites();
+
 
 //All function and class prototypes go here
 
