@@ -363,8 +363,8 @@ void Battery::gameOver()
 	float h, w;
 	//if (bcount == 0 /* || collisionWithGhost */) {
 	if (gl.keepTrack == 10) {
-		h = 600.0;
-		w = 800.0;
+		h = gl.yres;
+		w = gl.xres;
 		glPushMatrix();
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
