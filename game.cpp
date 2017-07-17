@@ -296,8 +296,8 @@ void render(void)
             gl.keyCount++;
             printf("keyCount: %d\n", gl.keyCount); //debugger
         }
-        //gl.batt.gameOver();
-        //renderGameOverSprite();
+        gl.batt.gameOver();
+        renderGameOverSprite();
         //gl.batt.drawBattery(); 
         renderLifeBarSprite();
         gl.lev.renderBackground();

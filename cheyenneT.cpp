@@ -362,7 +362,7 @@ void Battery::gameOver()
 	Rect r;
 	float h, w;
 	//if (bcount == 0 /* || collisionWithGhost */) {
-	if (gl.keepTrack == 10) {
+	if (gl.keepTrack == 1000) {
 		h = gl.yres;
 		w = gl.xres;
 		glPushMatrix();
@@ -399,7 +399,7 @@ class Lightning : public Sprite {
 
 void initLightSprite()
 {
-	globalSprite.light = new Sprite("electricity.png", 8, 4, 8, 9.0f/16.0f, 512, 256);
+	globalSprite.light = new Sprite("electricity.gif", 8, 4, 8, 9.0f/16.0f, 512, 256);
 	globalSprite.light->setPos(gl.xres/1.4 , 100);
 }
 
@@ -417,7 +417,27 @@ void renderLightSprite()
 
 void physicsLightSprite()
 {
-    // 
+/*
+	if (gl.state == STATE_GAMEPLAY) {
+		Sprite* l = globalSprite.light;
+		l->setVisible(false);
+		float cx = gl.lightPos[0],
+		cy = gl.lightPos[1],
+		velY = gl.lightVelY;
+	}
+ 
+	if (cy <= 100) { //If on the ground check (tiles??)
+		m->setVisible(true);
+		if (gl.keys[XK_Up]) {
+			velY += 100;
+			cy += 1;
+			printf("Jump!\n");
+			//reset animation
+			mj->reset();
+			m->reset();
+	}
+*/
 }
+
 
 

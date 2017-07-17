@@ -312,6 +312,8 @@ public:
     //Physics variables for mortana 
     float mortanaVelY;
     Vec mortanaPos;
+    Vec lightPos;
+    float lightVelY;
 
     ~Global()
     {
@@ -335,6 +337,8 @@ public:
         memset(keys, 0, 65536);
         mortanaPos[0] = xres / 2;
         mortanaPos[1] = 100;
+        lightPos[0] = xres / 2;
+        lightPos[1] = 100;
     }
 };
 
