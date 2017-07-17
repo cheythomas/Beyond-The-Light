@@ -267,8 +267,7 @@ void physics(void)
         for (int i = 0; i < 5; i++) {
             globalSprite.background[i]->physics();
         }
-        globalSprite.gameover->physics();
-        globalSprite.characterGirl->physics();
+        globalSprite.gameover->physics();        
         for (int i = 0; i < 10; i++) {
 
             globalSprite.life[i]->physics();
@@ -299,7 +298,7 @@ void render(void)
         gl.batt.gameOver();
         renderGameOverSprite();
         //gl.batt.drawBattery(); 
-        renderLifeBarSprite();
+        renderLifeBarSprite(); 
         gl.lev.renderBackground();
         renderCharacterSprites();
         glPopMatrix();

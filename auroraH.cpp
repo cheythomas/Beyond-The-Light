@@ -249,10 +249,27 @@ void renderCharacterSprites()
 
 void physicsCharacterSprites()
 {
-    static float pos = 0;
-    Sprite* sp = globalSprite.characterGirl;
-    sp->setPos(pos, 113 / 2 + 25);
-    pos += 50;
+//    static float pos = 0;
+//    Sprite* sp = globalSprite.characterGirl;
+//    sp->setPos(pos, 113 / 2 + 25);
+//    pos += 50;
+    physicsMortana();
+}
+
+void physicsMortana(){
+    if (gl.state == STATE_GAMEPLAY) {
+        if (gl.keys[XK_Right]) {
+            // mortana walking right
+            Sprite* cg = globalSprite.characterGirl;
+            cg->setPos(cg->getPosX() + 3, cg->getPosY());
+            globalSprite.characterGirl->physics();
+        } else if(gl.keys[XK_Left]) {
+            // mortana walking left
+            Sprite* cg = globalSprite.characterGirl;
+            cg->setPos(cg->getPosX() - 3, cg->getPosY());
+            globalSprite.characterGirl->physics();
+        }
+    }
 }
 
 //**
@@ -351,10 +368,10 @@ void Menu::add(MenuItem item)
 MainMenu::MainMenu()
 {
     ////add all menu items    
-    add(MenuItem("[P] lay", 300, 400, 200, 60));
-    add(MenuItem("[H] igh Scores", 300, 330, 200, 60));
-    add(MenuItem("[C] redits", 300, 260, 200, 60));
-    add(MenuItem("[E] xit", 300, 190, 200, 60));
+    add(MenuItem("Play", 300, 400, 200, 60));
+    add(MenuItem("High Scores", 300, 330, 200, 60));
+    add(MenuItem("Credits", 300, 260, 200, 60));
+    add(MenuItem("Exit", 300, 190, 200, 60));
 }
 
 void MainMenu::draw()
@@ -386,12 +403,14 @@ void MainMenu::keyboardInput(int key)
         }
     case XK_Up:
         if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
-            gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex() - 1 % gl.mainMenu.getSize());
+            gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex()
+            - 1 % gl.mainMenu.getSize());
         }
         break;
     case XK_Down:
         if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
-            gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex() + 1 % gl.mainMenu.getSize());
+            gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex()
+            + 1 % gl.mainMenu.getSize());
         }
         break;
     case XK_Return:
@@ -416,8 +435,8 @@ void MainMenu::keyboardInput(int key)
             }
         }
         break;
-        // gl.done = 1;
+        
 
-        break;
+       
     }
 }

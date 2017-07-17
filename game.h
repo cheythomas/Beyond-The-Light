@@ -272,8 +272,8 @@ enum State {
     STATE_GAMEOVER,
     STATE_GAMEPAUSE,
     STATE_HIGHSCORE,
-    STATE_CREDITS,
-    STATE_EXIT
+    STATE_CREDITS
+    
 };
 
 class Global {
@@ -306,6 +306,8 @@ public:
     struct timespec timeCurrent;
     struct timespec shockTime;
     State state; //*
+    //keyboard input
+    int inputMortana; 
 
     ~Global()
     {
@@ -344,6 +346,7 @@ void physics(void);
 void render(void);
 void initCharacterSprites();
 void initBackgroundSprites();
+void physicsMortana();
 unsigned char *buildAlphaData(Ppmimage *img);
 
 //All function and class prototypes go here
