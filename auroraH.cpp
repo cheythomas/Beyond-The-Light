@@ -20,11 +20,11 @@
 //Week 7-8
 //Main menu: Game paused option, pauses game 
 //Main menu: Highlight option ready
-//Main menu: add enums for menu options
+//Main menu: add enums to handle menu options
 //Add movement, keys to Mortana
 //Left and right keys should allow Mortana to walk left and right
-// Up and down keys allows to jump up and down
-
+// Up allows for jump
+// Movement physics calculations
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -98,7 +98,8 @@ currentFrame(0),
 posX(w / 2.0f), posY(h / 2.0f),
 delay(delayValue),
 time(),
-visible(true)
+visible(true),
+direction(1)
 {
     // convert to ppm automatically
     string inputFile = "./images/" + filename;
@@ -182,17 +183,27 @@ void Sprite::draw()
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, 0.0f);
         glColor4ub(255, 255, 255, 255);
-
-
+        // direction changes, left & right
         glBegin(GL_QUADS);
-        glTexCoord2f(tx, ty + th);
-        glVertex2i(cx - w, cy - h);
-        glTexCoord2f(tx, ty);
-        glVertex2i(cx - w, cy + h);
-        glTexCoord2f(tx + tw, ty);
-        glVertex2i(cx + w, cy + h);
-        glTexCoord2f(tx + tw, ty + th);
-        glVertex2i(cx + w, cy - h);
+        if (direction == 1) {
+            glTexCoord2f(tx, ty + th);
+            glVertex2i(cx - w, cy - h);
+            glTexCoord2f(tx, ty);
+            glVertex2i(cx - w, cy + h);
+            glTexCoord2f(tx + tw, ty);
+            glVertex2i(cx + w, cy + h);
+            glTexCoord2f(tx + tw, ty + th);
+            glVertex2i(cx + w, cy - h);
+        } else {
+            glTexCoord2f(tx, ty + th);
+            glVertex2i(cx + w, cy - h);
+            glTexCoord2f(tx, ty);
+            glVertex2i(cx + w, cy + h);
+            glTexCoord2f(tx + tw, ty);
+            glVertex2i(cx - w, cy + h);
+            glTexCoord2f(tx + tw, ty + th);
+            glVertex2i(cx - w, cy - h);
+        }
 
         glEnd();
         glPopMatrix();
@@ -251,6 +262,16 @@ void Sprite::reset()
     currentFrame = 0;
 }
 
+int Sprite::getDirection()
+{
+    return direction;
+}
+
+void Sprite::setDireciont(int value)
+{
+    direction = value;
+}
+
 void initCharacterSprites()
 {
     globalSprite.mortana = new Sprite
@@ -297,22 +318,28 @@ void physicsMortana()
                 velY += 100;
                 cy += 1;
                 printf("Jump!\n");
+                //reset animation
                 mj->reset();
                 m->reset();
             } else if (gl.keys[XK_Right]) {
                 // mortana walking right
-                globalSprite.mortana->physics();
+                m->physics();
                 cx += 3;
-                if (/* if oritented to the left */ true) {
-                    //fix it
+                if (m->getDirection() == 0) {
+                    m->setDireciont(1);
+                    mj->setDireciont(1);
                 }
             } else if (gl.keys[XK_Left]) {
                 // mortana walking left
                 m->setVisible(true);
                 m->physics();
-                if (/* if oriented to the right*/ true) {
-                    //fix it
+                if (m->getDirection() == 1) {
+                    m->setDireciont(0);
+                    mj->setDireciont(0);
                 }
+                // if (gl.keys[XK_Left])
+
+                // }
                 cx -= 3;
             }
         } else {
@@ -463,6 +490,7 @@ void renderTutorial()
     ggprint8b(&r, 20, c, "INSTRUCTIONS");
     ggprint8b(&r, 16, c, "Right arrow -> walk right");
     ggprint8b(&r, 16, c, "Left arrow  <- walk left");
+    ggprint8b(&r, 16, c, "UP arrow--Jump");
     ggprint8b(&r, 16, c, "'P/p' Game Pause/Resume ");
     ggprint8b(&r, 16, c, "'F/f' Attack ");
 

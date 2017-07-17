@@ -79,6 +79,7 @@ class Sprite {
     double delay;
     struct timespec time;
     bool visible;
+    int direction;
 public:
     Sprite(
             const std::string & filename,
@@ -104,14 +105,10 @@ public:
     void setVisible(bool value);
     bool getVisible();
     void reset();
+    // Mortana direction
+    int getDirection();
+    void setDireciont(int );
 };
-/*enum State {
-    STATE_STARTUP,
-    STATE_GAMEPLAY,
-    STATE_GAMEOVER, 
-    STATE_GAMEPAUSE
-}; */
-
 /*
  * This creates a class called GlobalSprite, has one variable of type Sprite*,
  * named characterGirl. It also at the same time makes it accessible globally 
