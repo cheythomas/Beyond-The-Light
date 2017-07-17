@@ -122,6 +122,7 @@ struct GlobalSprite {
     Sprite* light;
     Sprite* life[11];
     Sprite* gameover;
+    Sprite* pinkghost;
 
 };
 
@@ -313,6 +314,7 @@ public:
     float mortanaVelY;
     Vec mortanaPos;
     Vec lightPos;
+    
     float lightVelY;
 
     ~Global()

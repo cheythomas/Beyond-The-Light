@@ -16,8 +16,8 @@
 // Settings
 // Exit game
 
-
-//Week 7-8
+/*********************************************************/
+//Week 7
 //Main menu: Game paused option, pauses game 
 //Main menu: Highlight option ready
 //Main menu: add enums to handle menu options
@@ -25,6 +25,12 @@
 //Left and right keys should allow Mortana to walk left and right
 // Up allows for jump
 // Movement physics calculations
+
+/*****************************************************/
+//Week 8
+// Enemy Character Sprites
+// Physics for enemy
+// Collision detection
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -361,9 +367,35 @@ void physicsMortana()
     }
 }
 
+
+//*
+// ENEMY
+//*
+void initEnemySprites(){
+     globalSprite.pinkghost = new Sprite
+            ("pinkghost.gif", 5, 2, 5, 1.0f / 8.0f, 113, 128);
+    globalSprite.pinkghost->setPos(gl.xres / 2, 200);
+
+    
+    
+}
+void physicsEnemySprites(){
+    //globalSprite.pinkghost->draw();
+    
+}
+void renderEnemySprites(){
+    globalSprite.pinkghost->draw();
+    
+}
+
+
+
+
+
 //**
 // Menu
 //**
+
 
 MenuItem::MenuItem(std::string txt, int x, int y, int w, int h)
 : text(txt), posX(x), posY(y), width(w), height(h), highlight(false)
