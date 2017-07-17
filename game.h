@@ -349,7 +349,7 @@ void initCharacterSprites();
 void initBackgroundSprites();
 void physicsMortana();
 //instructions for user
-void renderTutorial(); 
+void renderTutorial();
 unsigned char *buildAlphaData(Ppmimage *img);
 
 //All function and class prototypes go here

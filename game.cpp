@@ -286,7 +286,6 @@ void render(void)
     // Menu and menu item must open first then the rest will be rendered
     if (gl.state != STATE_STARTUP) {
         glPushMatrix();
-       //renderBackground();
         renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
@@ -300,10 +299,10 @@ void render(void)
         gl.batt.gameOver();
         renderGameOverSprite();
         //gl.batt.drawBattery(); 
-        renderLifeBarSprite(); 
+        renderLifeBarSprite();
         gl.lev.renderBackground();
         renderCharacterSprites();
-       
+
         glPopMatrix();
     }
     if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {

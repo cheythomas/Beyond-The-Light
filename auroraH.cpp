@@ -239,12 +239,12 @@ void initCharacterSprites()
     globalSprite.characterGirl = new Sprite
             ("girl1.gif", 11, 1, 11, 1.0f / 8.0f, 113, 128);
     globalSprite.characterGirl->setPos(gl.xres / 2, 113 / 2 + 25);
-    
-    
+
+
     //Mortana Jump Sprite
     globalSprite.mortanaJump = new Sprite
-            ("jumpMortana.gif", 13, 1, 13, 1.0f/8.0f, 113,128); 
-    globalSprite.mortanaJump->setPos(gl.xres/ 2, 113 / 2 + 25);
+            ("jumpMortana.gif", 13, 1, 13, 1.0f / 8.0f, 113, 128);
+    globalSprite.mortanaJump->setPos(gl.xres / 2, 113 / 2 + 25);
 }
 
 void renderCharacterSprites()
@@ -394,25 +394,20 @@ void MainMenu::draw()
 //*
 //Instructions for user
 //*
-void renderTutorial(){
-            Rect r;
-       
-        unsigned int c = 0x00FF0000;
-        r.bot = gl.yres - 20;
-        r.left = 10;
-        r.center = 0;
-        //ggprint8b(&r, 16, c, "W   Girl Walks");
-        //ggprint8b(&r, 16, c, "+   faster");
-       // ggprint8b(&r, 16, c, "-   slower");
-        ggprint8b(&r, 20, c, "INSTRUCTIONS");
-        ggprint8b(&r, 16, c, "Right arrow -> walk right");
-        ggprint8b(&r, 16, c, "Left arrow  <- walk left");
-        ggprint8b(&r, 16, c, "'P' Game Pause/Resume ");
-        
-       // ggprint8b(&r, 16, c, "up arrow  jump up");
-       // ggprint8b(&r, 16, c, "down arrow   jump down");
-        //ggprint8b(&r, 16, c, "frame: %i", gl.walkFrame);
-    
+
+void renderTutorial()
+{
+    Rect r;
+
+    unsigned int c = 0x00FF0000;
+    r.bot = gl.yres - 20;
+    r.left = 10;
+    r.center = 0;
+    ggprint8b(&r, 20, c, "INSTRUCTIONS");
+    ggprint8b(&r, 16, c, "Right arrow -> walk right");
+    ggprint8b(&r, 16, c, "Left arrow  <- walk left");
+    ggprint8b(&r, 16, c, "'P' Game Pause/Resume ");
+
 }
 
 void MainMenu::keyboardInput(int key)
