@@ -399,19 +399,20 @@ class Lightning : public Sprite {
 
 void initLightSprite()
 {
-	globalSprite.light = new Sprite("electricity.png", 1, 1, 1, 1, 200, 600);
+	globalSprite.light = new Sprite("electricity.png", 8, 4, 8, 9.0f/16.0f, 512, 256);
+	globalSprite.light->setPos(gl.xres/1.4 , 100);
 }
 
 void renderLightSprite()
 {       
-	int x = gl.xres-370; //800 
-	int y = gl.yres-300;  //600 
-	if (gl.keepTrack == 10) {
+	//int x = gl.xres-200; //800 
+	//int y = gl.yres-520;  //600 
+	//if (gl.keepTrack == 10) {
 		//do nothing
-	} else {
+	//} else {
 		globalSprite.light->draw();
-		globalSprite.light->setPos(-gl.camera[0] + x, y);
-	}
+		//globalSprite.light->setPos(-gl.camera[0] + x, y);
+	//}
 }
 
 void physicsLightSprite()
