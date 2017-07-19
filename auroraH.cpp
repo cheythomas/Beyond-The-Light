@@ -289,12 +289,23 @@ void initCharacterSprites()
     globalSprite.mortanaJump = new Sprite
             ("jumpMortana.gif", 13, 1, 13, 1.0f / 8.0f, 113, 128);
     globalSprite.mortanaJump->setPos(gl.xres / 2, 100);
+    
+    
+    //blk cat
+    //black cat
+    globalSprite.blkcat = new Sprite
+            ("catsprites.gif", 5, 3, 5, 1.0f / 8.0f, 113, 128);
+    globalSprite.blkcat->setPos(gl.xres / 2, 500);
+
+    
+    
 }
 
 void renderCharacterSprites()
 {
     globalSprite.mortana->draw();
     globalSprite.mortanaJump->draw();
+    globalSprite.blkcat->draw();
 
 }
 
@@ -306,20 +317,23 @@ void physicsCharacterSprites()
     //    pos += 50;
     physicsMortana();
 }
-
+//physics mortana and blk cat
 void physicsMortana()
 {
     if (gl.state == STATE_GAMEPLAY) {
         Sprite* m = globalSprite.mortana;
         Sprite* mj = globalSprite.mortanaJump;
+        Sprite* cat = globalSprite.blkcat;
         m->setVisible(false);
         mj->setVisible(false);
+        cat->setVisible(false);
         float cx = gl.mortanaPos[0],
                 cy = gl.mortanaPos[1],
                 velY = gl.mortanaVelY;
         //printf("Pos(X: %f, Y: %f)\n", cx, cy);
         if (cy <= 100) { //If on the ground check 
             m->setVisible(true);
+            cat->setVisible(true);
             if (gl.keys[XK_Up]) {
                 velY += 100;
                 cy += 1;
@@ -327,9 +341,11 @@ void physicsMortana()
                 //reset animation
                 mj->reset();
                 m->reset();
+                cat->reset();
             } else if (gl.keys[XK_Right]) {
                 // mortana walking right
                 m->physics();
+                cat->physics();
                 cx += 3;
                 if (m->getDirection() == 0) {
                     m->setDireciont(1);
@@ -389,10 +405,10 @@ void initEnemySprites()
             ("pacghost.gif", 9, 6, 9, 1.0f / 8.0f, 113, 128);
     globalSprite.pacghost->setPos(gl.xres / 2, 400);
 
-    //black cat
-    globalSprite.blkcat = new Sprite
-            ("catsprites.gif", 5, 3, 5, 1.0f / 8.0f, 113, 128);
-    globalSprite.blkcat->setPos(gl.xres / 2, 500);
+//    //black cat
+//    globalSprite.blkcat = new Sprite
+//            ("catsprites.gif", 5, 3, 5, 1.0f / 8.0f, 113, 128);
+//    globalSprite.blkcat->setPos(gl.xres / 2, 500);
 
 
 }
@@ -402,7 +418,7 @@ void renderEnemySprites()
     globalSprite.pinkghost->draw();
     globalSprite.blanketghost->draw();
     globalSprite.pacghost->draw();
-    globalSprite.blkcat->draw();
+    //globalSprite.blkcat->draw();
 
 }
 

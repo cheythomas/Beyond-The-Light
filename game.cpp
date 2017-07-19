@@ -268,7 +268,7 @@ void physics(void)
 
         //When game is not paused, sprite physics must be updated
         for (int i = 0; i < 5; i++) {
-            globalSprite.background[i]->physics();
+           // globalSprite.background[i]->physics();
         }
         globalSprite.gameover->physics();
         for (int i = 0; i < 10; i++) {
