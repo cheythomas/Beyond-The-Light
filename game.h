@@ -119,7 +119,7 @@ struct GlobalSprite {
     Sprite* mortana;
     Sprite* mortanaJump;
     Sprite* background[5];
-    Sprite* light;
+    Sprite* light[4];
     Sprite* life[11];
     Sprite* gameover;
     //Enemy sprites
