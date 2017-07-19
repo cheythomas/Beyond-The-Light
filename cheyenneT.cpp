@@ -399,20 +399,39 @@ class Lightning : public Sprite {
 
 void initLightSprite()
 {
-	globalSprite.light = new Sprite("electricity.gif", 8, 4, 8, 9.0f/16.0f, 512, 256);
-	globalSprite.light->setPos(gl.xres/1.4 , 100);
+	globalSprite.light[0] = new Sprite("electricityForward.gif", 4, 1, 4, 9.0f/16.0f, 512, 256);
+	globalSprite.light[1] = new Sprite("electricityUp.gif", 4, 1, 4, 9.0f/16.0f, 512, 256);
+	globalSprite.light[2] = new Sprite("electricityDiagonalLeft.gif", 4, 1, 4, 9.0f/16.0f, 512, 256);
+	globalSprite.light[3] = new Sprite("electricityDiagonalRight.gif", 4, 1, 4, 9.0f/16.0f, 512, 256);
 }
 
 void renderLightSprite()
 {       
-	//int x = gl.xres-200; //800 
-	//int y = gl.yres-520;  //600 
-	//if (gl.keepTrack == 10) {
+	int x = gl.xres-200; //800 
+	int y = gl.yres-520;  //600 
+	if (gl.keepTrack == 10) {
 		//do nothing
-	//} else {
-		globalSprite.light->draw();
-		//globalSprite.light->setPos(-gl.camera[0] + x, y);
-	//}
+	} else {
+	    	if(gl.keys[XK_d] || gl.keys[XK_D] || gl.keys[XK_a] || gl.keys[XK_A]) {
+			globalSprite.light[0]->draw();
+			globalSprite.light[0]->setPos(-gl.camera[0] + x, y);
+		}
+	    	
+		if(gl.keys[XK_w] || gl.keys[XK_W]) {
+			globalSprite.light[1]->draw();
+			globalSprite.light[1]->setPos(-gl.camera[0] + x, y);
+		}
+	    	
+		if(gl.keys[XK_q] || gl.keys[XK_Q]) {
+			globalSprite.light[2]->draw();
+			globalSprite.light[2]->setPos(-gl.camera[0] + x, y);
+		}
+	    	
+		if(gl.keys[XK_e] || gl.keys[XK_E]) {
+			globalSprite.light[3]->draw();
+			globalSprite.light[3]->setPos(-gl.camera[0] + x, y);
+		}
+	}
 }
 
 void physicsLightSprite()
