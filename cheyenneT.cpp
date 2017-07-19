@@ -49,7 +49,7 @@ void Battery::grabCharge()
 	r.left = 750; // x-axis
 	r.center = 0;
 	unsigned int c = 0x00ffff44;
-	if (gl.keys[XK_a]) {
+	if (gl.keys[XK_r] || gl.keys[XK_R]) {
 		if (gl.keepTrack == 0) {
 			ggprint8b(&r, 16, c, "Already full");
 		} 
@@ -120,61 +120,61 @@ void renderLifeBarSprite()
 		gl.keepTrack = 0;
 	}
 
-	if (gl.keyCount > 20) {
+	if (gl.keyCount > 30) {
 		globalSprite.life[1]->draw();
 		globalSprite.life[1]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 1;
 	}
 	
-	if (gl.keyCount > 30) {
+	if (gl.keyCount > 60) {
 		globalSprite.life[2]->draw();
 		globalSprite.life[2]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 2;
 	}
 	
-	if (gl.keyCount > 40) {
+	if (gl.keyCount > 90) {
 		globalSprite.life[3]->draw();
 		globalSprite.life[3]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 3;
 	}
 	
-	if (gl.keyCount > 50) {
+	if (gl.keyCount > 120) {
 		globalSprite.life[4]->draw();
 		globalSprite.life[4]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 4;
 	}
 	
-	if (gl.keyCount > 60) {
+	if (gl.keyCount > 150) {
 		globalSprite.life[5]->draw();
 		globalSprite.life[5]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 5;
 	}
 	
-	if (gl.keyCount > 70) {
+	if (gl.keyCount > 180) {
 		globalSprite.life[6]->draw();
 		globalSprite.life[6]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 6;
 	}
 	
-	if (gl.keyCount > 80) {
+	if (gl.keyCount > 210) {
 		globalSprite.life[7]->draw();
 		globalSprite.life[7]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 7;
 	}
 	
-	if (gl.keyCount > 90) {
+	if (gl.keyCount > 240) {
 		globalSprite.life[8]->draw();
 		globalSprite.life[8]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 8;
 	}
 	
-	if (gl.keyCount > 100) {
+	if (gl.keyCount > 270) {
 		globalSprite.life[9]->draw();
 		globalSprite.life[9]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 9;
 	}
 	
-	if (gl.keyCount == 110 || gl.keyCount > 110) { 
+	if (gl.keyCount == 300 || gl.keyCount > 300) { 
 		globalSprite.life[10]->draw();
 		globalSprite.life[10]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 10;
@@ -351,7 +351,7 @@ void renderGameOverSprite()
 	int x = gl.xres-370; //800 
 	int y = gl.yres-300;  //600
 
-	if (gl.keepTrack == 10) {
+	if (gl.keepTrack == 1000) {
 		globalSprite.gameover->draw();
 		globalSprite.gameover->setPos(-gl.camera[0] + x, y);
 	}
@@ -409,27 +409,35 @@ void renderLightSprite()
 {       
 	int x = gl.xres-200; //800 
 	int y = gl.yres-520;  //600 
-	if (gl.keepTrack == 10) {
+	if (gl.keepTrack == 1000) {
 		//do nothing
 	} else {
 	    	if(gl.keys[XK_d] || gl.keys[XK_D] || gl.keys[XK_a] || gl.keys[XK_A]) {
 			globalSprite.light[0]->draw();
 			globalSprite.light[0]->setPos(-gl.camera[0] + x, y);
+			gl.keyCount = gl.keyCount + 1;
+		//	printf("keyCount: %d\n", gl.keyCount);
 		}
 	    	
 		if(gl.keys[XK_w] || gl.keys[XK_W]) {
 			globalSprite.light[1]->draw();
 			globalSprite.light[1]->setPos(-gl.camera[0] + x, y);
+			gl.keyCount = gl.keyCount + 1;
+		//	printf("keyCount: %d\n", gl.keyCount);
 		}
 	    	
 		if(gl.keys[XK_q] || gl.keys[XK_Q]) {
 			globalSprite.light[2]->draw();
 			globalSprite.light[2]->setPos(-gl.camera[0] + x, y);
+			gl.keyCount = gl.keyCount + 1;
+		//	printf("keyCount: %d\n", gl.keyCount);
 		}
 	    	
 		if(gl.keys[XK_e] || gl.keys[XK_E]) {
 			globalSprite.light[3]->draw();
 			globalSprite.light[3]->setPos(-gl.camera[0] + x, y);
+			gl.keyCount = gl.keyCount + 1;
+		//	printf("keyCount: %d\n", gl.keyCount);
 		}
 	}
 }
