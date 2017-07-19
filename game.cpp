@@ -275,7 +275,7 @@ void physics(void)
 
             globalSprite.life[i]->physics();
         }
-        globalSprite.light->physics();
+        globalSprite.light[4]->physics();
     }
 }
 
@@ -293,11 +293,7 @@ void render(void)
         renderBackgroundSprites();
         gl.batt.chargeObject();
         gl.batt.grabCharge();
-        if (gl.keys[XK_f] || gl.keys[XK_F]) {
-            renderLightSprite();
-            gl.keyCount++;
-            printf("keyCount: %d\n", gl.keyCount); //debugger
-        }
+        renderLightSprite();
         gl.batt.gameOver();
         renderGameOverSprite();
         //gl.batt.drawBattery(); 
