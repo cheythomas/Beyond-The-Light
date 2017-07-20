@@ -273,7 +273,7 @@ int Sprite::getDirection()
     return direction;
 }
 
-void Sprite::setDireciont(int value)
+void Sprite::setDirection(int value)
 {
     direction = value;
 }
@@ -294,8 +294,8 @@ void initCharacterSprites()
     //blk cat
     //black cat
     globalSprite.blkcat = new Sprite
-            ("catsprites.gif", 5, 3, 5, 1.0f / 8.0f, 113, 128);
-    globalSprite.blkcat->setPos(gl.xres / 2, 500);
+            ("catsprites.gif", 5, 3, 5, 1.0f / 8.0f, 50, 90);
+    globalSprite.blkcat->setPos(gl.xres / 1.5, 100);
 
     
     
@@ -348,16 +348,19 @@ void physicsMortana()
                 cat->physics();
                 cx += 3;
                 if (m->getDirection() == 0) {
-                    m->setDireciont(1);
-                    mj->setDireciont(1);
+                    m->setDirection(1);
+                    mj->setDirection(1);
+                    cat->setDirection(0);
                 }
             } else if (gl.keys[XK_Left]) {
                 // mortana walking left
                 m->setVisible(true);
                 m->physics();
+                cat->physics();
                 if (m->getDirection() == 1) {
-                    m->setDireciont(0);
-                    mj->setDireciont(0);
+                    m->setDirection(0);
+                    mj->setDirection(0);
+                    cat->setDirection(1);
                 }
                 cx -= 3;
             }
@@ -377,9 +380,13 @@ void physicsMortana()
 
         m->setPos(cx, cy);
         mj->setPos(cx, cy);
+        cat->setPos(cx,cy);
         gl.mortanaPos[0] = cx;
         gl.mortanaPos[1] = cy;
         gl.mortanaVelY = velY;
+        gl.catPos [0] = cx;
+        gl.catPos [1] = cy;
+        gl.catVelY = velY;
     }
 }
 

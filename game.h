@@ -107,7 +107,7 @@ public:
     void reset();
     // Mortana direction
     int getDirection();
-    void setDireciont(int);
+    void setDirection(int);
 };
 
 /*
@@ -319,6 +319,9 @@ public:
     float mortanaVelY;
     Vec mortanaPos;
     Vec lightPos;
+    // physics for blk cat
+    float catVelY;
+    Vec catPos;
     
     //Physics variable for pink ghost
     float pinkghost;
@@ -354,6 +357,10 @@ public:
         // pink ghost
         pinkghostPos[0] = xres / 2;
         pinkghostPos[1] = 100;
+        
+        // blkcat
+        catPos[0] = xres / 2;
+        catPos[1] = 85;
     }
 };
 

@@ -265,6 +265,7 @@ void physics(void)
         physicsCharacterSprites();
         //physicsEnemySprites(); //*
         gl.camera[0] = -globalSprite.mortana->getPosX() + gl.xres / 2;
+        gl.camera[0] = -globalSprite.blkcat->getPosX() + gl.xres / 2;
 
         //When game is not paused, sprite physics must be updated
         for (int i = 0; i < 5; i++) {
