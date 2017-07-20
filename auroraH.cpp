@@ -105,7 +105,9 @@ posX(w / 2.0f), posY(h / 2.0f),
 delay(delayValue),
 time(),
 visible(true),
-direction(1)
+direction(1),
+repeating(true),
+reverse(false)
 {
     // convert to ppm automatically
     string inputFile = "./images/" + filename;
@@ -155,10 +157,21 @@ void Sprite::physics()
 
         double timeSpan = timeDiff(&time, &current);
         if (timeSpan > delay) {
-            //next frame
-            ++currentFrame;
-            if (currentFrame >= frameCount)
-                currentFrame = 0;
+            //next frame            
+            if(!reverse) {                    
+                if(currentFrame+1 < frameCount) {
+                    ++currentFrame;
+                } else if(repeating) {
+                    currentFrame = 0;
+                }
+            } else {
+            //previous frame
+                if(currentFrame-1 >= 0) {
+                    --currentFrame;
+                } else if(repeating) {
+                    currentFrame = frameCount;
+                }
+            }                          
             recordTime(&time);
         }
     }
@@ -278,6 +291,37 @@ void Sprite::setDirection(int value)
     direction = value;
 }
 
+int Sprite::getFrameIndex()
+{
+    return currentFrame;
+}
+
+void Sprite::setFrameIndex(int index)
+{
+    currentFrame = index;
+}
+
+bool Sprite::getRepeating()
+{
+    return repeating;
+}
+
+void Sprite::setRepeating(bool repeat)
+{
+    repeating = repeat;
+}
+
+bool Sprite::getReverse()
+{
+    return reverse;
+}
+
+void Sprite::setReverse(bool value)
+{
+    reverse = value;
+}
+
+
 void initCharacterSprites()
 {
     globalSprite.mortana = new Sprite
@@ -294,19 +338,26 @@ void initCharacterSprites()
     //blk cat
     //black cat
     globalSprite.blkcat = new Sprite
-            ("catsprites.gif", 5, 3, 5, 1.0f / 8.0f, 50, 90);
-    globalSprite.blkcat->setPos(gl.xres / 1.5, 100);
-
+            ("blkscat.gif", 12, 12, 1, 1.0f / 8.0f, 50, 100);
+    globalSprite.blkcat->setPos(gl.xres / 1.5-100, 100);
+    globalSprite.blkcat->setDirection(0);
+    globalSprite.blkcat->setVisible(false);
     
+    globalSprite.blkcatsit = new Sprite
+            ("blkscats.gif", 6, 6, 1, 1.0f / 8.0f, 50, 100);
+    globalSprite.blkcatsit->setPos(gl.xres / 1.5-100, 100);
+    globalSprite.blkcatsit->setDirection(0);
+    globalSprite.blkcatsit->setFrameIndex(5);
+    globalSprite.blkcatsit->setRepeating(false);
     
 }
 
 void renderCharacterSprites()
 {
-    globalSprite.mortana->draw();
-    globalSprite.mortanaJump->draw();
     globalSprite.blkcat->draw();
-
+    globalSprite.blkcatsit->draw();
+    globalSprite.mortana->draw();    
+    globalSprite.mortanaJump->draw();
 }
 
 void physicsCharacterSprites()
@@ -320,20 +371,25 @@ void physicsCharacterSprites()
 //physics mortana and blk cat
 void physicsMortana()
 {
+    int catDistance = 200;
+    int catDistanceSit = 170;
     if (gl.state == STATE_GAMEPLAY) {
         Sprite* m = globalSprite.mortana;
         Sprite* mj = globalSprite.mortanaJump;
         Sprite* cat = globalSprite.blkcat;
+        Sprite* catsit= globalSprite.blkcatsit;
         m->setVisible(false);
         mj->setVisible(false);
         cat->setVisible(false);
+        catsit->setVisible(false);
         float cx = gl.mortanaPos[0],
                 cy = gl.mortanaPos[1],
-                velY = gl.mortanaVelY;
+                velY = gl.mortanaVelY,
+                catx = gl.catPos[0],
+                caty = gl.catPos[1];
         //printf("Pos(X: %f, Y: %f)\n", cx, cy);
         if (cy <= 100) { //If on the ground check 
             m->setVisible(true);
-            cat->setVisible(true);
             if (gl.keys[XK_Up]) {
                 velY += 100;
                 cy += 1;
@@ -341,28 +397,68 @@ void physicsMortana()
                 //reset animation
                 mj->reset();
                 m->reset();
-                cat->reset();
+                //cat->reset();
+                //catsit->reset();
+                if(catsit->getFrameIndex() == 5) {
+                    catsit->setVisible(true);
+                } else {
+                    cat->setVisible(true);
+                }
+                catsit->reset();
             } else if (gl.keys[XK_Right]) {
                 // mortana walking right
                 m->physics();
-                cat->physics();
                 cx += 3;
                 if (m->getDirection() == 0) {
                     m->setDirection(1);
-                    mj->setDirection(1);
-                    cat->setDirection(0);
+                    mj->setDirection(1);                    
                 }
+                if(catx > cx-catDistance) {
+                    //cat is on the right side of mortana                    
+                    catx -= 3;
+                    catsit->setVisible(true);
+                    catsit->physics();
+                } else {
+                    cat->physics();            
+                    cat->setVisible(true);
+                    catx = cx - catDistance;
+                    cat->setDirection(0);
+                    catsit->setDirection(0);
+                }                
+                catsit->reset();
             } else if (gl.keys[XK_Left]) {
                 // mortana walking left
                 m->setVisible(true);
-                m->physics();
-                cat->physics();
+                m->physics();                
                 if (m->getDirection() == 1) {
                     m->setDirection(0);
                     mj->setDirection(0);
-                    cat->setDirection(1);
                 }
                 cx -= 3;
+                if(catx < cx+catDistance) {
+                    //cat is on the left side of mortana
+                    catx += 3;
+                    catsit->setVisible(true);
+                    catsit->physics();
+                } else {
+                    cat->physics();   
+                    cat->setVisible(true);
+                    catx = cx + catDistance;
+                    cat->setDirection(1);
+                    catsit->setDirection(1);
+                }                
+                //pcatsit->reset();
+            } else {
+                //let cat sit down   
+                catsit->setVisible(true); 
+                catsit->physics();
+                if(catx < cx-catDistanceSit) {
+                    //Mortana is not moving but the cat is on the right side
+                    catx += 3;                    
+                } else if(catx > cx+catDistanceSit) {
+                    //mortana is not moving but the cat is on the left side
+                    catx -= 3;
+                }
             }
         } else {
             //in the air            
@@ -375,17 +471,28 @@ void physicsMortana()
                 cy = 100;
             }
             mj->setVisible(true);
+            if(catsit->getFrameIndex() == 5) {
+                catsit->setVisible(true);
+            } else {
+                cat->setVisible(true);
+            }
         }
 
 
         m->setPos(cx, cy);
         mj->setPos(cx, cy);
-        cat->setPos(cx,cy);
+        cat->setPos(catx, caty);
+        catsit->setPos(catx, caty);
+//        if(m->getDirection() == 1) {
+//            cat->setPos(cx - 100, caty);
+//        } else {
+//            cat->setPos(cx + 100, caty);
+//        }
         gl.mortanaPos[0] = cx;
         gl.mortanaPos[1] = cy;
         gl.mortanaVelY = velY;
-        gl.catPos [0] = cx;
-        gl.catPos [1] = cy;
+        gl.catPos [0] = catx;
+        gl.catPos [1] = caty;
         gl.catVelY = velY;
     }
 }

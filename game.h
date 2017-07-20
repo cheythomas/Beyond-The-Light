@@ -80,6 +80,8 @@ class Sprite {
     struct timespec time;
     bool visible;
     int direction;
+    bool repeating;
+    bool reverse;
 public:
     Sprite(
             const std::string & filename,
@@ -108,6 +110,12 @@ public:
     // Mortana direction
     int getDirection();
     void setDirection(int);
+    void setFrameIndex(int);
+    int getFrameIndex();
+    bool getRepeating();
+    void setRepeating(bool);
+    void setReverse(bool);
+    bool getReverse();
 };
 
 /*
@@ -127,6 +135,7 @@ struct GlobalSprite {
     Sprite* blanketghost;
     Sprite* pacghost;
     Sprite* blkcat;
+    Sprite* blkcatsit;
     //Sprite* pacghost01;
 
 };
@@ -360,7 +369,7 @@ public:
         
         // blkcat
         catPos[0] = xres / 2;
-        catPos[1] = 85;
+        catPos[1] = 70;
     }
 };
 
