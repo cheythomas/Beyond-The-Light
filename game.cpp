@@ -266,7 +266,7 @@ void physics(void)
         physicsCharacterSprites();
         //physicsEnemySprites(); //*
         gl.camera[0] = -globalSprite.mortana->getPosX() + gl.xres / 2;
-
+		physicsLightSprite();
         //When game is not paused, sprite physics must be updated
         for (int i = 0; i < 5; i++) {
             // globalSprite.background[i]->physics();
@@ -292,16 +292,15 @@ void render(void)
         renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
-        gl.batt.chargeObject();
         gl.batt.grabCharge();
         renderLightSprite();
-        gl.batt.gameOver();
-        renderGameOverSprite();
-        //gl.batt.drawBattery(); 
         renderLifeBarSprite();
         gl.lev.renderBackground();
+        gl.batt.chargeObject();
         renderCharacterSprites();
         renderEnemySprites();
+        gl.batt.gameOver();
+        renderGameOverSprite();
 
 
 
