@@ -114,7 +114,8 @@ time(),
 visible(true),
 direction(1),
 repeating(true),
-reverse(false)
+reverse(false),
+angle(0)
 {
     // convert to ppm automatically
     string inputFile = "./images/" + filename;
@@ -202,6 +203,13 @@ void Sprite::draw()
         float th = 1.0f / rows;
 
         glPushMatrix();
+        
+        if(angle != 0) {
+            glTranslated(cx, cy, 0);
+            glRotated(angle, 0, 0, 1);
+            glTranslated(-cx, -cy, 0);
+        }
+        
         glColor3f(1.0, 1.0, 1.0);
         glBindTexture(GL_TEXTURE_2D, glTexture);
 
@@ -328,8 +336,12 @@ void Sprite::setReverse(bool value)
     reverse = value;
 }
 
-float Sprite::setAngle()
+void Sprite::setAngle(float val)
 {
+    angle = val;
+}
+
+float Sprite::getAngle(){
     return angle;
 }
 

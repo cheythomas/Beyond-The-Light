@@ -118,7 +118,7 @@ public:
     void setReverse(bool);
     bool getReverse();
     float getAngle();
-    float setAngle();
+    void setAngle(float);
 };
 
 /*
