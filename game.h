@@ -242,7 +242,9 @@ class MenuItem {
 public:
     MenuItem(std::string txt, int x, int y, int w, int h);
     void draw();
-
+    void setPos(int, int);
+    int getPosX();
+    int getPosY();
 private:
     std::string text;
 
@@ -284,6 +286,8 @@ public:
 
     void draw();
 
+    void resize(int oldw, int neww, int oldh, int newh);
+    
     void keyboardInput(int key);
 };
 

@@ -566,18 +566,13 @@ void physicsPinkghost()
     }
 }
 
-
-
-
-
-
 //**
 // Menu
 //**
 //background for menu
 void initMenuBackground(){
-    globalSprite.backgroundMenu = new Sprite("menuBoy.gif", 1, 1, 1, 1, 1000, 3024);
-    globalSprite.backgroundMenu->setPos(gl.xres / 2, 250);
+    globalSprite.backgroundMenu = new Sprite("boy.gif", 1, 1, 1, 1, 1380, 2320);
+    globalSprite.backgroundMenu->setPos(gl.xres / 0.75, 500);
 
     
 }
@@ -615,12 +610,30 @@ void MenuItem::draw()
     r.center = 0;
     r.bot = posY + 15;
     r.left = posX + 50;
+   
     // hex for color white
     ggprint16(&r, 0, 0xFF0000, this->text.c_str());
 
 
     glPopMatrix();
 }
+
+int MenuItem::getPosX()
+{
+    return posX;
+}
+
+int MenuItem::getPosY()
+{
+    return posY;
+}
+
+void MenuItem::setPos(int x, int y)
+{
+    posX = x;
+    posY = y;
+}
+
 
 void Menu::draw()
 {
@@ -632,6 +645,8 @@ void Menu::draw()
         menuitem.draw();
     }
 }
+
+
 
 Menu::Menu() : menuItems(), selectedItemIndex(0)
 {
@@ -695,6 +710,18 @@ void MainMenu::draw()
     Menu::draw();
 }
 
+void MainMenu::resize(int oldw, int neww, int oldh, int newh)
+{
+    // position of main menu items
+    int xDiff = (neww - oldw)/2;
+    int yDiff = (newh - oldh)/2;
+    for(unsigned int i = 0; i < menuItems.size(); i++) {
+        int x = menuItems[i].getPosX();
+        int y = menuItems[i].getPosY();
+        menuItems[i].setPos(x + xDiff, y + yDiff);
+    }
+}
+
 //*
 //Instructions for user
 //*
@@ -702,7 +729,6 @@ void MainMenu::draw()
 void renderTutorial()
 {
     Rect r;
-
     unsigned int c = 0x00FF0000;
     r.bot = gl.yres - 20;
     r.left = 10;

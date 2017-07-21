@@ -142,7 +142,8 @@ void checkResize(XEvent *e)
     XConfigureEvent xce = e->xconfigure;
     if (xce.width != gl.xres || xce.height != gl.yres) {
         //Window size did change.
-        reshapeWindow(xce.width, xce.height);
+        gl.mainMenu.resize(gl.xres, xce.width, gl.yres, xce.height);
+        reshapeWindow(xce.width, xce.height);        
         gl.xres = xce.width;
         gl.yres = xce.height;
     }
@@ -282,16 +283,18 @@ void physics(void)
 
 void render(void)
 {
+     
     //Clear the screen
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    renderMenuBackground();
+   renderMenuBackground();
     // Menu and menu item must open first then the rest will be rendered
     if (gl.state != STATE_STARTUP) {
         glPushMatrix();
-        renderTutorial();
+        //renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
+        renderTutorial();
         gl.batt.chargeObject();
         gl.batt.grabCharge();
         renderLightSprite();
