@@ -5,7 +5,7 @@ int main(void)
 {
     initXWindows();
     initOpengl();
-    initMenuBackground();  //main menu background
+    initMenuBackground(); //main menu background
     initCharacterSprites(); // function call inside initOpenGl
     initBackgroundSprites();
     initLightSprite();
@@ -143,7 +143,7 @@ void checkResize(XEvent *e)
     if (xce.width != gl.xres || xce.height != gl.yres) {
         //Window size did change.
         gl.mainMenu.resize(gl.xres, xce.width, gl.yres, xce.height);
-        reshapeWindow(xce.width, xce.height);        
+        reshapeWindow(xce.width, xce.height);
         gl.xres = xce.width;
         gl.yres = xce.height;
     }
@@ -267,7 +267,7 @@ void physics(void)
         physicsCharacterSprites();
         //physicsEnemySprites(); //*
         gl.camera[0] = -globalSprite.mortana->getPosX() + gl.xres / 2;
-
+        physicsLightSprite();
         //When game is not paused, sprite physics must be updated
         for (int i = 0; i < 5; i++) {
             // globalSprite.background[i]->physics();
@@ -283,28 +283,30 @@ void physics(void)
 
 void render(void)
 {
-     
+
     //Clear the screen
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-   renderMenuBackground();
+    renderMenuBackground();
     // Menu and menu item must open first then the rest will be rendered
     if (gl.state != STATE_STARTUP) {
         glPushMatrix();
         //renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
+
         renderTutorial();
         gl.batt.chargeObject();
+
         gl.batt.grabCharge();
         renderLightSprite();
-        gl.batt.gameOver();
-        renderGameOverSprite();
-        //gl.batt.drawBattery(); 
         renderLifeBarSprite();
         gl.lev.renderBackground();
+        gl.batt.chargeObject();
         renderCharacterSprites();
         renderEnemySprites();
+        gl.batt.gameOver();
+        renderGameOverSprite();
 
 
 
