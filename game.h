@@ -82,6 +82,7 @@ class Sprite {
     int direction;
     bool repeating;
     bool reverse;
+    float angle; //rotating sprites
 public:
     Sprite(
             const std::string & filename,
@@ -116,6 +117,8 @@ public:
     void setRepeating(bool);
     void setReverse(bool);
     bool getReverse();
+    float getAngle();
+    float setAngle();
 };
 
 /*
@@ -136,6 +139,7 @@ struct GlobalSprite {
     Sprite* pacghost;
     Sprite* blkcat;
     Sprite* blkcatsit;
+    Sprite* backgroundMenu;
     //Sprite* pacghost01;
 
 };
@@ -425,6 +429,8 @@ void renderLightSprite(); // for light/electricity to kill ghosts
 void renderLifeBarSprite(); // 
 void renderGameOverSprite(); // 
 void physicsLightSprite();
+void initMenuBackground(); // main menu background
+void renderMenuBackground(); //main menu
 
 
 

@@ -328,6 +328,11 @@ void Sprite::setReverse(bool value)
     reverse = value;
 }
 
+float Sprite::setAngle()
+{
+    return angle;
+}
+
 void initCharacterSprites()
 {
     //mortana walk sprite
@@ -557,6 +562,19 @@ void physicsPinkghost()
 //**
 // Menu
 //**
+//background for menu
+void initMenuBackground(){
+    globalSprite.backgroundMenu = new Sprite("menuBoy.gif", 1, 1, 1, 1, 1000, 3024);
+    globalSprite.backgroundMenu->setPos(gl.xres / 2, 250);
+
+    
+}
+
+void renderMenuBackground(){
+    globalSprite.backgroundMenu->draw();
+    
+}
+
 
 MenuItem::MenuItem(std::string txt, int x, int y, int w, int h)
 : text(txt), posX(x), posY(y), width(w), height(h), highlight(false)
