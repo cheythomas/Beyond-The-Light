@@ -331,12 +331,12 @@ public:
     // physics for blk cat
     float catVelY;
     Vec catPos;
-    
+
     //Physics variable for pink ghost
     float pinkghost;
     Vec pinkghostPos;
-    
-    
+
+
     float lightVelY;
 
     ~Global()
@@ -366,7 +366,7 @@ public:
         // pink ghost
         pinkghostPos[0] = xres / 2;
         pinkghostPos[1] = 100;
-        
+
         // blkcat
         catPos[0] = xres / 2;
         catPos[1] = 70;
