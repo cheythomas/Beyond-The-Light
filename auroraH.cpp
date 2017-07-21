@@ -734,13 +734,21 @@ void renderTutorial()
     r.left = 10;
     r.center = 0;
     ggprint8b(&r, 20, c, "INSTRUCTIONS");
+    ggprint8b(&r, 20, c, "Walk Mode:");
     ggprint8b(&r, 16, c, "Right arrow -> walk right");
     ggprint8b(&r, 16, c, "Left arrow  <- walk left");
     ggprint8b(&r, 16, c, "UP arrow--Jump");
-    ggprint8b(&r, 16, c, "'P/p' Game Pause/Resume ");
-    ggprint8b(&r, 16, c, "'F/f' Attack ");
+    ggprint8b(&r, 25, c, "'P/p' Game Pause/Resume ");
+    ggprint8b(&r, 18, c, "Attack Mode:");
+    ggprint8b(&r, 18, c, "W--up");
+    ggprint8b(&r, 18, c, "A/D--Forward");
+    ggprint8b(&r, 18, c, "E--upright");
+    ggprint8b(&r, 18, c, "Q--upleft");
+    
 
 }
+
+
 
 void MainMenu::keyboardInput(int key)
 {
@@ -782,10 +790,10 @@ void MainMenu::keyboardInput(int key)
             case 1:
                 gl.state = STATE_HIGHSCORE;
                 break;
-            case 2:
-                gl.state = STATE_CREDITS;
+           // case 2:
+                //gl.state = STATE_CREDITS;
 
-                break;
+               // break;
             case 3:
                 gl.done = 1;
 

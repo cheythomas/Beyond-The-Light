@@ -288,7 +288,7 @@ public:
 
     void resize(int oldw, int neww, int oldh, int newh);
     
-    void keyboardInput(int key);
+   void keyboardInput(int key);
 };
 
 /**/
