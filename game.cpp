@@ -5,13 +5,14 @@ int main(void)
 {
     initXWindows();
     initOpengl();
+    initMenuBackground(); //main menu background
     initCharacterSprites(); // function call inside initOpenGl
     initBackgroundSprites();
     initLightSprite();
     initLifeBarSprite();
     initEnemySprites();
     initGameOverSprite();
-     init();
+    init();
     struct timespec now, last;
     recordTime(&last);
 
@@ -50,7 +51,7 @@ void cleanupXWindows(void)
     XDestroyWindow(gl.dpy, gl.win);
     XCloseDisplay(gl.dpy);
 }
-
+//hello
 void setTitle(void)
 {
     //Set the window title bar.
@@ -141,6 +142,7 @@ void checkResize(XEvent *e)
     XConfigureEvent xce = e->xconfigure;
     if (xce.width != gl.xres || xce.height != gl.yres) {
         //Window size did change.
+        gl.mainMenu.resize(gl.xres, xce.width, gl.yres, xce.height);
         reshapeWindow(xce.width, xce.height);
         gl.xres = xce.width;
         gl.yres = xce.height;
@@ -204,6 +206,7 @@ void checkKeys(XEvent *e)
         //Always checked because it opens the menu
         //it checks if main menu is open
         gl.mainMenu.keyboardInput(key);
+		//renderCreditSprite.keyboardInput(key);
     }
 
     if (shift) {
@@ -265,48 +268,48 @@ void physics(void)
         physicsCharacterSprites();
         //physicsEnemySprites(); //*
         gl.camera[0] = -globalSprite.mortana->getPosX() + gl.xres / 2;
-
+        physicsLightSprite();
         //When game is not paused, sprite physics must be updated
         for (int i = 0; i < 5; i++) {
-            globalSprite.background[i]->physics();
+            // globalSprite.background[i]->physics();
         }
         globalSprite.gameover->physics();
         for (int i = 0; i < 10; i++) {
 
             globalSprite.life[i]->physics();
         }
-        globalSprite.light->physics();
+        globalSprite.light[4]->physics();
     }
 }
 
 void render(void)
 {
+
     //Clear the screen
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-
+    renderMenuBackground();
+    //renderCreditBackround();
     // Menu and menu item must open first then the rest will be rendered
     if (gl.state != STATE_STARTUP) {
         glPushMatrix();
-        renderTutorial();
+        //renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
+
+        renderTutorial();
         gl.batt.chargeObject();
+
         gl.batt.grabCharge();
-        if (gl.keys[XK_f] || gl.keys[XK_F]) {
-            renderLightSprite();
-            gl.keyCount++;
-            printf("keyCount: %d\n", gl.keyCount); //debugger
-        }
-        gl.batt.gameOver();
-        renderGameOverSprite();
-        //gl.batt.drawBattery(); 
+        renderLightSprite();
         renderLifeBarSprite();
         gl.lev.renderBackground();
+        gl.batt.chargeObject();
         renderCharacterSprites();
         renderEnemySprites();
-        
-        
+        gl.batt.gameOver();
+        renderGameOverSprite();
+
 
         glPopMatrix();
     }

@@ -81,6 +81,9 @@ protected:
     struct timespec time;
     bool visible;
     int direction;
+    bool repeating;
+    bool reverse;
+    float angle; //rotating sprites
 public:
     Sprite(
             const std::string & filename,
@@ -108,7 +111,15 @@ public:
     void reset();
     // Mortana direction
     int getDirection();
-    void setDireciont(int);
+    void setDirection(int);
+    void setFrameIndex(int);
+    int getFrameIndex();
+    bool getRepeating();
+    void setRepeating(bool);
+    void setReverse(bool);
+    bool getReverse();
+    float getAngle();
+    void setAngle(float);
 };
 
 /*
@@ -120,14 +131,17 @@ struct GlobalSprite {
     Sprite* mortana;
     Sprite* mortanaJump;
     Sprite* background[5];
-    Sprite* light;
+    Sprite* light[4];
     Sprite* life[11];
     Sprite* gameover;
+    Sprite* credits[4];
     //Enemy sprites
     Sprite* pinkghost;
     Sprite* blanketghost;
     Sprite* pacghost;
     Sprite* blkcat;
+    Sprite* blkcatsit;
+    Sprite* backgroundMenu;
     //Sprite* pacghost01;
 
 };
@@ -230,7 +244,9 @@ class MenuItem {
 public:
     MenuItem(std::string txt, int x, int y, int w, int h);
     void draw();
-
+    void setPos(int, int);
+    int getPosX();
+    int getPosY();
 private:
     std::string text;
 
@@ -272,7 +288,9 @@ public:
 
     void draw();
 
-    void keyboardInput(int key);
+    void resize(int oldw, int neww, int oldh, int newh);
+    
+   void keyboardInput(int key);
 };
 
 /**/
@@ -320,12 +338,15 @@ public:
     float mortanaVelY;
     Vec mortanaPos;
     Vec lightPos;
-    
+    // physics for blk cat
+    float catVelY;
+    Vec catPos;
+
     //Physics variable for pink ghost
     float pinkghost;
     Vec pinkghostPos;
-    
-    
+
+
     float lightVelY;
 
     ~Global()
@@ -355,6 +376,10 @@ public:
         // pink ghost
         pinkghostPos[0] = xres / 2;
         pinkghostPos[1] = 100;
+
+        // blkcat
+        catPos[0] = xres / 2;
+        catPos[1] = 70;
     }
 };
 
@@ -406,10 +431,14 @@ void drawFlashlightPower(float); //displays the bar of battery life
 void initLightSprite(); // for light/electicity to kill ghosts
 void initLifeBarSprite(); // 
 void initGameOverSprite(); // 
+void initCreditBackground(); // 
 void renderLightSprite(); // for light/electricity to kill ghosts
 void renderLifeBarSprite(); // 
 void renderGameOverSprite(); // 
+void renderCreditBackground(); // 
 void physicsLightSprite();
+void initMenuBackground(); // main menu background
+void renderMenuBackground(); //main menu
 
 
 

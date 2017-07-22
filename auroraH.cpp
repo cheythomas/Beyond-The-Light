@@ -10,7 +10,7 @@
 //Tested main character sprite
 /**/
 //Week 5
-// Start on main menu/start up menu
+// tart on main menu/start up menu
 // Allow for collection of points
 // Allow for new game
 // Settings
@@ -28,9 +28,16 @@
 
 /*****************************************************/
 //Week 8
-// Enemy Character Sprites
-// Physics for enemy
-// Collision detection
+// Render Character Enemy Sprites
+// Physics for cat campanion
+
+/******************************************************/
+//Week 9
+// Main menu Backround
+// Connection for High Scores
+// Credits button
+// Collision detection for ghosts 
+/*****************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -105,7 +112,10 @@ posX(w / 2.0f), posY(h / 2.0f),
 delay(delayValue),
 time(),
 visible(true),
-direction(1)
+direction(1),
+repeating(true),
+reverse(false),
+angle(0)
 {
     // convert to ppm automatically
     string inputFile = "./images/" + filename;
@@ -155,10 +165,21 @@ void Sprite::physics()
 
         double timeSpan = timeDiff(&time, &current);
         if (timeSpan > delay) {
-            //next frame
-            ++currentFrame;
-            if (currentFrame >= frameCount)
-                currentFrame = 0;
+            //next frame            
+            if (!reverse) {
+                if (currentFrame + 1 < frameCount) {
+                    ++currentFrame;
+                } else if (repeating) {
+                    currentFrame = 0;
+                }
+            } else {
+                //previous frame
+                if (currentFrame - 1 >= 0) {
+                    --currentFrame;
+                } else if (repeating) {
+                    currentFrame = frameCount;
+                }
+            }
             recordTime(&time);
         }
     }
@@ -182,6 +203,13 @@ void Sprite::draw()
         float th = 1.0f / rows;
 
         glPushMatrix();
+        
+        if(angle != 0) {
+            glTranslated(cx, cy, 0);
+            glRotated(angle, 0, 0, 1);
+            glTranslated(-cx, -cy, 0);
+        }
+        
         glColor3f(1.0, 1.0, 1.0);
         glBindTexture(GL_TEXTURE_2D, glTexture);
 
@@ -273,13 +301,53 @@ int Sprite::getDirection()
     return direction;
 }
 
-void Sprite::setDireciont(int value)
+void Sprite::setDirection(int value)
 {
     direction = value;
 }
 
+int Sprite::getFrameIndex()
+{
+    return currentFrame;
+}
+
+void Sprite::setFrameIndex(int index)
+{
+    currentFrame = index;
+}
+
+bool Sprite::getRepeating()
+{
+    return repeating;
+}
+
+void Sprite::setRepeating(bool repeat)
+{
+    repeating = repeat;
+}
+
+bool Sprite::getReverse()
+{
+    return reverse;
+}
+
+void Sprite::setReverse(bool value)
+{
+    reverse = value;
+}
+
+void Sprite::setAngle(float val)
+{
+    angle = val;
+}
+
+float Sprite::getAngle(){
+    return angle;
+}
+
 void initCharacterSprites()
 {
+    //mortana walk sprite
     globalSprite.mortana = new Sprite
             ("girl1.gif", 11, 1, 11, 1.0f / 8.0f, 113, 128);
     globalSprite.mortana->setPos(gl.xres / 2, 100);
@@ -289,34 +357,59 @@ void initCharacterSprites()
     globalSprite.mortanaJump = new Sprite
             ("jumpMortana.gif", 13, 1, 13, 1.0f / 8.0f, 113, 128);
     globalSprite.mortanaJump->setPos(gl.xres / 2, 100);
+
+
+
+    //black cat walk
+    globalSprite.blkcat = new Sprite
+            ("blkscat.gif", 12, 12, 1, 1.0f / 8.0f, 50, 100);
+    globalSprite.blkcat->setPos(gl.xres / 1.5 - 100, 100);
+    globalSprite.blkcat->setDirection(0);
+    globalSprite.blkcat->setVisible(false);
+
+    //blk cat sit
+    globalSprite.blkcatsit = new Sprite
+            ("blkscats.gif", 6, 6, 1, 1.0f / 8.0f, 50, 100);
+    globalSprite.blkcatsit->setPos(gl.xres / 1.5 - 100, 100);
+    globalSprite.blkcatsit->setDirection(0);
+    globalSprite.blkcatsit->setFrameIndex(5);
+    globalSprite.blkcatsit->setRepeating(false);
+
 }
 
 void renderCharacterSprites()
 {
+    globalSprite.blkcat->draw();
+    globalSprite.blkcatsit->draw();
     globalSprite.mortana->draw();
     globalSprite.mortanaJump->draw();
-
 }
 
 void physicsCharacterSprites()
 {
-    //    static float pos = 0;
-    //    Sprite* sp = globalSprite.characterGirl;
-    //    sp->setPos(pos, 113 / 2 + 25);
-    //    pos += 50;
+
     physicsMortana();
 }
+//physics mortana and blk cat
 
 void physicsMortana()
 {
+    int catDistance = 200;
+    int catDistanceSit = 170;
     if (gl.state == STATE_GAMEPLAY) {
         Sprite* m = globalSprite.mortana;
         Sprite* mj = globalSprite.mortanaJump;
+        Sprite* cat = globalSprite.blkcat;
+        Sprite* catsit = globalSprite.blkcatsit;
         m->setVisible(false);
         mj->setVisible(false);
+        cat->setVisible(false);
+        catsit->setVisible(false);
         float cx = gl.mortanaPos[0],
                 cy = gl.mortanaPos[1],
-                velY = gl.mortanaVelY;
+                velY = gl.mortanaVelY,
+                catx = gl.catPos[0],
+                caty = gl.catPos[1];
         //printf("Pos(X: %f, Y: %f)\n", cx, cy);
         if (cy <= 100) { //If on the ground check 
             m->setVisible(true);
@@ -327,23 +420,67 @@ void physicsMortana()
                 //reset animation
                 mj->reset();
                 m->reset();
+
+                if (catsit->getFrameIndex() == 5) {
+                    catsit->setVisible(true);
+                } else {
+                    cat->setVisible(true);
+                }
+                catsit->reset();
             } else if (gl.keys[XK_Right]) {
                 // mortana walking right
                 m->physics();
                 cx += 3;
                 if (m->getDirection() == 0) {
-                    m->setDireciont(1);
-                    mj->setDireciont(1);
+                    m->setDirection(1);
+                    mj->setDirection(1);
                 }
+                if (catx > cx - catDistance) {
+                    //cat is on the right side of mortana                    
+                    catx -= 3;
+                    catsit->setVisible(true);
+                    catsit->physics();
+                } else {
+                    cat->physics();
+                    cat->setVisible(true);
+                    catx = cx - catDistance;
+                    cat->setDirection(0);
+                    catsit->setDirection(0);
+                }
+                catsit->reset();
             } else if (gl.keys[XK_Left]) {
                 // mortana walking left
                 m->setVisible(true);
                 m->physics();
                 if (m->getDirection() == 1) {
-                    m->setDireciont(0);
-                    mj->setDireciont(0);
+                    m->setDirection(0);
+                    mj->setDirection(0);
                 }
                 cx -= 3;
+                if (catx < cx + catDistance) {
+                    //cat is on the left side of mortana
+                    catx += 3;
+                    catsit->setVisible(true);
+                    catsit->physics();
+                } else {
+                    cat->physics();
+                    cat->setVisible(true);
+                    catx = cx + catDistance;
+                    cat->setDirection(1);
+                    catsit->setDirection(1);
+                }
+                //pcatsit->reset();
+            } else {
+                //let cat sit down   
+                catsit->setVisible(true);
+                catsit->physics();
+                if (catx < cx - catDistanceSit) {
+                    //Mortana is not moving but the cat is on the right side
+                    catx += 3;
+                } else if (catx > cx + catDistanceSit) {
+                    //mortana is not moving but the cat is on the left side
+                    catx -= 3;
+                }
             }
         } else {
             //in the air            
@@ -356,14 +493,25 @@ void physicsMortana()
                 cy = 100;
             }
             mj->setVisible(true);
+            if (catsit->getFrameIndex() == 5) {
+                catsit->setVisible(true);
+            } else {
+                cat->setVisible(true);
+            }
         }
 
 
         m->setPos(cx, cy);
         mj->setPos(cx, cy);
+        cat->setPos(catx, caty);
+        catsit->setPos(catx, caty);
+
         gl.mortanaPos[0] = cx;
         gl.mortanaPos[1] = cy;
         gl.mortanaVelY = velY;
+        gl.catPos [0] = catx;
+        gl.catPos [1] = caty;
+        gl.catVelY = velY;
     }
 }
 
@@ -389,11 +537,6 @@ void initEnemySprites()
             ("pacghost.gif", 9, 6, 9, 1.0f / 8.0f, 113, 128);
     globalSprite.pacghost->setPos(gl.xres / 2, 400);
 
-    //black cat
-    globalSprite.blkcat = new Sprite
-            ("catsprites.gif", 5, 3, 5, 1.0f / 8.0f, 113, 128);
-    globalSprite.blkcat->setPos(gl.xres / 2, 500);
-
 
 }
 
@@ -402,7 +545,7 @@ void renderEnemySprites()
     globalSprite.pinkghost->draw();
     globalSprite.blanketghost->draw();
     globalSprite.pacghost->draw();
-    globalSprite.blkcat->draw();
+    //globalSprite.blkcat->draw();
 
 }
 
@@ -416,21 +559,29 @@ void physicsPinkghost()
 {
     if (gl.state == STATE_GAMEPLAY) {
         Sprite* pghost = globalSprite.pinkghost;
-       
+
         pghost->setVisible(false);
-      
-        
+
+
     }
 }
-
-
-
-
-
 
 //**
 // Menu
 //**
+//background for menu
+void initMenuBackground(){
+    globalSprite.backgroundMenu = new Sprite("boy.gif", 1, 1, 1, 1, 1280, 2220);
+    globalSprite.backgroundMenu->setPos(gl.xres / 0.75, 500);
+
+    
+}
+
+void renderMenuBackground(){
+    globalSprite.backgroundMenu->draw();
+    
+}
+
 
 MenuItem::MenuItem(std::string txt, int x, int y, int w, int h)
 : text(txt), posX(x), posY(y), width(w), height(h), highlight(false)
@@ -459,12 +610,30 @@ void MenuItem::draw()
     r.center = 0;
     r.bot = posY + 15;
     r.left = posX + 50;
+   
     // hex for color white
     ggprint16(&r, 0, 0xFF0000, this->text.c_str());
 
 
     glPopMatrix();
 }
+
+int MenuItem::getPosX()
+{
+    return posX;
+}
+
+int MenuItem::getPosY()
+{
+    return posY;
+}
+
+void MenuItem::setPos(int x, int y)
+{
+    posX = x;
+    posY = y;
+}
+
 
 void Menu::draw()
 {
@@ -476,6 +645,8 @@ void Menu::draw()
         menuitem.draw();
     }
 }
+
+
 
 Menu::Menu() : menuItems(), selectedItemIndex(0)
 {
@@ -539,6 +710,18 @@ void MainMenu::draw()
     Menu::draw();
 }
 
+void MainMenu::resize(int oldw, int neww, int oldh, int newh)
+{
+    // position of main menu items
+    int xDiff = (neww - oldw)/2;
+    int yDiff = (newh - oldh)/2;
+    for(unsigned int i = 0; i < menuItems.size(); i++) {
+        int x = menuItems[i].getPosX();
+        int y = menuItems[i].getPosY();
+        menuItems[i].setPos(x + xDiff, y + yDiff);
+    }
+}
+
 //*
 //Instructions for user
 //*
@@ -546,19 +729,26 @@ void MainMenu::draw()
 void renderTutorial()
 {
     Rect r;
-
     unsigned int c = 0x00FF0000;
     r.bot = gl.yres - 20;
     r.left = 10;
     r.center = 0;
     ggprint8b(&r, 20, c, "INSTRUCTIONS");
+    ggprint8b(&r, 20, c, "Walk Mode:");
     ggprint8b(&r, 16, c, "Right arrow -> walk right");
     ggprint8b(&r, 16, c, "Left arrow  <- walk left");
     ggprint8b(&r, 16, c, "UP arrow--Jump");
-    ggprint8b(&r, 16, c, "'P/p' Game Pause/Resume ");
-    ggprint8b(&r, 16, c, "'F/f' Attack ");
+    ggprint8b(&r, 25, c, "'P/p' Game Pause/Resume ");
+    ggprint8b(&r, 18, c, "Attack Mode:");
+    ggprint8b(&r, 18, c, "W--up");
+    ggprint8b(&r, 18, c, "A/D--Forward");
+    ggprint8b(&r, 18, c, "E--upright");
+    ggprint8b(&r, 18, c, "Q--upleft");
+    
 
 }
+
+
 
 void MainMenu::keyboardInput(int key)
 {
@@ -600,10 +790,9 @@ void MainMenu::keyboardInput(int key)
             case 1:
                 gl.state = STATE_HIGHSCORE;
                 break;
-            case 2:
-                gl.state = STATE_CREDITS;
-
-                break;
+           case 2:
+               gl.state = STATE_CREDITS;
+               break;
             case 3:
                 gl.done = 1;
 
