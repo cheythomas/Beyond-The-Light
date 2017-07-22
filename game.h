@@ -133,7 +133,7 @@ struct GlobalSprite {
     Sprite* light[4];
     Sprite* life[11];
     Sprite* gameover;
-    Sprite* credits[4];
+    Sprite* credits[12];
     //Enemy sprites
     Sprite* pinkghost;
     Sprite* blanketghost;

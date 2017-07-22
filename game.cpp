@@ -9,6 +9,7 @@ int main(void)
     initCharacterSprites(); // function call inside initOpenGl
     initBackgroundSprites();
     initLightSprite();
+    initCreditBackground();
     initLifeBarSprite();
     initEnemySprites();
     initGameOverSprite();
@@ -288,9 +289,8 @@ void render(void)
     //Clear the screen
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    renderMenuBackground();
     // Menu and menu item must open first then the rest will be rendered
-    if (gl.state != STATE_STARTUP) {
+    if (gl.state == STATE_GAMEPLAY) {
         glPushMatrix();
         //renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
@@ -311,9 +311,11 @@ void render(void)
 
 
         glPopMatrix();
-    }
-    if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {
+    } else if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {
+    	renderMenuBackground();
         gl.mainMenu.draw();
-    }
+    } else if(gl.state == STATE_CREDITS) {
+   	renderCreditBackground();
+	}
 }
 

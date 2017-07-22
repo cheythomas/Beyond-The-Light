@@ -430,16 +430,23 @@ class Credits: public Sprite {
 
 void initCreditBackground()
 {
-	globalSprite.credits[0] = new Sprite("creditTitle.png", 1, 1, 1, 1, 148, 203);
-	globalSprite.credits[1] = new Sprite("creditKaren.png", 1, 1, 1, 1, 148, 203);
-	globalSprite.credits[2] = new Sprite("creditAurora.png", 1, 1, 1, 1, 148, 203);
-	globalSprite.credits[3] = new Sprite("creditCheyenne.png", 1, 1, 1, 1, 148, 203);
+	globalSprite.credits[0] = new Sprite("creditTitle2.png", 1, 1, 1, 1, 140, 700);
+	globalSprite.credits[1] = new Sprite("creditKaren5.png", 1, 1, 1, 1, 50, 250);
+	globalSprite.credits[2] = new Sprite("creditKaren.png", 1, 1, 1, 1, 40, 200);
+	globalSprite.credits[3] = new Sprite("creditAurora.png", 1, 1, 1, 1, 50, 250);
+	globalSprite.credits[4] = new Sprite("creditAurora1.png", 1, 1, 1, 1, 40, 200);
+	globalSprite.credits[5] = new Sprite("creditCheyenne2.png", 1, 1, 1, 1, 50, 200);
+	globalSprite.credits[6] = new Sprite("creditAurora1.png", 1, 1, 1, 1, 40, 150);
+	globalSprite.credits[7] = new Sprite("creditThanks.png", 1, 1, 1, 1, 50, 200);
+	globalSprite.credits[8] = new Sprite("creditGordon.png", 1, 1, 1, 1, 40, 150);
+	globalSprite.credits[9] = new Sprite("credit3350.png", 1, 1, 1, 1, 40, 150);
+	globalSprite.credits[10] = new Sprite("creditParents2.png", 1, 1, 1, 1, 40, 150);
+	globalSprite.credits[11] = new Sprite("creditCats.png", 1, 1, 1, 1, 40, 150);
 }
 
 void renderCreditBackground()
 {
 	if (gl.state == STATE_CREDITS) {
-		if (gl.keys[XK_Return]) {
 		// black background  
 		float h, w;
 		h = gl.yres;
@@ -457,12 +464,11 @@ void renderCreditBackground()
 
 		// Font
 		int x = gl.xres/2; //800 
-		int y = gl.yres-30;  //600
-		for (int i = 0; i < 4; i++) {
+		int y = gl.yres-45;  //600
+		for (int i = 0; i < 12; i++) {
 			globalSprite.credits[i]->draw();
-			globalSprite.life[0]->setPos(-gl.camera[0] + x, y);
-			y -= 100;
+			globalSprite.credits[i]->setPos(x, y);
+			y -= 50;
 		}
-	}
 	}
 }
