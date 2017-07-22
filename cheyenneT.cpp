@@ -192,67 +192,67 @@ void renderLifeBarSprite()
 	int y = gl.yres-20;  //600
 	
 	// full to empty
-	if (gl.keyCount == 0 || 21 > gl.keyCount) {
+	if (gl.keyCount == 0 || 51 > gl.keyCount) {
 		globalSprite.life[0]->draw();
 		globalSprite.life[0]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 0;
 	}
 
-	if (gl.keyCount > 30) {
+	if (gl.keyCount > 50) {
 		globalSprite.life[1]->draw();
 		globalSprite.life[1]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 1;
 	}
 	
-	if (gl.keyCount > 60) {
+	if (gl.keyCount > 100) {
 		globalSprite.life[2]->draw();
 		globalSprite.life[2]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 2;
 	}
 	
-	if (gl.keyCount > 90) {
+	if (gl.keyCount > 250) {
 		globalSprite.life[3]->draw();
 		globalSprite.life[3]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 3;
 	}
 	
-	if (gl.keyCount > 120) {
+	if (gl.keyCount > 300) {
 		globalSprite.life[4]->draw();
 		globalSprite.life[4]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 4;
 	}
 	
-	if (gl.keyCount > 150) {
+	if (gl.keyCount > 350) {
 		globalSprite.life[5]->draw();
 		globalSprite.life[5]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 5;
 	}
 	
-	if (gl.keyCount > 180) {
+	if (gl.keyCount > 400) {
 		globalSprite.life[6]->draw();
 		globalSprite.life[6]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 6;
 	}
 	
-	if (gl.keyCount > 210) {
+	if (gl.keyCount > 450) {
 		globalSprite.life[7]->draw();
 		globalSprite.life[7]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 7;
 	}
 	
-	if (gl.keyCount > 240) {
+	if (gl.keyCount > 500) {
 		globalSprite.life[8]->draw();
 		globalSprite.life[8]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 8;
 	}
 	
-	if (gl.keyCount > 270) {
+	if (gl.keyCount > 550) {
 		globalSprite.life[9]->draw();
 		globalSprite.life[9]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 9;
 	}
 	
-	if (gl.keyCount == 300 || gl.keyCount > 300) { 
+	if (gl.keyCount == 600 || gl.keyCount > 600) { 
 		globalSprite.life[10]->draw();
 		globalSprite.life[10]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 10;
@@ -268,25 +268,6 @@ class GameOver : public Sprite {
 
 	void draw() {
 		Sprite::draw();
-		 
-		float cx = gl.xres/2.0;
-		float cy = gl.yres/2.0;
-		float w = 200*.5;
-		float h = 200.0;
-
-		glPushMatrix();
-		glColor3f(1.0, 1.0, 1.0);
-		glEnable(GL_ALPHA_TEST);
-		glAlphaFunc(GL_GREATER, 0.0f);
-		glColor4ub(255, 255, 255, 255);
-		glBegin(GL_QUADS);
-			glVertex2i(cx - w, cy - h);
-			glVertex2i(cx - w, cy + w);
-			glVertex2i(cx + w, cy + h);
-			glVertex2i(cx + w, cy - h);
-		glEnd();
-		glPopMatrix();
-		
 	}
 };
 
@@ -433,5 +414,55 @@ void physicsLightSprite()
 	if(keyPressed) {
 		gl.keyCount = gl.keyCount + 1;
 		printf("keyCount: %d\n", gl.keyCount);
+	}
+}
+
+class Credits: public Sprite {
+	
+	public:
+	Credits (const std::string & filename, float height, float width) :
+		Sprite(filename, 1, 1, 1, 1, height, width) { }
+
+	void draw() {
+		Sprite::draw();
+	}
+};
+
+void initCreditBackground()
+{
+	globalSprite.credits[0] = new Sprite("creditTitle.png", 1, 1, 1, 1, 148, 203);
+	globalSprite.credits[1] = new Sprite("creditKaren.png", 1, 1, 1, 1, 148, 203);
+	globalSprite.credits[2] = new Sprite("creditAurora.png", 1, 1, 1, 1, 148, 203);
+	globalSprite.credits[3] = new Sprite("creditCheyenne.png", 1, 1, 1, 1, 148, 203);
+}
+
+void renderCreditBackground()
+{
+	if (gl.state == STATE_CREDITS) {
+		if (gl.keys[XK_Return]) {
+		// black background  
+		float h, w;
+		h = gl.yres;
+		w = gl.xres;
+		glPushMatrix();
+		glColor3f(0.0, 0.0, 0.0);
+		glTranslated(gl.xres/2, gl.yres/2, 0);
+		glBegin(GL_QUADS); 
+			glVertex2i(-w, -h);
+			glVertex2i(-w,  h);
+			glVertex2i( w,  h);
+			glVertex2i( w, -h);
+		glEnd();
+		glPopMatrix();
+
+		// Font
+		int x = gl.xres/2; //800 
+		int y = gl.yres-30;  //600
+		for (int i = 0; i < 4; i++) {
+			globalSprite.credits[i]->draw();
+			globalSprite.life[0]->setPos(-gl.camera[0] + x, y);
+			y -= 100;
+		}
+	}
 	}
 }

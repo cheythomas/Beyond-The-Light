@@ -206,6 +206,7 @@ void checkKeys(XEvent *e)
         //Always checked because it opens the menu
         //it checks if main menu is open
         gl.mainMenu.keyboardInput(key);
+		//renderCreditSprite.keyboardInput(key);
     }
 
     if (shift) {
@@ -307,7 +308,6 @@ void render(void)
         renderEnemySprites();
         gl.batt.gameOver();
         renderGameOverSprite();
-
 
 
         glPopMatrix();

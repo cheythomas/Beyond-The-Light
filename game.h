@@ -133,6 +133,7 @@ struct GlobalSprite {
     Sprite* light[4];
     Sprite* life[11];
     Sprite* gameover;
+    Sprite* credits[4];
     //Enemy sprites
     Sprite* pinkghost;
     Sprite* blanketghost;
@@ -429,9 +430,11 @@ void drawFlashlightPower(float); //displays the bar of battery life
 void initLightSprite(); // for light/electicity to kill ghosts
 void initLifeBarSprite(); // 
 void initGameOverSprite(); // 
+void initCreditBackground(); // 
 void renderLightSprite(); // for light/electricity to kill ghosts
 void renderLifeBarSprite(); // 
 void renderGameOverSprite(); // 
+void renderCreditBackground(); // 
 void physicsLightSprite();
 void initMenuBackground(); // main menu background
 void renderMenuBackground(); //main menu
