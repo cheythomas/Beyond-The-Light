@@ -316,6 +316,6 @@ void render(void)
         gl.mainMenu.draw();
     } else if(gl.state == STATE_CREDITS) {
    	renderCreditBackground();
-	}
+    }
 }
 

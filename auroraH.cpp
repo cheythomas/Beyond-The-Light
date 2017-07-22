@@ -571,7 +571,7 @@ void physicsPinkghost()
 //**
 //background for menu
 void initMenuBackground(){
-    globalSprite.backgroundMenu = new Sprite("boy.gif", 1, 1, 1, 1, 1380, 2320);
+    globalSprite.backgroundMenu = new Sprite("boy.gif", 1, 1, 1, 1, 1280, 2220);
     globalSprite.backgroundMenu->setPos(gl.xres / 0.75, 500);
 
     
