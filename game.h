@@ -65,6 +65,7 @@ inline void recordTime(struct timespec *t)
  * Sprite animation class
  */
 class Sprite {
+protected:
     GLuint glTexture;
     int frameCount;
     int rows;
@@ -100,7 +101,7 @@ public:
     double getDelay();
     float getPosY();
     float getPosX();
-    void draw();
+    virtual void draw();
     void physics();
     void setVisible(bool value);
     bool getVisible();
