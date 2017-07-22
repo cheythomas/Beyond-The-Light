@@ -10,7 +10,7 @@
 //Tested main character sprite
 /**/
 //Week 5
-// Start on main menu/start up menu
+// tart on main menu/start up menu
 // Allow for collection of points
 // Allow for new game
 // Settings
@@ -790,10 +790,10 @@ void MainMenu::keyboardInput(int key)
             case 1:
                 gl.state = STATE_HIGHSCORE;
                 break;
-           // case 2:
-                //gl.state = STATE_CREDITS;
-
-               // break;
+           case 2:
+               // gl.state = STATE_CREDITS;
+               renderCreditBackground();
+               break;
             case 3:
                 gl.done = 1;
 

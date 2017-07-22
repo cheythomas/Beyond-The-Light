@@ -51,7 +51,7 @@ void cleanupXWindows(void)
     XDestroyWindow(gl.dpy, gl.win);
     XCloseDisplay(gl.dpy);
 }
-
+//hello
 void setTitle(void)
 {
     //Set the window title bar.
