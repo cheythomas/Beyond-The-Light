@@ -3,11 +3,11 @@
 //Week 4
 //On this program, I am in charge of the background.
 //===============================================================
-//Week 7
+//Week 8
 //Changed made: Added code for tiles, still need to edit
 //
 //===============================================================
-//Week 8
+//Week 9
 //Changes made: Fixed parallax scrolling
 //              Added the ground by rendering it
 //              Tiles are currently being fixed
