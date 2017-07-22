@@ -237,6 +237,7 @@ public:
 // class for sub menu items
 //forward declare menu
 class Menu;
+class MainMenu;
 
 class MenuItem {
     //Menu is friend of MenuItem
@@ -247,6 +248,8 @@ public:
     void setPos(int, int);
     int getPosX();
     int getPosY();
+    std::string getText();
+    void setText(std::string);
 private:
     std::string text;
 

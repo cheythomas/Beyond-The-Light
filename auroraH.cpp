@@ -240,6 +240,7 @@ void Sprite::draw()
         }
 
         glEnd();
+        glBindTexture(GL_TEXTURE_2D, 0);
         glPopMatrix();
     }
 }
@@ -602,7 +603,7 @@ void MenuItem::draw()
     glRectf(
             posX,
             posY,
-            posX + width,
+            posX + width ,
             posY + height
             );
     // rendering text
@@ -634,6 +635,15 @@ void MenuItem::setPos(int x, int y)
     posY = y;
 }
 
+std::string MenuItem::getText()
+{
+    return text;
+}
+
+void MenuItem::setText(std::string value)
+{
+    text = value;
+}
 
 void Menu::draw()
 {
@@ -699,13 +709,16 @@ MainMenu::MainMenu()
     add(MenuItem("High Scores", 300, 330, 200, 60));
     add(MenuItem("Credits", 300, 260, 200, 60));
     add(MenuItem("Exit", 300, 190, 200, 60));
+   // add(MenuItem("Game Paused", 300, 150, 200, 60));
+    
 }
 
 void MainMenu::draw()
 {
     if (gl.state == STATE_GAMEPAUSE) {
-        MenuItem menuitem("Game Paused", 300, 450, 200, 60);
-        menuitem.draw();
+        menuItems[0].setText("Resume");
+    } else {
+        menuItems[0].setText("Play");
     }
     Menu::draw();
 }
@@ -720,6 +733,7 @@ void MainMenu::resize(int oldw, int neww, int oldh, int newh)
         int y = menuItems[i].getPosY();
         menuItems[i].setPos(x + xDiff, y + yDiff);
     }
+   
 }
 
 //*
