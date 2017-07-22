@@ -29,11 +29,12 @@
 /*****************************************************/
 //Week 8
 // Render Character Enemy Sprites
-// Physics for cat campanion
+// Physics for cat companion
 
 /******************************************************/
 //Week 9
-// Main menu Backround
+// Main menu Background
+// Menu item and user tutorial
 // Connection for High Scores
 // Credits button
 // Collision detection for ghosts 
@@ -745,7 +746,7 @@ void renderTutorial()
     Rect r;
     unsigned int c = 0x00FF0000;
     r.bot = gl.yres - 20;
-    r.left = 10;
+    r.left = -gl.camera[0] + 10;
     r.center = 0;
     ggprint8b(&r, 20, c, "INSTRUCTIONS");
     ggprint8b(&r, 20, c, "Walk Mode:");

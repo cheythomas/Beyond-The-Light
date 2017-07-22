@@ -292,7 +292,7 @@ void render(void)
     // Menu and menu item must open first then the rest will be rendered
     if (gl.state == STATE_GAMEPLAY) {
         glPushMatrix();
-        //renderTutorial();
+       // renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
 
