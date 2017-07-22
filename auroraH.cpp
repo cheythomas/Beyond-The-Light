@@ -791,8 +791,7 @@ void MainMenu::keyboardInput(int key)
                 gl.state = STATE_HIGHSCORE;
                 break;
            case 2:
-               // gl.state = STATE_CREDITS;
-               renderCreditBackground();
+               gl.state = STATE_CREDITS;
                break;
             case 3:
                 gl.done = 1;
