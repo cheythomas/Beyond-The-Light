@@ -289,6 +289,7 @@ void render(void)
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     renderMenuBackground();
+    //renderCreditBackround();
     // Menu and menu item must open first then the rest will be rendered
     if (gl.state != STATE_STARTUP) {
         glPushMatrix();
