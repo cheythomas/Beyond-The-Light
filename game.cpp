@@ -267,7 +267,7 @@ void physics(void)
     //   physicsCharacterSprites();
     if (gl.state != STATE_STARTUP && gl.state != STATE_GAMEPAUSE) {
         physicsCharacterSprites();
-        //physicsEnemySprites(); //*
+        physicsEnemySprites(); //*
         gl.camera[0] = -globalSprite.mortana->getPosX() + gl.xres / 2;
         physicsLightSprite();
         //When game is not paused, sprite physics must be updated

@@ -56,6 +56,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <complex>
 #include "game.h"
 
 // Facilitating sprite animations for team members
@@ -85,7 +86,6 @@ unsigned char *buildAlphaData(Ppmimage *img)
         *(ptr + 1) = b;
         *(ptr + 2) = c;
         *(ptr + 3) = 1;
-        //float distance = (a-t0) + (b-t1)
         if (a == t0 && b == t1 && c == t2)
             *(ptr + 3) = 0;
         //-----------------------------------------------
@@ -391,6 +391,7 @@ void physicsCharacterSprites()
 {
 
     physicsMortana();
+   
 }
 //physics mortana and blk cat
 
@@ -530,13 +531,13 @@ void initEnemySprites()
     globalSprite.pinkghost->setPos(gl.xres / 2, 200);
 
     //blanket ghost
-    globalSprite.blanketghost = new Sprite
-            ("blanketghost.gif", 3, 3, 3, 1.0f / 8.0f, 113, 128);
-    globalSprite.blanketghost->setPos(gl.xres / 2, 300);
+    globalSprite.whiteghost = new Sprite
+            ("blanketghost.gif", 3, 3, 3, 1.0f / 8.0f, 123, 138);
+    globalSprite.whiteghost->setPos(gl.xres / 2, 300);
 
     // White pac ghost
     globalSprite.pacghost = new Sprite
-            ("pacghost.gif", 9, 6, 9, 1.0f / 8.0f, 113, 128);
+            ("pacghost.gif", 9, 6, 9, 1.0f / 8.0f, 130, 150);
     globalSprite.pacghost->setPos(gl.xres / 2, 400);
 
 
@@ -545,7 +546,7 @@ void initEnemySprites()
 void renderEnemySprites()
 {
     globalSprite.pinkghost->draw();
-    globalSprite.blanketghost->draw();
+    globalSprite.whiteghost->draw();
     globalSprite.pacghost->draw();
     //globalSprite.blkcat->draw();
 
@@ -555,6 +556,8 @@ void physicsEnemySprites()
 {
 
     physicsPinkghost();
+    physicsWhiteghost();
+    physicsPacghost();
 }
 
 void physicsPinkghost()
@@ -563,11 +566,36 @@ void physicsPinkghost()
         Sprite* pghost = globalSprite.pinkghost;
 
         pghost->setVisible(false);
+        float cx1 = gl.pinkghostPos[0],
+                cy1 =gl.pinkghostPos[1],
+                velY = gl.pinkghostVelY;
+        if (cy1 <= 200) {
+            pghost->setVisible(true);
+            if (gl.keys[XK_Left || XK_Right])
+                velY += 200;
+            cy1 += 1;
+            pghost->reset();
+            
+        } else if (gl.keys[XK_Left || XK_Right || XK_Up])
+            pghost->physics();
+        cx1 +=3;
+        
+        pghost->setPos(cx1, cy1);
+       
 
-
+        gl.pinkghostPos[0] = cx1;
+        gl.pinkghostPos[1] = cy1;
+        gl.pinkghostVelY = velY;
+        
     }
 }
 
+void physicsWhiteghost(){
+    
+}
+void physicsPacghost(){
+    
+}
 //**
 // Menu
 //**
@@ -706,6 +734,8 @@ void Menu::add(MenuItem item)
 MainMenu::MainMenu()
 {
     ////add all menu items    
+
+
     add(MenuItem("Play", 300, 400, 200, 60));
     add(MenuItem("High Scores", 300, 330, 200, 60));
     add(MenuItem("Credits", 300, 260, 200, 60));

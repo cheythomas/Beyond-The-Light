@@ -19,6 +19,7 @@
 #include "log.h"
 #include "ppm.h"
 #include "fonts.h"
+#include "vector"
 
 
 //macros
@@ -137,12 +138,12 @@ struct GlobalSprite {
     Sprite* credits[12];
     //Enemy sprites
     Sprite* pinkghost;
-    Sprite* blanketghost;
-    Sprite* pacghost;
+    Sprite* whiteghost;
+   // Sprite* pacghost;
     Sprite* blkcat;
     Sprite* blkcatsit;
     Sprite* backgroundMenu;
-    //Sprite* pacghost01;
+    Sprite* pacghost;
 
 };
 
@@ -296,7 +297,9 @@ public:
    void keyboardInput(int key);
 };
 
-/**/
+/*
+ Enums for Menu
+ */
 enum State {
     STATE_STARTUP,
     STATE_GAMEPLAY,
@@ -345,9 +348,19 @@ public:
     float catVelY;
     Vec catPos;
 
-    //Physics variable for pink ghost
+    //Physics variable ghosts
     float pinkghost;
     Vec pinkghostPos;
+    float pinkghostVelY;
+    float whiteghost;
+    Vec whiteghostPos;
+    float whiteghostVelY;
+    float pacghost;
+    Vec pacghostPos;
+    float pacghostVelY;
+   
+    
+    
 
 
     float lightVelY;
@@ -379,6 +392,10 @@ public:
         // pink ghost
         pinkghostPos[0] = xres / 2;
         pinkghostPos[1] = 100;
+        whiteghostPos[0] = xres/2;
+        whiteghostPos[1] = 100;
+        pacghostPos[0] = xres / 2;
+        pacghostPos[1] = 100;
 
         // blkcat
         catPos[0] = xres / 2;
@@ -403,16 +420,38 @@ void initBackgroundSprites();
 void physicsMortana();
 // enemy
 void physicsPinkghost();
+void physicsWhiteghost();
+void physicsPacghost();
 //instructions for user
 void renderTutorial();
 unsigned char *buildAlphaData(Ppmimage *img);
 
-//*
-// ENEMY
-//*
+/*
+ ENEMY
+*/
 void initEnemySprites();
 void physicsEnemySprites();
 void renderEnemySprites();
+
+/*
+ ENEMY COLLISION
+ */
+class Vec2 {
+    
+//public:
+    //enemy {
+        //float coord[3];
+        //struct{
+           // float x;
+           // float y;
+            //float z;
+      //  }
+  //  }
+};
+//struct Vec3 {
+//Vec;
+//Vec (float x, float y, float z);
+//Vec x(0), y(0), z(0);
 
 
 //All function and class prototypes go here
