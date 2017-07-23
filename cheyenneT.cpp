@@ -438,7 +438,7 @@ void initCreditBackground()
 	globalSprite.credits[5] = new Sprite("creditCheyenne2.png", 1, 1, 1, 1, 50, 200);
 	globalSprite.credits[6] = new Sprite("creditAurora1.png", 1, 1, 1, 1, 40, 150);
 	globalSprite.credits[7] = new Sprite("creditThanks.png", 1, 1, 1, 1, 50, 200);
-	globalSprite.credits[8] = new Sprite("creditGordon.png", 1, 1, 1, 1, 40, 150);
+	globalSprite.credits[8] = new Sprite("creditG.png", 1, 1, 1, 1, 40, 150);
 	globalSprite.credits[9] = new Sprite("credit3350.png", 1, 1, 1, 1, 40, 150);
 	globalSprite.credits[10] = new Sprite("creditParents2.png", 1, 1, 1, 1, 40, 150);
 	globalSprite.credits[11] = new Sprite("creditCats.png", 1, 1, 1, 1, 40, 150);
@@ -465,7 +465,7 @@ void renderCreditBackground()
 		// Font
 		int x = gl.xres/2; //800 
 		int y = gl.yres-45;  //600
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < 8; i++) {
 			globalSprite.credits[i]->draw();
 			globalSprite.credits[i]->setPos(x, y);
 			y -= 50;
