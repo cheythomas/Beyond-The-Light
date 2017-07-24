@@ -281,7 +281,7 @@ void renderGameOverSprite()
 	int x = gl.xres-370; //800 
 	int y = gl.yres-300;  //600
 
-	if (gl.keepTrack == 10e9) {
+	if (gl.keepTrack == 10) {
 		globalSprite.gameover->draw();
 		globalSprite.gameover->setPos(-gl.camera[0] + x, y);
 	}
@@ -432,7 +432,7 @@ void initCreditBackground()
 {
 	globalSprite.credits[0] = new Sprite("creditTitle2.png", 1, 1, 1, 1, 140, 700);
 	globalSprite.credits[1] = new Sprite("creditKaren5.png", 1, 1, 1, 1, 50, 250);
-	globalSprite.credits[2] = new Sprite("creditKaren.png", 1, 1, 1, 1, 40, 200);
+	globalSprite.credits[2] = new Sprite("creditKaren.png", 1, 1, 1, 1, 40, 230);
 	globalSprite.credits[3] = new Sprite("creditAurora.png", 1, 1, 1, 1, 50, 250);
 	globalSprite.credits[4] = new Sprite("creditAurora1.png", 1, 1, 1, 1, 40, 200);
 	globalSprite.credits[5] = new Sprite("creditCheyenne2.png", 1, 1, 1, 1, 50, 200);
@@ -465,10 +465,18 @@ void renderCreditBackground()
 		// Font
 		int x = gl.xres/2; //800 
 		int y = gl.yres-45;  //600
-		for (int i = 0; i < 8; i++) {
+		globalSprite.credits[0]->draw();
+		globalSprite.credits[0]->setPos(x, y);
+		x = gl.xres/2; //800 
+		y = gl.yres-145;  //600
+		for (int i = 1; i < 8; i++) {
 			globalSprite.credits[i]->draw();
 			globalSprite.credits[i]->setPos(x, y);
-			y -= 50;
+			if (i%2 == 1) {
+				y -= 35;
+			} else {
+				y -= 70; 
+			}
 		}
 	}
 }
