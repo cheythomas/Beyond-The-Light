@@ -53,6 +53,7 @@ void cleanupXWindows(void)
     XCloseDisplay(gl.dpy);
 }
 //hello
+
 void setTitle(void)
 {
     //Set the window title bar.
@@ -207,7 +208,7 @@ void checkKeys(XEvent *e)
         //Always checked because it opens the menu
         //it checks if main menu is open
         gl.mainMenu.keyboardInput(key);
-		//renderCreditSprite.keyboardInput(key);
+        //renderCreditSprite.keyboardInput(key);
     }
 
     if (shift) {
@@ -267,7 +268,7 @@ void physics(void)
     //   physicsCharacterSprites();
     if (gl.state != STATE_STARTUP && gl.state != STATE_GAMEPAUSE) {
         physicsCharacterSprites();
-        physicsEnemySprites(); //*
+        physicsGhosts();
         gl.camera[0] = -globalSprite.mortana->getPosX() + gl.xres / 2;
         physicsLightSprite();
         //When game is not paused, sprite physics must be updated
@@ -292,7 +293,7 @@ void render(void)
     // Menu and menu item must open first then the rest will be rendered
     if (gl.state == STATE_GAMEPLAY) {
         glPushMatrix();
-       // renderTutorial();
+        // renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
 
@@ -300,22 +301,23 @@ void render(void)
         gl.batt.chargeObject();
 
         gl.batt.grabCharge();
-        renderLightSprite();
+        //renderLightSprite();
         renderLifeBarSprite();
         gl.lev.renderBackground();
         gl.batt.chargeObject();
         renderCharacterSprites();
         renderEnemySprites();
+        renderLightSprite();
         gl.batt.gameOver();
         renderGameOverSprite();
 
 
         glPopMatrix();
     } else if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {
-    	renderMenuBackground();
+        renderMenuBackground();
         gl.mainMenu.draw();
-    } else if(gl.state == STATE_CREDITS) {
-   	renderCreditBackground();
+    } else if (gl.state == STATE_CREDITS) {
+        renderCreditBackground();
     }
 }
 

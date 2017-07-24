@@ -204,13 +204,13 @@ void Sprite::draw()
         float th = 1.0f / rows;
 
         glPushMatrix();
-        
-        if(angle != 0) {
+
+        if (angle != 0) {
             glTranslated(cx, cy, 0);
             glRotated(angle, 0, 0, 1);
             glTranslated(-cx, -cy, 0);
         }
-        
+
         glColor3f(1.0, 1.0, 1.0);
         glBindTexture(GL_TEXTURE_2D, glTexture);
 
@@ -343,7 +343,8 @@ void Sprite::setAngle(float val)
     angle = val;
 }
 
-float Sprite::getAngle(){
+float Sprite::getAngle()
+{
     return angle;
 }
 
@@ -377,6 +378,11 @@ void initCharacterSprites()
     globalSprite.blkcatsit->setFrameIndex(5);
     globalSprite.blkcatsit->setRepeating(false);
 
+    //add enemy characters
+    gl.enemies.push_back(Enemy(gl.xres / 2, 100, 0));
+    gl.enemies.push_back(Enemy(gl.xres / 2, 200, 1));
+    gl.enemies.push_back(Enemy(gl.xres / 2, 300, 2));
+
 }
 
 void renderCharacterSprites()
@@ -391,7 +397,7 @@ void physicsCharacterSprites()
 {
 
     physicsMortana();
-   
+
 }
 //physics mortana and blk cat
 
@@ -527,17 +533,17 @@ void initEnemySprites()
 {
     //Pink ghost
     globalSprite.pinkghost = new Sprite
-            ("ghostPink.gif", 4, 1, 4, 1.0f / 8.0f, 113, 128);
+            ("ghostPink.gif", 4, 1, 4, 1.0f / 4.0f, 113, 128);
     globalSprite.pinkghost->setPos(gl.xres / 2, 200);
 
     //blanket ghost
     globalSprite.whiteghost = new Sprite
-            ("blanketghost.gif", 3, 3, 3, 1.0f / 8.0f, 123, 138);
+            ("blanketghost.gif", 9, 3, 3, 1.0f / 2.0f, 123, 138);
     globalSprite.whiteghost->setPos(gl.xres / 2, 300);
 
     // White pac ghost
     globalSprite.pacghost = new Sprite
-            ("pacghost.gif", 9, 6, 9, 1.0f / 8.0f, 130, 150);
+            ("pacghost.gif", 9, 6, 9, 1.0f / 4.0f, 130, 150);
     globalSprite.pacghost->setPos(gl.xres / 2, 400);
 
 
@@ -545,73 +551,118 @@ void initEnemySprites()
 
 void renderEnemySprites()
 {
-    globalSprite.pinkghost->draw();
-    globalSprite.whiteghost->draw();
-    globalSprite.pacghost->draw();
-    //globalSprite.blkcat->draw();
-
-}
-
-void physicsEnemySprites()
-{
-
-    physicsPinkghost();
-    physicsWhiteghost();
-    physicsPacghost();
-}
-
-void physicsPinkghost()
-{
-    if (gl.state == STATE_GAMEPLAY) {
-        Sprite* pghost = globalSprite.pinkghost;
-
-        pghost->setVisible(false);
-        float cx1 = gl.pinkghostPos[0],
-                cy1 =gl.pinkghostPos[1],
-                velY = gl.pinkghostVelY;
-        if (cy1 <= 200) {
-            pghost->setVisible(true);
-            if (gl.keys[XK_Left || XK_Right])
-                velY += 200;
-            cy1 += 1;
-            pghost->reset();
-            
-        } else if (gl.keys[XK_Left || XK_Right || XK_Up])
-            pghost->physics();
-        cx1 +=3;
-        
-        pghost->setPos(cx1, cy1);
-       
-
-        gl.pinkghostPos[0] = cx1;
-        gl.pinkghostPos[1] = cy1;
-        gl.pinkghostVelY = velY;
-        
+    for (unsigned int i = 0; i < gl.enemies.size(); i++) {
+        Enemy& en = gl.enemies[i];
+        Sprite* s = NULL;
+        switch (en.spriteId) {
+        case 0:
+            s = globalSprite.pinkghost;
+            break;
+        case 1:
+            s = globalSprite.pacghost;
+            break;
+        case 2:
+            s = globalSprite.whiteghost;
+            break;
+        default:
+            printf("Invalid sprite id\n");
+            break;
+        }
+        s->setFrameIndex(en.frameIndex);
+        s->setPos(en.x, en.y);
+        s->draw();
     }
 }
 
-void physicsWhiteghost(){
-    
+void physicsPinkGhost(Enemy& enemy)
+{
+    Sprite* pghost = globalSprite.pinkghost;
+    pghost->setFrameIndex(enemy.frameIndex);
+    pghost->physics();
+    float cx1 = enemy.x,
+            cy1 = enemy.y;
+
+
+    cx1 += 1;
+
+    enemy.frameIndex = pghost->getFrameIndex();
+    enemy.x = cx1;
+    enemy.y = cy1;
+
 }
-void physicsPacghost(){
-    
+
+void physicsWhiteGhost(Enemy& enemy)
+{
+
+    Sprite* gs = globalSprite.whiteghost;
+    gs->setFrameIndex(enemy.frameIndex);
+    gs->physics();
+    float cx2 = enemy.x,
+            cy2 = enemy.y;
+
+
+
+    cx2 += 1;
+
+    enemy.frameIndex = gs->getFrameIndex();
+    enemy.x = cx2;
+    enemy.y = cy2;
+
 }
+
+void physicsPacGhost(Enemy& enemy)
+{
+    Sprite* gs = globalSprite.pacghost;
+    gs->setFrameIndex(enemy.frameIndex);
+    gs->physics();
+    float cx2 = enemy.x,
+            cy2 = enemy.y;
+
+    cx2 += 1;
+    enemy.frameIndex = gs->getFrameIndex();
+    enemy.x = cx2;
+    enemy.y = cy2;
+}
+
+void physicsGhosts()
+{
+    for (unsigned int i = 0; i < gl.enemies.size(); i++) {
+        Enemy& en = gl.enemies[i];
+        switch (en.spriteId) {
+        case 0:
+            physicsPinkGhost(en);
+            break;
+        case 1:
+            physicsPacGhost(en);
+            break;
+        case 2:
+            physicsWhiteGhost(en);
+            break;
+        default:
+            printf("Invalid sprite id\n");
+            break;
+        }
+    }
+}
+
 //**
 // Menu
 //**
 //background for menu
-void initMenuBackground(){
+
+void initMenuBackground()
+{
     globalSprite.backgroundMenu = new Sprite("boy.gif", 1, 1, 1, 1, 1280, 2220);
     globalSprite.backgroundMenu->setPos(gl.xres / 0.75, 500);
 
-    
+
 }
 
-void renderMenuBackground(){
+void renderMenuBackground()
+{
     globalSprite.backgroundMenu->draw();
-    
-}
 
+}
 
 MenuItem::MenuItem(std::string txt, int x, int y, int w, int h)
 : text(txt), posX(x), posY(y), width(w), height(h), highlight(false)
@@ -632,7 +683,7 @@ void MenuItem::draw()
     glRectf(
             posX,
             posY,
-            posX + width ,
+            posX + width,
             posY + height
             );
     // rendering text
@@ -640,7 +691,7 @@ void MenuItem::draw()
     r.center = 0;
     r.bot = posY + 15;
     r.left = posX + 50;
-   
+
     // hex for color white
     ggprint16(&r, 0, 0xFF0000, this->text.c_str());
 
@@ -684,8 +735,6 @@ void Menu::draw()
         menuitem.draw();
     }
 }
-
-
 
 Menu::Menu() : menuItems(), selectedItemIndex(0)
 {
@@ -740,8 +789,8 @@ MainMenu::MainMenu()
     add(MenuItem("High Scores", 300, 330, 200, 60));
     add(MenuItem("Credits", 300, 260, 200, 60));
     add(MenuItem("Exit", 300, 190, 200, 60));
-   // add(MenuItem("Game Paused", 300, 150, 200, 60));
-    
+    // add(MenuItem("Game Paused", 300, 150, 200, 60));
+
 }
 
 void MainMenu::draw()
@@ -757,14 +806,14 @@ void MainMenu::draw()
 void MainMenu::resize(int oldw, int neww, int oldh, int newh)
 {
     // position of main menu items
-    int xDiff = (neww - oldw)/2;
-    int yDiff = (newh - oldh)/2;
-    for(unsigned int i = 0; i < menuItems.size(); i++) {
+    int xDiff = (neww - oldw) / 2;
+    int yDiff = (newh - oldh) / 2;
+    for (unsigned int i = 0; i < menuItems.size(); i++) {
         int x = menuItems[i].getPosX();
         int y = menuItems[i].getPosY();
         menuItems[i].setPos(x + xDiff, y + yDiff);
     }
-   
+
 }
 
 //*
@@ -789,11 +838,9 @@ void renderTutorial()
     ggprint8b(&r, 18, c, "A/D--Forward");
     ggprint8b(&r, 18, c, "E--upright");
     ggprint8b(&r, 18, c, "Q--upleft");
-    
+
 
 }
-
-
 
 void MainMenu::keyboardInput(int key)
 {
@@ -835,9 +882,9 @@ void MainMenu::keyboardInput(int key)
             case 1:
                 gl.state = STATE_HIGHSCORE;
                 break;
-           case 2:
-               gl.state = STATE_CREDITS;
-               break;
+            case 2:
+                gl.state = STATE_CREDITS;
+                break;
             case 3:
                 gl.done = 1;
 
