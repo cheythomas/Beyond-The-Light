@@ -841,6 +841,19 @@ void renderTutorial()
 
 
 }
+ 
+void monitorCTRLC(int key) {
+
+    if( gl.state == STATE_CREDITS || gl.state == STATE_GAMEPLAY) {
+        if(key == XK_c && gl.keys[XK_Control_L]) {
+            if(gl.state == STATE_GAMEPLAY) {
+                gl.state = STATE_CREDITS;
+            } else {
+               gl.state = STATE_GAMEPLAY;
+            }
+        }
+    }
+}
 
 void MainMenu::keyboardInput(int key)
 {
@@ -853,7 +866,7 @@ void MainMenu::keyboardInput(int key)
         } else {
             gl.state = STATE_GAMEPLAY;
         }
-        break;
+     break;
     case XK_Escape:
         if (gl.state == STATE_GAMEPAUSE) {
             gl.state = STATE_GAMEPLAY;
@@ -893,5 +906,5 @@ void MainMenu::keyboardInput(int key)
             }
         }
         break;
+        }
     }
-}

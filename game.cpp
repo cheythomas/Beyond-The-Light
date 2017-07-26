@@ -209,6 +209,8 @@ void checkKeys(XEvent *e)
         //it checks if main menu is open
         gl.mainMenu.keyboardInput(key);
         //renderCreditSprite.keyboardInput(key);
+        
+       monitorCTRLC(key);
     }
 
     if (shift) {
@@ -310,7 +312,7 @@ void render(void)
         renderLightSprite();
         gl.batt.gameOver();
         renderGameOverSprite();
-
+        
 
         glPopMatrix();
     } else if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {
@@ -319,5 +321,6 @@ void render(void)
     } else if (gl.state == STATE_CREDITS) {
         renderCreditBackground();
     }
+  
 }
 

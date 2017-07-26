@@ -417,6 +417,7 @@ void render(void);
 void initCharacterSprites();
 void initBackgroundSprites();
 void physicsMortana();
+void monitorCTRLC(int);
 // enemy
 
 //instructions for user
