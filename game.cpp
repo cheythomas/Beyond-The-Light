@@ -11,6 +11,7 @@ int main(void)
     initLightSprite();
     initCreditBackground();
     initLifeBarSprite();
+    initHighScores();
     initEnemySprites();
     initGameOverSprite();
     init();
@@ -320,6 +321,8 @@ void render(void)
         gl.mainMenu.draw();
     } else if (gl.state == STATE_CREDITS) {
         renderCreditBackground();
+    } else if (gl.state == STATE_HIGHSCORE) {
+        renderHighScores();
     }
   
 }

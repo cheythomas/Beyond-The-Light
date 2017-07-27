@@ -136,6 +136,7 @@ struct GlobalSprite {
     Sprite* life[11];
     Sprite* gameover;
     Sprite* credits[12];
+    Sprite* scores[5];
     //Enemy sprites
     Sprite* pinkghost;
     Sprite* whiteghost;
@@ -471,7 +472,8 @@ void renderCreditBackground(); //
 void physicsLightSprite();
 void initMenuBackground(); // main menu background
 void renderMenuBackground(); //main menu
-
+void initHighScores();
+void renderHighScores();
 
 
 #endif /* GAME_H */
