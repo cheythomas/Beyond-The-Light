@@ -43,11 +43,10 @@ void Battery::chargeObject()
 
 		Rect r;
 		r.bot = 70; // y-axis
-		r.left = 700; // x-axis
+		r.left = 691; // x-axis
 		r.center = 0;
 		unsigned int c = 0x00ffff44;
-		char text[] = "Press R to collect"; 
-		ggprint8b(&r, 16, c, text);
+		ggprint8b(&r, 16, c, "Press R to collect");
 	}
 }
 
@@ -332,7 +331,7 @@ void Battery::gameOver()
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glColor4f(1.0, 1.0, 1.0, 0.7);
-		glTranslated(gl.xres/2, gl.yres/2, 0);
+		glTranslated(-gl.camera[0], gl.yres/2, 0);
 		glBegin(GL_QUADS);
 			glVertex2i(-w, -h);
 			glVertex2i(-w,  h);
@@ -342,10 +341,11 @@ void Battery::gameOver()
 		glDisable(GL_BLEND);
 		glPopMatrix();
 		unsigned int c = 0x00ffff44;
+		r.left = -gl.camera[0]; // x
 		r.bot = gl.yres*.20;  // y axis
-		r.left = gl.xres/2;
-		r.center = 1;
-		ggprint40(&r, 16, c, "Press ESC");
+		r.center = 0;
+		ggprint40
+		(&r, 16, c, "                                    Press ESC");
 	}
 }
 
@@ -480,11 +480,11 @@ void renderCreditBackground()
 
 		// Font
 		int x = gl.xres/2; //800 
-		int y = gl.yres-45;  //600
+		int y = gl.yres*.9;  //600
 		globalSprite.credits[0]->draw();
 		globalSprite.credits[0]->setPos(x, y);
 		x = gl.xres/2; //800 
-		y = gl.yres-145;  //600
+		y = gl.yres*.76;  //600
 		for (int i = 1; i < 8; i++) {
 			globalSprite.credits[i]->draw();
 			globalSprite.credits[i]->setPos(x, y);
