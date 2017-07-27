@@ -283,9 +283,9 @@ void renderLifeBarSprite()
 		} 
 
 		if (pressedR == 1) {
-				gl.keyCount -= 75;
-				gl.keepTrack = gl.keepTrack - 1;
-				globalSprite.life[gl.keepTrack]->draw();
+			gl.keyCount -= 75;
+			gl.keepTrack = gl.keepTrack - 1;
+			globalSprite.life[gl.keepTrack]->draw();
 		}
 	} else {
 		// do nothing
@@ -325,7 +325,7 @@ void Battery::gameOver()
 {
 	Rect r;
 	float h, w;
-	if (gl.keepTrack == 10e9) {
+	if (gl.keepTrack == 10) {
 		h = gl.yres;
 		w = gl.xres;
 		glPushMatrix();
@@ -341,11 +341,11 @@ void Battery::gameOver()
 		glEnd();
 		glDisable(GL_BLEND);
 		glPopMatrix();
-		// unsigned int c = 0x00ffff44;
-		r.bot = 100;  // y axis
+		unsigned int c = 0x00ffff44;
+		r.bot = gl.yres*.20;  // y axis
 		r.left = gl.xres/2;
 		r.center = 1;
-		ggprint8b(&r, 16, 0, "");
+		ggprint40(&r, 16, c, "Press ESC");
 	}
 }
 
