@@ -18,7 +18,29 @@
 //		Do the credits for the game. 
 //
 #include "game.h"
-#include <string>
+
+class myTimers {
+public:
+	double physicsRate;
+	double oobillion;
+	struct timespec timeStart, timeEnd, timeCurrent;
+	struct timespec gameTime;
+	myTimers() {
+		physicsRate = 1.0 / 30.0;
+		oobillion = 1.0 / 1e9;
+	}
+	double timeDiff(struct timespec *start, struct timespec *end) {
+		return (double)(end->tv_sec - start->tv_sec ) +
+				(double)(end->tv_nsec - start->tv_nsec) * oobillion;
+	}
+	void timeCopy(struct timespec *dest, struct timespec *source) {
+		memcpy(dest, source, sizeof(struct timespec));
+	}
+	void recordTime(struct timespec *t) {
+		clock_gettime(CLOCK_REALTIME, t);
+	}
+} timers;
+
 
 void Battery::chargeObject()
 {
@@ -69,100 +91,6 @@ void Battery::grabCharge()
 	}
 */
 }
-
-void Battery::healthBar()
-{	
-	// not sure yet
-}
-
-// old 
-void Battery::drawBattery(void)
-{
-	float w, h, z, x, y;
-	w = 40; // width size
-	h = 70; // length size
-	z = 0.0;
-	x = 750; // x-axis
-	y = 490; // y-axis
-
-	/**draw battery**/
-	glColor3ub(0, 0, 0);
-	//glColor3f(20,20,121);
-	glPushMatrix();
-	glTranslatef(x, y, z);
-	glBegin(GL_QUADS);
-		glVertex2i(-w, -h);
-		glVertex2i(-w,  h);
-		glVertex2i( w,  h);
-	glVertex2i( w, -h);
-	glEnd();
-	glPopMatrix();
-
-	/**battery border**/
-	glColor3ub(0, 100, 0);
-	glPushMatrix();
-	glTranslatef(x, y, z);
-	glBegin(GL_LINES);
-		glVertex2i(-w, -h);
-		glVertex2i(-w,  h);
-		glVertex2i( w,  h);
-		glVertex2i( w, -h);
-	glEnd();
-	glPopMatrix();
-
-	/**top of battery**/
-	w = 20; // width size
-	h = 15; // length size
-	z = 0.0;
-	x = 749; // x-axis
-	y = 575; // y-axis
-	glColor3ub(0, 0, 0);
-	glPushMatrix();
-	glTranslatef(x, y, z);
-		glBegin(GL_QUADS);
-		glVertex2i(-w, -h);
-		glVertex2i(-w,  h);
-		glVertex2i( w,  h);
-		glVertex2i( w, -h);
-	glEnd();
-	glPopMatrix();
-
-	/**battery border**/
-	glColor3ub(0, 100, 0);
-	//glColor3f(20,20,121);
-	glPushMatrix();
-	glTranslatef(x, y, z);
-	glBegin(GL_LINES);
-		glVertex2i(-w, -h);
-		glVertex2i(-w,  h);
-		glVertex2i( w,  h);
-		glVertex2i( w, -h);
-	glEnd();
-	glPopMatrix();
-
-	// battery bars
-	w = 34; // width size
-	h = 12; // length size
-	z = 0.0;
-	x = 750; // x-axis
-	y = 540; // y-axis
-	for (int i = 0; i < 4; i++) {
-		glColor3ub(40, 230, 90); // make brighter
-		glPushMatrix();
-		glTranslatef(x, y, z);
-		glBegin(GL_QUADS);
-			glVertex2i(-w, -h);
-			glVertex2i(-w,  h);
-			glVertex2i( w,  h);
-			glVertex2i( w, -h);
-		glEnd();
-		glPopMatrix();
-		y -= 35; // y-axis
-		arr[i] = y;
-		//bcount++;
-	}
-}
-
 
 class energyBar : public Sprite {
 	
@@ -262,35 +190,33 @@ void renderLifeBarSprite()
 		globalSprite.life[10]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 10;
 	}
-
-	// bug allows multiple presses
+	
 	int pressedR = 0;
-	if (pressedR == 0) {
-		Rect r;
-		r.bot = 60; // y-axis
-		r.left = 700; // x-axis
-		r.center = 0;
-		unsigned int c = 0x00ffff44;
-		if (gl.keys[XK_r] || gl.keys[XK_R]) {
-			if (gl.keepTrack == 0) {
-				ggprint8b(&r, 16, c, "Already full");
-			} 
-			else if (gl.keepTrack > 0) {
-				ggprint8b(&r, 16, c, "nice!");
-				pressedR = 1;
+	if (gl.keepTrack == 3 || gl.keepTrack == 9) {
+		if (pressedR == 0) {
+			Rect r;
+			r.bot = gl.yres-20; // y-axis
+			r.left = gl.xres-110; // x-axis
+			r.center = 0;
+			unsigned int c = 0x00ffff44;
+			if (gl.keys[XK_r] || gl.keys[XK_R]) {
+				if (gl.keepTrack == 0) {
+					ggprint8b(&r, 16, c, "Already full");
+				}	 
+				else if (gl.keepTrack > 0) {
+					ggprint8b(&r, 16, c, "nice!");
+					pressedR = 1;
+				}
 			}
-		} 
-
+		}
 		if (pressedR == 1) {
 			gl.keyCount -= 75;
 			gl.keepTrack = gl.keepTrack - 1;
 			globalSprite.life[gl.keepTrack]->draw();
-		}
+		} 
 	} else {
 		// do nothing
 	}
-
-
 }
 
 class GameOver : public Sprite {
@@ -344,8 +270,8 @@ void Battery::gameOver()
 		r.left = -gl.camera[0]; // x
 		r.bot = gl.yres*.20;  // y axis
 		r.center = 0;
-		ggprint40
-		(&r, 16, c, "                                    Press ESC");
+		char space[100] = "                                  ";
+		ggprint40(&r, 16, c, "%sPress ESC", space);
 	}
 }
 
@@ -447,23 +373,22 @@ class Credits: public Sprite {
 void initCreditBackground()
 {
 	globalSprite.credits[0] = new Sprite("creditTitle2.png", 1, 1, 1, 1, 140, 700);
-	globalSprite.credits[1] = new Sprite("creditKaren5.png", 1, 1, 1, 1, 50, 250);
-	globalSprite.credits[2] = new Sprite("creditKaren.png", 1, 1, 1, 1, 35, 330);
+	globalSprite.credits[1] = new Sprite("creditKaren.png", 1, 1, 1, 1, 50, 250);
+	globalSprite.credits[2] = new Sprite("creditKaren1.png", 1, 1, 1, 1, 35, 330);
 	globalSprite.credits[3] = new Sprite("creditAurora.png", 1, 1, 1, 1, 50, 250);
 	globalSprite.credits[4] = new Sprite("creditAurora1.png", 1, 1, 1, 1, 30, 215);
 	globalSprite.credits[5] = new Sprite("creditCheyenne2.png", 1, 1, 1, 1, 50, 200);
 	globalSprite.credits[6] = new Sprite("creditAurora1.png", 1, 1, 1, 1, 30, 215);
 	globalSprite.credits[7] = new Sprite("creditThanks.png", 1, 1, 1, 1, 50, 200);
-	globalSprite.credits[8] = new Sprite("creditG.png", 1, 1, 1, 1, 40, 150);
-	globalSprite.credits[9] = new Sprite("credit3350.png", 1, 1, 1, 1, 40, 150);
-	globalSprite.credits[10] = new Sprite("creditParents2.png", 1, 1, 1, 1, 40, 150);
-	globalSprite.credits[11] = new Sprite("creditCats.png", 1, 1, 1, 1, 40, 150);
+	globalSprite.credits[8] = new Sprite("creditG.png", 1, 1, 1, 1, 30, 200);
+	globalSprite.credits[9] = new Sprite("creditParents.png", 1, 1, 1, 1, 30, 200);
+	globalSprite.credits[10] = new Sprite("creditCats.png", 1, 1, 1, 1, 30, 200);
 }
 
 void renderCreditBackground()
 {
 	if (gl.state == STATE_CREDITS) {
-		// black background  
+		// change bg
 		float h, w;
 		h = gl.yres;
 		w = gl.xres;
@@ -477,6 +402,25 @@ void renderCreditBackground()
 			glVertex2i( w, -h);
 		glEnd();
 		glPopMatrix();
+		
+		glPushMatrix();
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glColor4f(0.329412, 0.329412, 0.329412, 0.3);
+		glBegin(GL_QUAD_STRIP);
+			glVertex2i(0,                       0);
+			glVertex2i(50,                     50);
+			glVertex2i(gl.xres,                 0);
+			glVertex2i(gl.xres*.938,           50);
+			glVertex2i(gl.xres,           gl.yres);
+			glVertex2i(gl.xres*.938, gl.yres*.917);
+			glVertex2i(0,                 gl.yres);
+			glVertex2i(50,           gl.yres*.917);
+			glVertex2i(0,                       0);
+			glVertex2i(50,                     50);
+		glEnd();
+		glDisable(GL_BLEND);
+		glPopMatrix();
 
 		// Font
 		int x = gl.xres/2; //800 
@@ -485,13 +429,16 @@ void renderCreditBackground()
 		globalSprite.credits[0]->setPos(x, y);
 		x = gl.xres/2; //800 
 		y = gl.yres*.76;  //600
-		for (int i = 1; i < 8; i++) {
+		for (int i = 1; i < 11; i++) {
 			globalSprite.credits[i]->draw();
 			globalSprite.credits[i]->setPos(x, y);
-			if (i%2 == 1) {
+			if (i%2 == 1 && i < 8) {
 				y -= 35;
-			} else {
+			} else if (i%2 != 1 && i < 8) {
 				y -= 70; 
+			}
+			if (i > 7) {
+				y -= 35;
 			}
 		}
 	}
@@ -516,19 +463,28 @@ void initHighScores()
 void renderHighScores()
 {       
 	int x = gl.xres/2;  
-	int y = gl.yres*.90;  
+	int y = gl.yres*.83;  
+
+	glPushMatrix();
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glColor4f(1.0, 0.25, 0.0, 0.3);
+	glColor4f(0.329412, 0.329412, 0.329412, 0.3);
+	glBegin(GL_QUAD_STRIP);
+		glVertex2i(0,                       0);
+		glVertex2i(50,                     50);
+		glVertex2i(gl.xres,                 0);
+		glVertex2i(gl.xres*.938,           50);
+		glVertex2i(gl.xres,           gl.yres);
+		glVertex2i(gl.xres*.938, gl.yres*.917);
+		glVertex2i(0,                 gl.yres);
+		glVertex2i(50,           gl.yres*.917);
+		glVertex2i(0,                       0);
+		glVertex2i(50,                     50);
+	glEnd();
+	glDisable(GL_BLEND);
+	glPopMatrix();
+	
 	globalSprite.scores[0]->setPos(x, y);
 	globalSprite.scores[0]->draw();
-/*		
-	Rect r;
-	r.bot = 270; // y-axis
-	r.left = 700; // x-axis
-	r.center = 0;
-	unsigned int c = 0x00ffff44;
-	ggprint40(&r, 16, c, text);
-*/
 }
-
-
-
-
