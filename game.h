@@ -339,6 +339,8 @@ public:
     Level lev;
     int keepTrack;
     int keyCount;
+    int spacebar;
+    int hardSelection;
     int walkFrame;
     int walk;
     int shock;
@@ -386,6 +388,8 @@ public:
         yres = 600;
         keyCount = 0;
         keepTrack = 0;
+        spacebar = 0;
+        hardSelection = 0;
         shock = 0;
         shockFrame = 0;
         shockImage = NULL;
@@ -474,6 +478,7 @@ void initMenuBackground(); // main menu background
 void renderMenuBackground(); //main menu
 void initHighScores();
 void renderHighScores();
-
+void redScreenFlash();
+void hardMode();
 
 #endif /* GAME_H */

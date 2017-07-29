@@ -24,7 +24,7 @@ public:
 	double physicsRate;
 	double oobillion;
 	struct timespec timeStart, timeEnd, timeCurrent;
-	struct timespec gameTime;
+	struct timespec gameTime, overTime, modeTime;
 	myTimers() {
 		physicsRate = 1.0 / 30.0;
 		oobillion = 1.0 / 1e9;
@@ -74,22 +74,12 @@ void Battery::chargeObject()
 
 void Battery::grabCharge()
 {
-/*
 	Rect r;
-	r.bot = 60; // y-axis
-	r.left = 700; // x-axis
-	r.center = 0;
 	unsigned int c = 0x00ffff44;
-	if (gl.keys[XK_r] || gl.keys[XK_R]) {
-		if (gl.keepTrack == 0) {
-			ggprint8b(&r, 16, c, "Already full");
-		} 
-		else if (gl.keepTrack > 0) {
-			gl.keepTrack -= 1;
-			ggprint8b(&r, 16, c, "nice!");
-		}
-	}
-*/
+	r.left = -gl.camera[0] + 100; // x
+	r.bot = gl.yres-20;  // y axis
+	r.center = 0;
+	ggprint8b(&r, 16, c, "h - turn on/off Hard Mode");
 }
 
 class energyBar : public Sprite {
@@ -250,6 +240,8 @@ void Battery::gameOver()
 {
 	Rect r;
 	float h, w;
+	//int over = 0;
+	//double timeSpan = 0;
 	if (gl.keepTrack == 10) {
 		h = gl.yres;
 		w = gl.xres;
@@ -267,12 +259,27 @@ void Battery::gameOver()
 		glDisable(GL_BLEND);
 		glPopMatrix();
 		unsigned int c = 0x00ffff44;
-		r.left = -gl.camera[0]; // x
+		r.left = -gl.camera[0] + (gl.xres*0.33); // x
 		r.bot = gl.yres*.20;  // y axis
 		r.center = 0;
-		char space[100] = "                                  ";
-		ggprint40(&r, 16, c, "%sPress ESC", space);
+		ggprint40(&r, 16, c, "Press spacebar");
+	
+		if (gl.spacebar == 1) {
+			gl.state = STATE_HIGHSCORE;
+		}	
+		
+		//timers.recordTime(&timers.timeCurrent);
+		//timeSpan = timers.timeDiff(&timers.overTime, &timers.timeCurrent);
+		//if (timeSpan > 10) {
+		//	timers.timeCopy(&timers.overTime, &timers.timeCurrent);
+		//	over++;
+		//}
 	}
+	
+	//if (gl.keys[keys] == " ") {
+	//	gl.state = STATE_HIGHSCORE;
+	//}
+
 }
 
 class Lightning : public Sprite {
@@ -487,4 +494,91 @@ void renderHighScores()
 	
 	globalSprite.scores[0]->setPos(x, y);
 	globalSprite.scores[0]->draw();
+}
+
+void redScreenFlash()
+{
+	timers.recordTime(&timers.timeCurrent);
+	double timeSpan = timers.timeDiff(&timers.gameTime, &timers.timeCurrent);
+	
+	float w, h, z, x, y;
+	w = gl.xres; // width size
+	h = gl.yres; // length size
+	z = 0;
+	x = -gl.camera[0]; // x-axis
+	y = gl.yres/2; // y-axis
+	int flash = 0;
+
+	if (timeSpan > 1.4) {
+		timers.timeCopy(&timers.gameTime, &timers.timeCurrent);
+		flash++;
+	}
+
+	if (gl.keepTrack == 9 && flash >= 1) {
+		glColor4f(1.0, 0.0, 0.0, 0.3); 
+		glPushMatrix();
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glTranslatef(x, y, z);
+		glBegin(GL_QUADS);
+			glVertex2i(-w, -h);
+			glVertex2i(-w,  h);
+			glVertex2i( w,  h);
+			glVertex2i( w, -h);
+		glEnd();
+		glDisable(GL_BLEND);
+		glPopMatrix();
+	}	
+}
+
+void hardMode()
+{
+	timers.recordTime(&timers.timeCurrent);
+	double timeSpan = timers.timeDiff(&timers.modeTime, &timers.timeCurrent);
+	if (gl.hardSelection == 1) {
+		float w, h, z, x, y;
+		w = gl.xres; // width size
+		h = gl.yres; // length size
+		z = 0;
+		x = -gl.camera[0]; // x-axis
+		y = gl.yres/2; // y-axis
+		int flash = 0;
+
+		if (timeSpan > 0.5) {
+			timers.timeCopy(&timers.modeTime, &timers.timeCurrent);
+			flash++;
+		}
+
+		//if (gl.keepTrack >= 0 && flash >= 1) {
+		if (gl.keepTrack >= 0) {
+			glColor4f(0.0, 0.0, 0.0, 0.9); 
+			glPushMatrix();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glTranslatef(x, y, z);
+			glBegin(GL_QUADS);
+				glVertex2i(-w, -h);
+				glVertex2i(-w,  h);
+				glVertex2i( w,  h);
+				glVertex2i( w, -h);
+			glEnd();
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		}
+		if (timeSpan > 0.2) {
+			glColor4f(0.0, 0.0, 0.0, 0.96);
+			glPushMatrix();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glTranslatef(x, y, z);
+			glBegin(GL_QUADS);
+				glVertex2i(-w, -h);
+				glVertex2i(-w,  h);
+				glVertex2i( w,  h);
+				glVertex2i( w, -h);
+			glEnd();
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		} 
+	}
 }

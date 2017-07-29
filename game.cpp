@@ -218,9 +218,17 @@ void checkKeys(XEvent *e)
     }
     switch (key) {
         break;
-    case XK_m:
+    case XK_space:
+			if (gl.keepTrack == 10) {
+				gl.spacebar = 1;
+			}
         break;
-    case XK_a:
+    case XK_h:
+			if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
+				gl.hardSelection = 1;
+			} else if (gl.hardSelection == 1) {
+				gl.hardSelection = 0;
+			}
         break;
     case XK_w:
         break;
@@ -304,16 +312,16 @@ void render(void)
         gl.batt.chargeObject();
 
         gl.batt.grabCharge();
-        //renderLightSprite();
         renderLifeBarSprite();
         gl.lev.renderBackground();
         gl.batt.chargeObject();
         renderCharacterSprites();
         renderEnemySprites();
+        hardMode(); 
         renderLightSprite();
         gl.batt.gameOver();
         renderGameOverSprite();
-        
+        redScreenFlash();
 
         glPopMatrix();
     } else if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {
