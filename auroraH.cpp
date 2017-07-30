@@ -644,6 +644,20 @@ void physicsGhosts()
         }
     }
 }
+void collision (Vec axis, float min, float max){
+    int distance = 0;
+    float dotproduct= gl.xres;
+    min = dotproduct;
+    max = dotproduct;
+    for (int i = 0; i < gl.xres; i++){
+        dotproduct = gl.xres;
+        if (distance < min){
+            min= dotproduct;
+            
+        }
+        
+    }
+}
 
 //**
 // Menu

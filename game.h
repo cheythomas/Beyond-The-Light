@@ -122,6 +122,25 @@ public:
     float getAngle();
     void setAngle(float);
 };
+/*
+ Enemy collision*/
+class Enemycollsion{
+        public :
+struct enemyCollision; 
+// going to intersect?
+bool intersected;
+// intersecting now?
+bool intersect;
+// 
+Vec transVector;
+void collision (Vec axis, float min, float max);
+
+    
+    
+};
+
+
+
 
 /*
  * This creates a class called GlobalSprite, has one variable of type Sprite*,
