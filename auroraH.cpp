@@ -57,6 +57,7 @@
 #include <vector>
 #include <algorithm>
 #include <complex>
+#include <valarray>
 #include "game.h"
 
 // Facilitating sprite animations for team members
@@ -644,6 +645,47 @@ void physicsGhosts()
         }
     }
 }
+// **
+// COLLISION
+//**
+void mortanaCollision(){
+    
+    for (unsigned int i = 0; i < gl.enemies.size(); i++){
+        Enemy& en = gl.enemies[i];
+        
+        float radiusEnemy = 0;
+        float mortanaRadius = 75;
+        switch(en.spriteId) {
+            case 0: //pink
+                radiusEnemy = 25;
+                break;
+            case 1: //pac
+                radiusEnemy = 25;
+                break;
+            case 2: //white
+                radiusEnemy = 25;
+                break;            
+        }
+        
+        bool Collision = checkCircle(
+                    en.x, en.y, 
+                    gl.mortanaPos[0], gl.mortanaPos[1], 
+                    mortanaRadius, radiusEnemy);
+        
+        if(Collision) {
+            printf("There is a direct collision with Mortana and ghost %d\n", en.spriteId);
+        }
+    }
+}
+
+bool checkCircle(   double x1,  double y1, double x2, double y2, 
+                    float r1, float r2){
+    float distance = std::sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)); 
+    float distanceFromRadius = (distance - r1 - r2);  
+    return distanceFromRadius <= 0;
+}
+
+
 
 //**
 // Menu
