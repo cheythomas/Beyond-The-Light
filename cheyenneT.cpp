@@ -334,9 +334,11 @@ void physicsLightSprite()
 			if (mortDir == 1) {	
 				l->setPos(cmx + 120, cmy);
 				l->setAngle(0);
+				gl.lightning = 1;
 			} else {
 				l->setPos(cmx - 120, cmy);		
 				l->setAngle(180);
+				gl.lightning = 5;
 			}
 			keyPressed = true;
 		} else if (gl.keys[XK_w] || gl.keys[XK_W]) {
@@ -348,6 +350,7 @@ void physicsLightSprite()
 			}
 			l->setAngle(90);
 			keyPressed = true;
+			gl.lightning = 3;
 		} else if (gl.keys[XK_q] || gl.keys[XK_Q]) {
 			l->setVisible(true);	
 			if (mortDir == 1) {	
@@ -357,6 +360,7 @@ void physicsLightSprite()
 			}
 			l->setAngle(135);
 			keyPressed = true;
+			gl.lightning = 4;
 		} else if (gl.keys[XK_e] || gl.keys[XK_E]) {
 			l->setVisible(true);	
 			if(mortDir == 1) {	
@@ -366,8 +370,10 @@ void physicsLightSprite()
 			}
 			l->setAngle(45);
 			keyPressed = true;
+			gl.lightning = 2;
 		} else {
 			l->setVisible(false);
+			gl.lightning = 0;
 		}
 	}
 
@@ -514,7 +520,7 @@ void renderHighScores()
 	r.left = -gl.camera[0] + (gl.xres*0.33); // x
 	r.bot = gl.yres*.54;  // y axis
 	r.center = 0;
-	ggprint40(&r, 16, c, "Score         %d", pts);
+	ggprint40(&r, 16, c, "Score             %d", pts);
 
 }
 

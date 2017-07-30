@@ -162,7 +162,7 @@ void restart() {
     //when the game is over
     //example:
     //restartBattery();
-    //
+    
 }
 
 void checkMouse(XEvent *e)
@@ -328,8 +328,6 @@ void render(void)
         renderEnemySprites();
         hardMode(); 
         renderLightSprite();
-        gl.batt.gameOver();
-        renderGameOverSprite();
         redScreenFlash();
 
         glPopMatrix();
@@ -340,6 +338,9 @@ void render(void)
         renderCreditBackground();
     } else if (gl.state == STATE_HIGHSCORE) {
         renderHighScores();
+    } else if (gl.state == STATE_GAMEOVER) {
+        gl.batt.gameOver();
+        renderGameOverSprite();
     }
   
 }
