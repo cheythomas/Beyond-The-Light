@@ -20,7 +20,7 @@
 #include "ppm.h"
 #include "fonts.h"
 #include "vector"
-
+#include <math.h>
 
 //macros
 #define MAX_BARS 3
@@ -121,23 +121,36 @@ public:
     bool getReverse();
     float getAngle();
     void setAngle(float);
+    void collison();
+    void GameOver();
+    
 };
+
+
+void mortanaCollision();
+
 /*
  Enemy collision*/
-class Enemycollsion{
-        public :
-struct enemyCollision; 
-// going to intersect?
-bool intersected;
-// intersecting now?
-bool intersect;
-// 
-Vec transVector;
-void collision (Vec axis, float min, float max);
+bool checkCircle(   double x1,  double y1, double x2, double y2, 
+                    float r1, float r2);
+
+
 
     
     
-};
+//restart functinality
+void restart();
+    
+    
+        //nemyCollision; 
+//// going to intersect?
+//bool intersected;
+//// intersecting now?
+//bool intersect;
+//// 
+//Vec transVector;
+//void collision (Vec axis, float min, float max);
+
 
 
 

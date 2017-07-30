@@ -157,6 +157,14 @@ void init()
 
 }
 
+void restart() {
+    //add your own function if you have to reset anything
+    //when the game is over
+    //example:
+    //restartBattery();
+    //
+}
+
 void checkMouse(XEvent *e)
 {
     //Did the mouse move?
@@ -292,6 +300,7 @@ void physics(void)
             globalSprite.life[i]->physics();
         }
         globalSprite.light[4]->physics();
+        mortanaCollision();
     }
 }
 
