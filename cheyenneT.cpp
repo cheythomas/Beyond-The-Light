@@ -48,13 +48,23 @@ void Battery::chargeObject()
 	if (gl.keepTrack == 3 || gl.keepTrack == 9) {
 		float w, h, z, x, y;
 		w = 34; // width size
-		h = 12; // length size
+		h = 8; // length size
 		z = 0.0;
 		x = 740; // x-axis
 		y = 50; // y-axis
 		glColor3f(0.0, 1.0, 0.0); 
 		glPushMatrix();
 		glTranslatef(x, y, z);
+		glBegin(GL_QUADS);
+			glVertex2i(-w, -h);
+			glVertex2i(-w,  h);
+			glVertex2i( w,  h);
+			glVertex2i( w, -h);
+		glEnd();
+		glPopMatrix();
+		
+		glPushMatrix();
+		glTranslatef(3000, y, z);
 		glBegin(GL_QUADS);
 			glVertex2i(-w, -h);
 			glVertex2i(-w,  h);
@@ -179,6 +189,7 @@ void renderLifeBarSprite()
 		globalSprite.life[10]->draw();
 		globalSprite.life[10]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 10;
+		gl.state = STATE_GAMEOVER;
 	}
 	
 	int pressedR = 0;
@@ -494,9 +505,9 @@ void renderHighScores()
 	
 	globalSprite.scores[0]->setPos(x, y);
 	globalSprite.scores[0]->draw();
-/*	
+	
 	int pts = 0;
-	pts = scorePoints();
+	//pts = scorePoints();
 
 	Rect r;	
 	unsigned int c = 0x00FF0000;
@@ -504,7 +515,7 @@ void renderHighScores()
 	r.bot = gl.yres*.54;  // y axis
 	r.center = 0;
 	ggprint40(&r, 16, c, "Score         %d", pts);
-*/
+
 }
 
 void redScreenFlash()
