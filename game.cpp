@@ -301,6 +301,7 @@ void physics(void)
         }
         globalSprite.light[4]->physics();
         mortanaCollision();
+        lightningCollision();
     }
 }
 
@@ -326,6 +327,7 @@ void render(void)
         gl.batt.chargeObject();
         renderCharacterSprites();
         renderEnemySprites();
+        
         hardMode(); 
         renderLightSprite();
         gl.batt.gameOver();

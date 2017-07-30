@@ -126,7 +126,7 @@ public:
     
 };
 
-
+void lightningCollision();
 void mortanaCollision();
 
 /*

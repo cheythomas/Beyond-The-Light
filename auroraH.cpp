@@ -677,6 +677,12 @@ void mortanaCollision(){
         }
     }
 }
+void lightningCollision(){
+    
+    
+    
+    
+}
 
 bool checkCircle(   double x1,  double y1, double x2, double y2, 
                     float r1, float r2){
