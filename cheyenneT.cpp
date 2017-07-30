@@ -48,13 +48,23 @@ void Battery::chargeObject()
 	if (gl.keepTrack == 3 || gl.keepTrack == 9) {
 		float w, h, z, x, y;
 		w = 34; // width size
-		h = 12; // length size
+		h = 8; // length size
 		z = 0.0;
 		x = 740; // x-axis
 		y = 50; // y-axis
 		glColor3f(0.0, 1.0, 0.0); 
 		glPushMatrix();
 		glTranslatef(x, y, z);
+		glBegin(GL_QUADS);
+			glVertex2i(-w, -h);
+			glVertex2i(-w,  h);
+			glVertex2i( w,  h);
+			glVertex2i( w, -h);
+		glEnd();
+		glPopMatrix();
+		
+		glPushMatrix();
+		glTranslatef(3000, y, z);
 		glBegin(GL_QUADS);
 			glVertex2i(-w, -h);
 			glVertex2i(-w,  h);
@@ -179,6 +189,7 @@ void renderLifeBarSprite()
 		globalSprite.life[10]->draw();
 		globalSprite.life[10]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 10;
+		gl.state = STATE_GAMEOVER;
 	}
 	
 	int pressedR = 0;
@@ -323,9 +334,11 @@ void physicsLightSprite()
 			if (mortDir == 1) {	
 				l->setPos(cmx + 120, cmy);
 				l->setAngle(0);
+				gl.lightning = 1;
 			} else {
 				l->setPos(cmx - 120, cmy);		
 				l->setAngle(180);
+				gl.lightning = 5;
 			}
 			keyPressed = true;
 		} else if (gl.keys[XK_w] || gl.keys[XK_W]) {
@@ -337,6 +350,7 @@ void physicsLightSprite()
 			}
 			l->setAngle(90);
 			keyPressed = true;
+			gl.lightning = 3;
 		} else if (gl.keys[XK_q] || gl.keys[XK_Q]) {
 			l->setVisible(true);	
 			if (mortDir == 1) {	
@@ -346,6 +360,7 @@ void physicsLightSprite()
 			}
 			l->setAngle(135);
 			keyPressed = true;
+			gl.lightning = 4;
 		} else if (gl.keys[XK_e] || gl.keys[XK_E]) {
 			l->setVisible(true);	
 			if(mortDir == 1) {	
@@ -355,8 +370,10 @@ void physicsLightSprite()
 			}
 			l->setAngle(45);
 			keyPressed = true;
+			gl.lightning = 2;
 		} else {
 			l->setVisible(false);
+			gl.lightning = 0;
 		}
 	}
 
@@ -494,17 +511,17 @@ void renderHighScores()
 	
 	globalSprite.scores[0]->setPos(x, y);
 	globalSprite.scores[0]->draw();
-/*	
+	
 	int pts = 0;
-	pts = scorePoints();
+	//pts = scorePoints();
 
 	Rect r;	
 	unsigned int c = 0x00FF0000;
 	r.left = -gl.camera[0] + (gl.xres*0.33); // x
 	r.bot = gl.yres*.54;  // y axis
 	r.center = 0;
-	ggprint40(&r, 16, c, "Score         %d", pts);
-*/
+	ggprint40(&r, 16, c, "Score             %d", pts);
+
 }
 
 void redScreenFlash()
