@@ -374,6 +374,7 @@ public:
     int spacebar;
     int hardSelection;
     int ghostKilled;
+    int points;
     int lightning;
     int walkFrame;
     int walk;
@@ -426,6 +427,7 @@ public:
         hardSelection = 0;
         lightning = 0;
         ghostKilled = 0;
+        points = 0;
         shock = 0;
         shockFrame = 0;
         shockImage = NULL;
@@ -516,5 +518,6 @@ void initHighScores();
 void renderHighScores();
 void redScreenFlash();
 void hardMode();
+void trackKills(int);
 
 #endif /* GAME_H */
