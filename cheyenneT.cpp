@@ -72,7 +72,8 @@ void Battery::energybarAppears()
 	       	
 		//refractoring	
 		drawBattery(w, h, x, y, z);
-		drawBattery(w, h, 3000, y, z);
+		drawBattery(w, h, 4000, y, z);
+		drawBattery(w, h, 2000, y, z);
 
 		Rect r;
 		r.bot = 80; // y-axis
