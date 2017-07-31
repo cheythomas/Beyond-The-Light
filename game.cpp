@@ -246,7 +246,12 @@ void checkKeys(XEvent *e)
 				gl.escKey = 1;
 			}
         break;
-    case XK_e:
+    case XK_j:
+			if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
+				gl.danceParty = 1;
+			} else if (gl.hardSelection == 1) {
+				gl.danceParty = 0;
+			}
         break;
     case XK_f:
         break;
@@ -330,7 +335,8 @@ void render(void)
         gl.lev.renderBackground();
         renderCharacterSprites();
         renderEnemySprites();
-        hardMode(); 
+		hardMode(); 
+        disco(); 
         renderLifeBarSprite();
         renderText();
         renderLightSprite();

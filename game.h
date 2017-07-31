@@ -361,6 +361,7 @@ public:
     int keyCount;
     int spacebar;
     int hardSelection;
+    int danceParty;
     int ghostKilled;
     int points;
     int savescore;
@@ -415,6 +416,7 @@ public:
         keepTrack = 0;
         spacebar = 0;
         hardSelection = 0;
+        danceParty = 0;
         lightning = 0;
         ghostKilled = 0;
         points = 0;
@@ -493,4 +495,6 @@ void hardMode();
 void trackKills(int);
 void renderText();
 void cheyRestart();
+void disco();
+
 #endif /* GAME_H */
