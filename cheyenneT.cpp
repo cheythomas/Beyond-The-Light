@@ -243,7 +243,7 @@ void renderGameOverSprite()
 
 	if (gl.keepTrack == 10) {
 		globalSprite.gameover->draw();
-		globalSprite.gameover->setPos(-gl.camera[0] + x, y);
+		globalSprite.gameover->setPos(x, y);
 	}
 }
 
@@ -260,7 +260,7 @@ void Battery::gameOver()
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glColor4f(1.0, 1.0, 1.0, 0.7);
-		glTranslated(-gl.camera[0], gl.yres/2, 0);
+		glTranslated(gl.xres, gl.yres, 0);
 		glBegin(GL_QUADS);
 			glVertex2i(-w, -h);
 			glVertex2i(-w,  h);
@@ -270,7 +270,7 @@ void Battery::gameOver()
 		glDisable(GL_BLEND);
 		glPopMatrix();
 		unsigned int c = 0x00FF0000;
-		r.left = -gl.camera[0] + (gl.xres*0.33); // x
+		r.left = gl.xres*0.33; // x
 		r.bot = gl.yres*.20;  // y axis
 		r.center = 0;
 		ggprint40(&r, 16, c, "Press spacebar");
@@ -505,12 +505,12 @@ void renderHighScores()
 
 	Rect r;	
 	unsigned int c = 0x00FF0000;
-	r.left = -gl.camera[0] + (gl.xres*0.33); // x
+	r.left = gl.xres*0.33; // x
 	r.bot = gl.yres*.54;  // y axis
 	r.center = 0;
 	ggprint40(&r, 16, c, "Score             %d", pts);
 
-	r.left = -gl.camera[0] + (gl.xres*0.35); // x
+	r.left = gl.xres*0.35; // x
 	r.bot = gl.yres*.041;  // y axis
 	r.center = 0;
 	ggprint16(&r, 16, c, "Press spacebar for Main Menu");
