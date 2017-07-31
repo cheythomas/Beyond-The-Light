@@ -520,25 +520,15 @@ void renderHighScores()
 	globalSprite.scores[0]->draw();
 	
 	int score = 0;
-	int lastscore = 0;
-	int bestscore = 0;
 	score = gl.savescore;
-	lastscore = score;
-	bestscore = score;
-
-	if (score > lastscore) {
-		bestscore = score;
-	} else if (lastscore > score) {
-		bestscore = lastscore;
-	}			
 
 	Rect r;	
 	unsigned int c = 0x00FF0000;
-	r.left = gl.xres*0.33; 
+	r.left = gl.xres*0.28; 
 	r.bot = gl.yres*.58;  
 	r.center = 0;
 	
-	ggprint40(&r, 16, c, "Overall Scores");
+	ggprint40(&r, 16, c, "Top Scores");
 	ggprint17(&r, 16, c, " ");
 	//printf("Rendering %d scores\n", gl.scores.size());
 	for (unsigned int i = 0; i < gl.scores.size(); i++) {
@@ -546,12 +536,12 @@ void renderHighScores()
 		ggprint17(&r, 32, c, "%s - %d", s.name.c_str(), s.score);
 	}
 	
-	r.bot = gl.yres*.32;  
+	r.bot = gl.yres*.24;  
 	ggprint40(&r, 16, c, "Your high score            %d", score);
 	r.bot = gl.yres*.20;  
-	ggprint40(&r, 16, c, "Best Score                     %d", bestscore);
+	//ggprint40(&r, 16, c, "Best Score                     %d", bestscore);
 
-	r.left = gl.xres*0.35; 
+	r.left = gl.xres*0.33; 
 	r.bot = gl.yres*.04;  
 	r.center = 0;
 	ggprint16(&r, 16, c, "Press ESC for Main Menu");
