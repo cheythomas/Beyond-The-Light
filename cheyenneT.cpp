@@ -607,17 +607,14 @@ void hardMode()
 		} 
 	}
 }
-/*
-int scorePoints()
+
+void trackKills(int type)
 {
-	int points = 0;
-	//if (  collision  ) {
-		if (gl.hardSelection == 0) {
-			points += 10;
-		} else if (gl.hardSelection == 1) {
-			points += 20;
-		}
-	//}
-	return points;
+	if (gl.hardSelection == 0) {
+		gl.points += 10;
+	} else if (gl.hardSelection == 1) {
+		gl.points += 20;
+	}
+	gl.ghostKilled++;
 }
-*/
+
