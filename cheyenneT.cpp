@@ -207,6 +207,7 @@ void renderLifeBarSprite()
 		globalSprite.life[10]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 10;
 		gl.state = STATE_GAMEOVER;
+		restart();
 	}
 	
 	int pressedR = 0;
@@ -521,8 +522,8 @@ void renderHighScores()
 	int score = 0;
 	int lastscore = 0;
 	int bestscore = 0;
-	score = gl.points;
-	lastscore = gl.savescore;
+	score = gl.savescore;
+	lastscore = score;
 	bestscore = score;
 
 	if (score > lastscore) {
@@ -545,9 +546,9 @@ void renderHighScores()
 	r.center = 0;
 	ggprint16(&r, 16, c, "Press ESC for Main Menu");
 	
-	if (gl.escKey == 1) {	
-		restart();	
-	}
+	//if (gl.escKey == 1) {	
+	//	restart();	
+	//}
 }
 
 void redScreenFlash()
