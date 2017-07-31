@@ -25,6 +25,7 @@
 //macros
 #define MAX_BARS 3
 
+
 typedef double Flt;
 typedef double Vec[3];
 typedef Flt Matrix[4][4];
@@ -121,36 +122,24 @@ public:
     bool getReverse();
     float getAngle();
     void setAngle(float);
-    void collison();
+   // void collison();
     void GameOver();
     
 };
 
-void mortanaCollision();
 
 /*
  Enemy collision*/
 bool checkCircle(   double x1,  double y1, double x2, double y2, 
                     float r1, float r2);
-
-
+void mortanaCollision();
+void ghostRandom ();
 
     
     
 //restart functinality
 void restart();
     
-    
-        //nemyCollision; 
-//// going to intersect?
-//bool intersected;
-//// intersecting now?
-//bool intersect;
-//// 
-//Vec transVector;
-//void collision (Vec axis, float min, float max);
-
-
 
 
 

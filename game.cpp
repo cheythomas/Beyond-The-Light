@@ -306,6 +306,8 @@ void physics(void)
             globalSprite.life[i]->physics();
         }
         globalSprite.light[4]->physics();
+        ghostRandom();
+     
         mortanaCollision();
     }
 }
