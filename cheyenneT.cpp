@@ -278,19 +278,7 @@ void Battery::gameOver()
 		if (gl.spacebar == 1) {
 			gl.state = STATE_HIGHSCORE;
 		}	
-		
-		//timers.recordTime(&timers.timeCurrent);
-		//timeSpan = timers.timeDiff(&timers.overTime, &timers.timeCurrent);
-		//if (timeSpan > 10) {
-		//	timers.timeCopy(&timers.overTime, &timers.timeCurrent);
-		//	over++;
-		//}
 	}
-	
-	//if (gl.keys[keys] == " ") {
-	//	gl.state = STATE_HIGHSCORE;
-	//}
-
 }
 
 class Lightning : public Sprite {
@@ -522,6 +510,14 @@ void renderHighScores()
 	r.center = 0;
 	ggprint40(&r, 16, c, "Score             %d", pts);
 
+	r.left = -gl.camera[0] + (gl.xres*0.35); // x
+	r.bot = gl.yres*.041;  // y axis
+	r.center = 0;
+	ggprint16(&r, 16, c, "Press spacebar for Main Menu");
+	
+	if (gl.spacebar == 0) {
+		gl.state = STATE_STARTUP;
+	}
 }
 
 void redScreenFlash()
@@ -541,7 +537,7 @@ void redScreenFlash()
 		timers.timeCopy(&timers.gameTime, &timers.timeCurrent);
 		flash++;
 	}
-
+	// close to dying flash screen
 	if (gl.keepTrack == 9 && flash >= 1) {
 		glColor4f(1.0, 0.0, 0.0, 0.3); 
 		glPushMatrix();
@@ -576,7 +572,7 @@ void hardMode()
 			timers.timeCopy(&timers.modeTime, &timers.timeCurrent);
 			flash++;
 		}
-
+		// darken screen
 		//if (gl.keepTrack >= 0 && flash >= 1) {
 		if (gl.keepTrack >= 0) {
 			glColor4f(0.0, 0.0, 0.0, 0.9); 
@@ -593,6 +589,7 @@ void hardMode()
 			glDisable(GL_BLEND);
 			glPopMatrix();
 		}
+		// flash screen
 		if (timeSpan > 0.2) {
 			glColor4f(0.0, 0.0, 0.0, 0.96);
 			glPushMatrix();

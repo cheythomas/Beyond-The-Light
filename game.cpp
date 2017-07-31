@@ -230,6 +230,9 @@ void checkKeys(XEvent *e)
 			if (gl.keepTrack == 10) {
 				gl.spacebar = 1;
 			}
+			if (gl.state == STATE_HIGHSCORE) {
+				gl.spacebar = 0;
+			}
         break;
     case XK_h:
 			if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
