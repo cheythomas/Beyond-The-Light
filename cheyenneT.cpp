@@ -42,7 +42,7 @@ public:
 } timers;
 
 
-void Battery::chargeObject()
+void Battery::energybarAppears()
 {
 	// a energy bar on the ground
 	if (gl.keepTrack == 3 || gl.keepTrack == 9) {
@@ -82,7 +82,7 @@ void Battery::chargeObject()
 	}
 }
 
-void Battery::grabCharge()
+void renderText()
 {
 	Rect r;
 	unsigned int c = 0x00ffff44;
@@ -90,6 +90,13 @@ void Battery::grabCharge()
 	r.bot = gl.yres-20;  // y axis
 	r.center = 0;
 	ggprint8b(&r, 16, c, "h - turn on/off Hard Mode");
+	
+	int pts = gl.points;
+	r.left = -gl.camera[0] + 700; // x
+	r.bot = gl.yres*.04;  // y axis
+	r.center = 0;
+	ggprint16(&r, 16, c, "score: %d", pts);
+
 }
 
 class energyBar : public Sprite {
@@ -500,8 +507,7 @@ void renderHighScores()
 	globalSprite.scores[0]->setPos(x, y);
 	globalSprite.scores[0]->draw();
 	
-	int pts = 0;
-	//pts = scorePoints();
+	int pts = gl.points;
 
 	Rect r;	
 	unsigned int c = 0x00FF0000;
@@ -608,7 +614,7 @@ void hardMode()
 	}
 }
 
-void trackKills(int)
+void trackKills(int /*type*/)
 {
 	if (gl.hardSelection == 0) {
 		gl.points += 10;

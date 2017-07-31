@@ -241,7 +241,7 @@ void checkKeys(XEvent *e)
 				gl.hardSelection = 0;
 			}
         break;
-    case XK_w:
+    case XK_Escape:
         break;
     case XK_e:
         break;
@@ -333,7 +333,6 @@ void render(void)
         hardMode(); 
         renderLightSprite();
         redScreenFlash();
-
         glPopMatrix();
     } else if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {
         renderMenuBackground();
