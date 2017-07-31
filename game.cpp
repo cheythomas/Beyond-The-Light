@@ -333,12 +333,8 @@ void render(void)
         renderBackgroundSprites();
        
         renderTutorial();
-        gl.batt.chargeObject();
-        gl.batt.grabCharge();       
+        gl.batt.energybarAppears();   
         renderLifeBarSprite();
-        gl.batt.chargeObject();
-        gl.batt.energybarAppears();
-        gl.lev.renderBackground();
         renderCharacterSprites();
         renderEnemySprites();
 	hardMode(); 
