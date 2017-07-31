@@ -317,13 +317,11 @@ void physics(void)
         ghostRandom();
 
         mortanaCollision();
-        //  ghostRandom();
     }
 }
 
 void render(void)
 {
-
     //Clear the screen
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -333,7 +331,6 @@ void render(void)
         // renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
-
         renderTutorial();
         gl.batt.energybarAppears();
         renderLifeBarSprite();
@@ -377,8 +374,6 @@ void render(void)
         glEnd();
         glDisable(GL_BLEND);
         glPopMatrix();
-
-
     }
 
 }

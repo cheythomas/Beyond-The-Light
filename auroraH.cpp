@@ -43,25 +43,7 @@
 //Final collision
 // Final sound additions
 //****************************************************/
-//
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
-//#include <unistd.h>
-//#include <time.h>
-//#include <math.h>
-//#include <X11/Xlib.h>
-//#include <X11/keysym.h>
-//#include <GL/glx.h>
-//#include "log.h"
-//#include "ppm.h"
-//#include "fonts.h"
-//
-//#include <string>
-//#include <vector>
-//#include <algorithm>
-//#include <complex>
-//#include <valarray>
+
 #include "game.h"
 
 
@@ -135,8 +117,6 @@ angle(0)
     //create openGL IMAGE
     //use build AlphaData to convert transparent
     //save result in class variables
-
-
     Ppmimage *ppmImage = ppm6GetImage(outputFile.c_str());
     origHeight = ppmImage->height;
     origWidth = ppmImage->width;
@@ -154,7 +134,6 @@ angle(0)
 
     free(imageData);
     ppm6CleanupImage(ppmImage);
-    //unlink(outputFile.c_str());
     recordTime(&time);
 }
 
@@ -194,7 +173,6 @@ void Sprite::physics()
 
 void Sprite::draw()
 {
-
     if (visible) {
         //Calculate the sprite frame and size
         //and location
@@ -219,8 +197,6 @@ void Sprite::draw()
 
         glColor3f(1.0, 1.0, 1.0);
         glBindTexture(GL_TEXTURE_2D, glTexture);
-
-        //
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, 0.0f);
         glColor4ub(255, 255, 255, 255);
@@ -384,11 +360,6 @@ void initCharacterSprites()
     globalSprite.blkcatsit->setFrameIndex(5);
     globalSprite.blkcatsit->setRepeating(false);
 
-    //add enemy characters
-    //    gl.enemies.push_back(Enemy(gl.xres / 2 + 250, 100, 0));
-    //    gl.enemies.push_back(Enemy(gl.xres / 2 + 300, 200, 1));
-    //    gl.enemies.push_back(Enemy(gl.xres / 2 + 350, 300, 2));
-
 }
 
 void renderCharacterSprites()
@@ -405,6 +376,7 @@ void physicsCharacterSprites()
     physicsMortana();
 
 }
+
 //physics mortana and blk cat
 
 void physicsMortana()
@@ -439,12 +411,12 @@ void physicsMortana()
 
                 if (catsit->getFrameIndex() == 5) {
                     catsit->setVisible(true);
-                    playMeow(); // plays sound
+                    playMeow();
                 } else {
                     cat->setVisible(true);
                 }
                 catsit->reset();
-                playMeow(); // plays cat sound
+                playMeow();
             } else if (gl.keys[XK_Right]) {
                 // mortana walking right
                 m->physics();
@@ -487,7 +459,7 @@ void physicsMortana()
                     cat->setDirection(1);
                     catsit->setDirection(1);
                 }
-                //pcatsit->reset();
+
             } else {
                 //let cat sit down
                 catsit->setVisible(true);
@@ -516,8 +488,6 @@ void physicsMortana()
                 cat->setVisible(true);
             }
         }
-
-
         m->setPos(cx, cy);
         mj->setPos(cx, cy);
         cat->setPos(catx, caty);
@@ -591,7 +561,7 @@ void moveGhostToMortana(Enemy& enemy)
 
     float movePixels = rnd() * 10;
     float moveVerticalAlso = rnd() * 0.5;
-    //angle etween mortana and ghost
+    //angle between mortana and ghost
     float angle = std::atan2(my - cy1, mx - cx1);
     //Find components of vector
     float velX = movePixels * std::cos(angle) + moveVerticalAlso;
@@ -709,18 +679,16 @@ void mortanaCollision()
         if (Collision) {
             // printf("There is a direct collision with Mortana and ghost:
             //Game over! %d\n", en.spriteId);
-           
             gl.keepTrack = 10;
             gl.state = STATE_GAMEOVER;
-           
+
             restart();
             return;
         }
         //check collision with lightning
         lightningCollision(en);
-         playPoint();
+        playPoint();
         if (!en.alive) {
-            // gl.state = STATE_GAMEOVER;
             it = gl.enemies.erase(it);
         }
 
@@ -855,9 +823,7 @@ bool Menu::setSelectedIndex(unsigned int index)
         menuItems[index].highlight = true;
         //save new index
         selectedItemIndex = index;
-        playSelection();
         return true;
-
     } else {
         return false;
     }
@@ -986,16 +952,19 @@ void MainMenu::keyboardInput(int key)
         if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
             gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex()
                     - 1 % gl.mainMenu.getSize());
+            playSelection();
         }
         break;
     case XK_Down:
         if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
             gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex()
                     + 1 % gl.mainMenu.getSize());
+            playSelection();
         }
         break;
     case XK_Return:
         if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
+            playClick();
             switch (gl.mainMenu.getSelectedIndex()) {
                 // This is not ready, goes back to play mode
             case 0:
@@ -1009,10 +978,9 @@ void MainMenu::keyboardInput(int key)
                 break;
             case 3:
                 gl.done = 1;
-
                 break;
-
             }
+
         }
         break;
     }
