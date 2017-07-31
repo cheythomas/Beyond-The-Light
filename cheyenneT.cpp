@@ -86,16 +86,24 @@ void renderText()
 {
 	Rect r;
 	unsigned int c = 0x00ffff44;
-	r.left = -gl.camera[0] + 100; // x
-	r.bot = gl.yres-20;  // y axis
-	r.center = 0;
-	ggprint8b(&r, 16, c, "h - turn on/off Hard Mode");
+	if (gl.hardSelection == 0) {
+		r.left = -gl.camera[0] + 100; // x
+		r.bot = gl.yres-20;  // y axis
+		r.center = 0;
+		ggprint8b(&r, 16, c, "h - turn on/off Hard Mode");
 	
-	int pts = gl.points;
-	r.left = -gl.camera[0] + 700; // x
-	r.bot = gl.yres*.04;  // y axis
-	r.center = 0;
-	ggprint16(&r, 16, c, "score: %d", pts);
+		int pts = gl.points;
+		r.left = -gl.camera[0] + 700; // x
+		r.bot = gl.yres*.04;  // y axis
+		r.center = 0;
+		ggprint16(&r, 16, c, "score: %d", pts);
+	} else if(gl.hardSelection == 1) {
+		int pts = gl.points;
+		r.left = -gl.camera[0] + 700; // x
+		r.bot = gl.yres*.04;  // y axis
+		r.center = 0;
+		ggprint16(&r, 16, c, "score: %d", pts);
+	}
 
 }
 

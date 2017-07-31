@@ -322,12 +322,12 @@ void render(void)
 
         renderTutorial();
         gl.batt.energybarAppears();
-        renderLifeBarSprite();
         gl.lev.renderBackground();
         renderCharacterSprites();
         renderEnemySprites();
-        renderText();
         hardMode(); 
+        renderLifeBarSprite();
+        renderText();
         renderLightSprite();
         redScreenFlash();
         glPopMatrix();
