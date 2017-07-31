@@ -95,13 +95,13 @@ void renderText()
 		ggprint8b(&r, 16, c, "h - turn on/off Hard Mode");
 	
 		int pts = gl.points;
-		r.left = -gl.camera[0] + 700; // x
+		r.left = -gl.camera[0] + (gl.xres*.9); // x
 		r.bot = gl.yres*.04;  // y axis
 		r.center = 0;
 		ggprint16(&r, 16, c, "score: %d", pts);
 	} else if(gl.hardSelection == 1) {
 		int pts = gl.points;
-		r.left = -gl.camera[0] + 700; // x
+		r.left = -gl.camera[0] + (gl.xres*.9); // x
 		r.bot = gl.yres*.04;  // y axis
 		r.center = 0;
 		ggprint16(&r, 16, c, "score: %d", pts);
@@ -524,10 +524,10 @@ void renderHighScores()
 	r.left = gl.xres*0.33; // x
 	r.bot = gl.yres*.54;  // y axis
 	r.center = 0;
-	ggprint40(&r, 16, c, "Score             %d", pts);
+	ggprint40(&r, 16, c, "Score                 %d", pts);
 
 	r.left = gl.xres*0.35; // x
-	r.bot = gl.yres*.041;  // y axis
+	r.bot = gl.yres*.04;  // y axis
 	r.center = 0;
 	ggprint16(&r, 16, c, "Press ESC for Main Menu");
 	// bug here
@@ -539,7 +539,8 @@ void renderHighScores()
 void redScreenFlash()
 {
 	timers.recordTime(&timers.timeCurrent);
-	double timeSpan = timers.timeDiff(&timers.gameTime, &timers.timeCurrent);
+	double timeSpan = 
+	timers.timeDiff(&timers.gameTime, &timers.timeCurrent);
 	
 	float w, h, z, x, y;
 	w = gl.xres; // width size
@@ -574,7 +575,8 @@ void redScreenFlash()
 void hardMode()
 {
 	timers.recordTime(&timers.timeCurrent);
-	double timeSpan = timers.timeDiff(&timers.modeTime, &timers.timeCurrent);
+	double timeSpan = 
+		timers.timeDiff(&timers.modeTime, &timers.timeCurrent);
 	if (gl.hardSelection == 1) {
 		float w, h, z, x, y;
 		w = gl.xres; // width size
