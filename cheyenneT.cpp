@@ -211,7 +211,8 @@ void renderLifeBarSprite()
 		gl.state = STATE_GAMEOVER;
 		restart();
 	}
-	
+
+	// adds a life bar after R key press	
 	int pressedR = 0;
 	if (gl.keepTrack == 3 || gl.keepTrack == 6 || gl.keepTrack == 9) {
 		if (pressedR == 0) {
@@ -259,8 +260,8 @@ void initGameOverSprite()
 
 void renderGameOverSprite()
 {     
-	int x = gl.xres*0.538; //800 
-	int y = gl.yres*0.5;  //600
+	int x = gl.xres*0.538;  
+	int y = gl.yres*0.5;  
 
 	if (gl.keepTrack == 10) {
 		globalSprite.gameover->draw();
@@ -272,8 +273,6 @@ void Battery::gameOver()
 {
 	Rect r;
 	float h, w;
-	//int over = 0;
-	//double timeSpan = 0;
 	if (gl.keepTrack == 10) {
 		h = gl.yres;
 		w = gl.xres;
@@ -291,8 +290,8 @@ void Battery::gameOver()
 		glDisable(GL_BLEND);
 		glPopMatrix();
 		unsigned int c = 0x00FF0000;
-		r.left = gl.xres*0.33; // x
-		r.bot = gl.yres*.20;  // y axis
+		r.left = gl.xres*0.33; 
+		r.bot = gl.yres*.20;  
 		r.center = 0;
 		ggprint40(&r, 16, c, "Press spacebar");
 	
@@ -372,7 +371,7 @@ void physicsLightSprite()
 			gl.lightning = 4;
 		} else if (gl.keys[XK_e] || gl.keys[XK_E]) {
 			l->setVisible(true);	
-			if(mortDir == 1) {	
+			if (mortDir == 1) {	
 				l->setPos(cmx + 150*0.707, cmy + 128*0.707);
 			} else {
 				l->setPos(cmx + 150*0.707, cmy + 128*0.707);		
@@ -421,7 +420,7 @@ void initCreditBackground()
 void renderCreditBackground()
 {
 	if (gl.state == STATE_CREDITS) {
-		// change bg
+		// background color
 		float h, w;
 		h = gl.yres;
 		w = gl.xres;
@@ -456,12 +455,12 @@ void renderCreditBackground()
 		glPopMatrix();
 
 		// Font
-		int x = gl.xres/2; //800 
-		int y = gl.yres*.9;  //600
+		int x = gl.xres/2;  
+		int y = gl.yres*.9;  
 		globalSprite.credits[0]->draw();
 		globalSprite.credits[0]->setPos(x, y);
-		x = gl.xres/2; //800 
-		y = gl.yres*.76;  //600
+		x = gl.xres/2;  
+		y = gl.yres*.76;  
 		for (int i = 1; i < 11; i++) {
 			globalSprite.credits[i]->draw();
 			globalSprite.credits[i]->setPos(x, y);
@@ -536,15 +535,15 @@ void renderHighScores()
 
 	Rect r;	
 	unsigned int c = 0x00FF0000;
-	r.left = gl.xres*0.33; // x
-	r.bot = gl.yres*.54;  // y axis
+	r.left = gl.xres*0.33; 
+	r.bot = gl.yres*.54;  
 	r.center = 0;
 	ggprint40(&r, 16, c, "Your score            %d", score);
-	r.bot = gl.yres*.40;  // y axis
+	r.bot = gl.yres*.40;  
 	ggprint40(&r, 16, c, "Best Score            %d", bestscore);
 
-	r.left = gl.xres*0.35; // x
-	r.bot = gl.yres*.04;  // y axis
+	r.left = gl.xres*0.35; 
+	r.bot = gl.yres*.04;  
 	r.center = 0;
 	ggprint16(&r, 16, c, "Press ESC for Main Menu");
 	
@@ -553,6 +552,7 @@ void renderHighScores()
 	//}
 }
 
+// Screen flashes once down to last life bar
 void redScreenFlash()
 {
 	timers.recordTime(&timers.timeCurrent);
@@ -571,7 +571,7 @@ void redScreenFlash()
 		timers.timeCopy(&timers.gameTime, &timers.timeCurrent);
 		flash++;
 	}
-	// close to dying flash screen
+	// flashes screen
 	if (gl.keepTrack == 9 && flash >= 1) {
 		glColor4f(1.0, 0.0, 0.0, 0.3); 
 		glPushMatrix();
@@ -608,7 +608,6 @@ void hardMode()
 			flash++;
 		}
 		// darken screen
-		//if (gl.keepTrack >= 0 && flash >= 1) {
 		if (gl.keepTrack >= 0) {
 			glColor4f(0.0, 0.0, 0.0, 0.87); 
 			glPushMatrix();
