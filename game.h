@@ -350,6 +350,17 @@ public:
     bool alive;
 };
 
+class Score {
+public:
+    Score(std::string name, int score) :
+    name(name), score(score)
+    {
+    }
+
+    std::string name;
+    int score;
+};
+
 class Global {
 public:
     Display *dpy;
@@ -400,10 +411,9 @@ public:
     //Physics variable ghosts
     float pinkghost;
     std::vector<Enemy> enemies;
-
-
-
-
+    std::vector<Score> scores;
+    std::string username;
+    
     float lightVelY;
 
     ~Global()
@@ -517,5 +527,8 @@ void playGrab();
 void playJump();
 void setupAudio();
 void cleanupAudio();
+void updateScores(std::string, int);
+void renderUsernameInput();
+void checkUserNameInput(int);
 
 #endif /* GAME_H */

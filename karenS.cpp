@@ -34,6 +34,7 @@
 #include <string.h>
 #include <ctime>
 #include <string>
+#include <sstream>
 #include "game.h"
 #include <AL/al.h>
 #include <AL/alut.h>
@@ -47,7 +48,6 @@
 using namespace std;
 
 #include <iostream>
-
 
 class SpriteWrapAround : public Sprite {
 public:
@@ -99,11 +99,14 @@ void initBackgroundSprites()
     globalSprite.background[0] = new Sprite("bg.png", 1, 1, 1, 1, 1200, 5000);
     globalSprite.background[1] = new Sprite("moon.png", 1, 1, 1, 1, 100, 100);
     globalSprite.background[1]->setPos(5000 / 2, 0.8 * gl.yres);
-    globalSprite.background[2] = new SpriteWrapAround("mountain-fg.png", 513, 5000);
+    globalSprite.background[2] = new SpriteWrapAround("mountain-fg.png", 513, 
+    5000);
     globalSprite.background[2]->setPos(5000 / 2, 360);
-    globalSprite.background[3] = new SpriteWrapAround("mountain-bg.png", 703, 5000);
+    globalSprite.background[3] = new SpriteWrapAround("mountain-bg.png", 703, 
+    5000);
     globalSprite.background[3]->setPos(5000 / 2, 360);
-    globalSprite.background[4] = new SpriteWrapAround("treeline.png", 770, 5000);
+    globalSprite.background[4] = new SpriteWrapAround("treeline.png", 770, 
+    5000);
     globalSprite.background[4]->setPos(5000 / 2, 200);
 
 }
@@ -114,7 +117,8 @@ void renderBackgroundSprites()
         if (i == 0) {
             globalSprite.background[i]->setPos(-gl.camera[0], 600);
         } else if (i == 1) {
-            globalSprite.background[i]->setPos(-gl.camera[0] + gl.xres * 0.66, gl.yres * 0.8);
+            globalSprite.background[i]->setPos(-gl.camera[0] + gl.xres * 0.66, 
+                    gl.yres * 0.8);
         } else if (i == 2) {
             globalSprite.background[i]->setPos(-gl.camera[0]*0.1, 360);
         } else if (i == 3) {
@@ -152,21 +156,30 @@ void setupAudio()
     alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
     alListenerfv(AL_ORIENTATION, vec);
     alListenerf(AL_GAIN, 1.0f);
+    
+    //click up and down
+    alBuffer[0] = alutCreateBufferFromFile("./sound/click.wav"); 
+    //select
+    alBuffer[1] = alutCreateBufferFromFile("./sound/select.wav"); 
+    //blast lightning
+    alBuffer[2] = alutCreateBufferFromFile("./sound/Blast.wav"); 
+    //Game menu
+    alBuffer[3] = alutCreateBufferFromFile("./sound/MainMenu.wav"); 
+    // Background Music
+    alBuffer[4] = alutCreateBufferFromFile("./sound/theme1b.wav"); 
+    //game over
+    alBuffer[5] = alutCreateBufferFromFile("./sound/gameover.wav"); 
+    //girl die scream
+    alBuffer[6] = alutCreateBufferFromFile("./sound/scream.wav"); 
+    //girl jumps
+    alBuffer[7] = alutCreateBufferFromFile("./sound/jump.wav");
+    //grabs object
+    alBuffer[8] = alutCreateBufferFromFile("./sound/grab.wav"); 
+    //grabs object
+    alBuffer[9] = alutCreateBufferFromFile("./sound/kitty.wav"); 
 
-    alBuffer[0] = alutCreateBufferFromFile("./sound/click.wav"); //click up and down
-    alBuffer[1] = alutCreateBufferFromFile("./sound/select.wav"); //select
-    alBuffer[2] = alutCreateBufferFromFile("./sound/Blast.wav"); //blast lightning
-    alBuffer[3] = alutCreateBufferFromFile("./sound/MainMenu.wav"); //Game menu
-    alBuffer[4] = alutCreateBufferFromFile("./sound/theme1b.wav");// Background Music
-    alBuffer[5] = alutCreateBufferFromFile("./sound/gameover.wav");//game over
-    alBuffer[6] = alutCreateBufferFromFile("./sound/scream.wav"); //girl die scream
-    alBuffer[7] = alutCreateBufferFromFile("./sound/jump.wav"); //girl jumps
-    alBuffer[8] = alutCreateBufferFromFile("./sound/grab.wav"); //grabs object
-    alBuffer[9] = alutCreateBufferFromFile("./sound/kitty.wav"); //grabs object
-
-   
     alGenSources(10, alSource);
-   
+
     alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
     alSourcef(alSource[0], AL_GAIN, 1.0f);
     alSourcef(alSource[0], AL_PITCH, 1.0f);
@@ -180,7 +193,7 @@ void setupAudio()
     alSourcef(alSource[1], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
         printf("Audio setup error\n");
-    }  
+    }
     alSourcei(alSource[2], AL_BUFFER, alBuffer[2]);
     alSourcef(alSource[2], AL_GAIN, 1.0f);
     alSourcef(alSource[2], AL_PITCH, 1.0f);
@@ -201,7 +214,7 @@ void setupAudio()
     alSourcef(alSource[4], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
         printf("Audio setup error\n");
-    }  
+    }
     alSourcei(alSource[5], AL_BUFFER, alBuffer[5]);
     alSourcef(alSource[5], AL_GAIN, 1.0f);
     alSourcef(alSource[5], AL_PITCH, 1.0f);
@@ -215,28 +228,28 @@ void setupAudio()
     alSourcef(alSource[6], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
         printf("Audio setup error\n");
-    }  
+    }
     alSourcei(alSource[7], AL_BUFFER, alBuffer[7]);
     alSourcef(alSource[7], AL_GAIN, 1.0f);
     alSourcef(alSource[7], AL_PITCH, 1.0f);
     alSourcef(alSource[7], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
         printf("Audio setup error\n");
-    }  
+    }
     alSourcei(alSource[8], AL_BUFFER, alBuffer[8]);
     alSourcef(alSource[8], AL_GAIN, 1.0f);
     alSourcef(alSource[8], AL_PITCH, 1.0f);
     alSourcef(alSource[8], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
         printf("Audio setup error\n");
-    }  
+    }
     alSourcei(alSource[9], AL_BUFFER, alBuffer[9]);
     alSourcef(alSource[9], AL_GAIN, 0.15f);
     alSourcef(alSource[9], AL_PITCH, 1.0f);
     alSourcef(alSource[9], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
         printf("Audio setup error\n");
-    }  
+    }
 #endif
 }
 
@@ -274,18 +287,21 @@ void cleanupAudio()
     alcCloseDevice(Device);
 #endif
 }
+
 void playClick()
 {
 #ifdef ENABLE_AUDIO
     alSourcePlay(alSource[0]);
 #endif
 }
+
 void playSelection()
 {
 #ifdef ENABLE_AUDIO    
     alSourcePlay(alSource[1]);
 #endif
 }
+
 void playPoint()
 {
 #ifdef ENABLE_AUDIO
@@ -295,18 +311,21 @@ void playPoint()
     }
 #endif
 }
+
 void playScream()
 {
 #ifdef ENABLE_AUDIO
     alSourcePlay(alSource[6]);
 #endif
 }
+
 void playJump()
 {
 #ifdef ENABLE_AUDIO
     alSourcePlay(alSource[7]);
 #endif
 }
+
 void playGrab()
 {
 #ifdef ENABLE_AUDIO
@@ -329,14 +348,14 @@ void physicsAudio()
 #ifdef ENABLE_AUDIO
     alGetSourcei(alSource[3], AL_SOURCE_STATE, &statel);
     if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP ||
-        gl.state == STATE_CREDITS || gl.state == STATE_HIGHSCORE) {
+            gl.state == STATE_CREDITS || gl.state == STATE_HIGHSCORE) {
         if (statel != AL_PLAYING) {
             alSourcePlay(alSource[3]);
         }
     } else if (statel == AL_PLAYING) {
         alSourceStop(alSource[3]);
     }
-    
+
     alGetSourcei(alSource[4], AL_SOURCE_STATE, &statel);
     if (gl.state == STATE_GAMEPLAY) {
         if (statel != AL_PLAYING) {
@@ -344,8 +363,8 @@ void physicsAudio()
         }
     } else if (statel == AL_PLAYING) {
         alSourceStop(alSource[4]);
-    } 
-    
+    }
+
     alGetSourcei(alSource[5], AL_SOURCE_STATE, &statel);
     if (gl.state == STATE_GAMEOVER) {
         if (statel != AL_PLAYING) {
@@ -355,188 +374,233 @@ void physicsAudio()
     } else if (statel == AL_PLAYING) {
         alSourceStop(alSource[5]);
         alSourceStop(alSource[6]);
-    } 
+    }
 #endif
 }
 
 int create_tcp_socket();
 char *get_ip(char *host);
-char *build_get_query(char *host, const char *page); 
+char *build_get_query(char *host, const char *page);
 //char was made into a constant to fix the error of deprecated conversation
-void program_usage();
 
 
-//took off an * on argv and added []
-//int lab3http(int argc, char **argv)
-char *lab3http()
+std::string submit(std::string username, int score)
 {
     struct sockaddr_in *remote;
     int sock;
     int tmpres;
     char *ip;
     char *get;
-    char buf[BUFSIZ+1];
+    char buf[BUFSIZ + 1];
     char host[] = "sleipnir.cs.csubak.edu";
-    char page[] = "/~ksalinas/3350/summerproject/file.txt"; 
-    //changed char into a constant
-
-    /*if(argc == 1){
-      program_usage();
-      exit(2);
-      }  
-      host = argv[1];
-      if(argc > 2){
-      page = argv[2];
-      }else{
-      page = PAGE;
-      }*/
+    char page[] = "/~ksalinas/3350/scores.php?username=%s&score=%d";
     sock = create_tcp_socket();
     ip = get_ip(host);
     fprintf(stderr, "IP is %s\n", ip);
-    remote = (struct sockaddr_in *)malloc(sizeof(struct sockaddr_in *));
+    remote = (struct sockaddr_in *) malloc(sizeof (struct sockaddr_in *));
     remote->sin_family = AF_INET;
-    tmpres = inet_pton(AF_INET, ip, (void *)(&(remote->sin_addr.s_addr)));
-    if( tmpres < 0)  
-    {
+    tmpres = inet_pton(AF_INET, ip, (void *) (&(remote->sin_addr.s_addr)));
+    if (tmpres < 0) {
         perror("Can't set remote->sin_addr.s_addr");
         exit(1);
-    }else if(tmpres == 0)
-    {
+    } else if (tmpres == 0) {
         fprintf(stderr, "%s is not a valid IP address\n", ip);
         exit(1);
     }
     remote->sin_port = htons(PORT);
-    if(connect(sock, (struct sockaddr *)remote, sizeof(struct sockaddr)) < 0){
+    if (connect(sock, (struct sockaddr *) remote, 
+            sizeof (struct sockaddr)) < 0) {
         perror("Could not connect");
         exit(1);
     }
-    get = build_get_query(host, page);
+    char pageString[512];
+    sprintf(pageString, page, username.c_str(), score);
+    get = build_get_query(host, pageString);
     fprintf(stderr, "Query is:\n<<START>>\n%s<<END>>\n", get);
     //Send the query to the server
     unsigned int sent = 0; //unsigned int to solve the error
-    while(sent < strlen(get))
-    {
-        tmpres = send(sock, get+sent, strlen(get)-sent, 0);
-        if(tmpres == -1){
+    while (sent < strlen(get)) {
+        tmpres = send(sock, get + sent, strlen(get) - sent, 0);
+        if (tmpres == -1) {
             perror("send command, Can't send query");
             exit(1);
         }
         sent += tmpres;
     }
     //now it is time to receive the page
-    memset(buf, 0, sizeof(buf));
+    memset(buf, 0, sizeof (buf));
     int htmlstart = 0;
     char * htmlcontent;
-    while((tmpres = recv(sock, buf, BUFSIZ, 0)) > 0){
-        if(htmlstart == 0)
-        {
+    std::string result;
+    while ((tmpres = recv(sock, buf, BUFSIZ, 0)) > 0) {
+        if (htmlstart == 0) {
             /* Under certain conditions this will not work.
              * If the \r\n\r\n part is splitted into two messages
              * it will fail to detect the beginning of HTML content
              */
             htmlcontent = strstr(buf, "\r\n\r\n");
-            if(htmlcontent != NULL){
+            if (htmlcontent != NULL) {
                 htmlstart = 1;
                 htmlcontent += 4;
             }
-        }else{
+        } else {
             htmlcontent = buf;
         }
-        if(htmlstart){
-            fprintf(stdout, "%s", htmlcontent); 
-            //include the "%s" to solve the issue of making it a string literal.
+        if (htmlstart) {
+            result = htmlcontent;
+            //include the "%s" to solve the issue of making it 
+            //a string literal.
         }
         //memset(buf, 0, tmpres);
     }
-    if(tmpres < 0)
-    {
+    if (tmpres < 0) {
         perror("Error receiving data");
     }
-    static char message[250];
-    strcpy(message, htmlcontent);
     free(get);
     free(remote);
     free(ip);
     close(sock);
-    return message;
+    return result;
 }
-void pause (int e) { 
+
+void pause(int e)
+{
 
     int temp = time(NULL) + e;
 
-    while(temp > time(NULL));
+    while (temp > time(NULL));
 
-} 
-void program_usage()
-{
-    fprintf(stderr, "USAGE: htmlget host [page]\n\
-            \thost: the website hostname. ex: coding.debuntu.org\n\
-            \tpage: the page to retrieve. ex: index.html, default: /\n");
 }
+
 int create_tcp_socket()
 {
     int sock;
-    if((sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0){
+    if ((sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
         perror("Can't create TCP socket");
         exit(1);
     }
     return sock;
 }
 //change to const char
+
 char *get_ip(char *host)
 {
     struct hostent *hent;
     //ip address format  123.123.123.123
     int iplen = 15;
-    char *ip = (char *)malloc(iplen+1);
-    memset(ip, 0, iplen+1);
-    if((hent = gethostbyname(host)) == NULL)
-    {
+    char *ip = (char *) malloc(iplen + 1);
+    memset(ip, 0, iplen + 1);
+    if ((hent = gethostbyname(host)) == NULL) {
         herror("Can't get IP host by name");
         exit(1);
     }
-    //for the bottom, we add 1 onto iplen so that we can fix the failed hostname
-    if(inet_ntop(AF_INET, (void *)hent->h_addr_list[0], ip, iplen+1) == NULL)
-
-    {
+    //for the bottom, we add 1 onto iplen so that we can fix the 
+    //failed hostname
+    if (inet_ntop(AF_INET, (void *) hent->h_addr_list[0],
+        ip, iplen + 1) == NULL)
+ {
         perror("Can't resolve host with inet_ntop");
         exit(1);
     }
     return ip;
 }
 //change char into a constant
+
 char *build_get_query(char *host, const char *page)
 {
     char *query;
     const char *getpage = page;
-    //added a constant to char to solve problem of deprecated conversion from string constant to char
-    //the following char *tpl was made into a constant to fix the error to pass string literals.
+    //added a constant to char to solve problem of deprecated conversion 
+    //from string constant to char the following char *tpl was made into a 
+    //constant to fix the error to pass string literals.
     const char *tpl = "GET /%s HTTP/1.0\r\nHost: %s\r\nUser-Agent: %s\r\n\r\n";
-    if(getpage[0] == '/'){
+    if (getpage[0] == '/') {
         getpage = getpage + 1;
-        fprintf(stderr,"Removing leading \"/\", converting %s to %s\n", page, getpage);
+        fprintf(stderr, "Removing leading \"/\", converting %s to %s\n", 
+                page, getpage);
     }
     // -5 is to consider the %s %s %s in tpl and the ending \0
-    query = (char *)malloc(strlen(host)+strlen(getpage)+strlen(USERAGENT)+strlen(tpl)-5);
+    query = (char *) malloc(strlen(host) + strlen(getpage) + strlen(USERAGENT) 
+            + strlen(tpl) - 5);
     sprintf(query, tpl, getpage, host, USERAGENT);
     return query;
 }
 
+void updateScores(std::string username, int score)
+{
+    //delete all scores
+    gl.scores.clear();
+    
+    //Send current and fetch new high scores
+    std::string text = submit(username, score);
+    printf("Scores are: %s\n", text.c_str());
+    
+    std::stringstream ss(text);
+    std::string u;
+    int s;
+    while(ss >> u >> s) {
+        gl.scores.push_back(Score(u,s));
+    }
+}
 
+void renderUsernameInput()
+{
+    glPushMatrix();
+    glColor3f(0,0,0);
+    glBegin(GL_QUADS);
+    glVertex2i(gl.xres/2-150, gl.yres/2-250);
+    glVertex2i(gl.xres/2-150, gl.yres/2-200);
+    glVertex2i(gl.xres/2+150, gl.yres/2-200);
+    glVertex2i(gl.xres/2+150, gl.yres/2-250);
+    glEnd();
+    
+    Rect r;
+    r.center = 1;
+    r.left = gl.xres/2;
+    r.bot = gl.yres/2-245;
+    ggprint16(&r, 0, 0xffffff, gl.username.c_str());
+   
+    r.center = 0;
+    r.bot = gl.yres/2-200;
+    r.left = gl.xres/2-150;
+    ggprint16(&r, 0, 0xff00ff, "Enter username and press ENTER to submit!");
+    
+    glPopMatrix();
+}
 
-
-
-
-
-
+void checkUserNameInput(int key) 
+{
+    if(gl.state == STATE_GAMEOVER) {
+        switch(key) {
+        case XK_Return:
+            if(!gl.username.empty()) {
+                updateScores(gl.username, gl.savescore);
+            }
+            gl.state = STATE_HIGHSCORE;
+            break;
+        case XK_Escape:
+            gl.username = "";
+            break;
+        case XK_BackSpace:
+            if(!gl.username.empty()) {
+                gl.username = gl.username.substr(0, gl.username.size()-1);
+            }
+            break;
+        default:
+            if(key >= 97 && key <= 122) {
+                gl.username += (char)key;
+            }
+        }
+    }
+}
 
 //void applyBackgroundMovement(void)
 //{
 
-    //float gx = globalSprite.characterGirl->getPosX();
-    //float gy = globalSprite.characterGirl->getPosY();
+//float gx = globalSprite.characterGirl->getPosX();
+//float gy = globalSprite.characterGirl->getPosY();
 
-    //globalSprite.background[0]->setPos()
+//globalSprite.background[0]->setPos()
 //}
 
 

@@ -38,7 +38,6 @@ int main(void)
             physicsAudio();
             physicsCountDown -= physicsRate;
         }
-
         render();
         glXSwapBuffers(gl.dpy, gl.win);
     }
@@ -156,9 +155,9 @@ void checkResize(XEvent *e)
 }
 
 void init()
-{
+        {
 
-}
+        }
 
 void restart() {
     //add your own function if you have to reset anything
@@ -219,6 +218,7 @@ void checkKeys(XEvent *e)
     }
 
     if (e->type == KeyPress) {
+        checkUserNameInput(key);
         //Always checked because it opens the menu
         //it checks if main menu is open
         gl.mainMenu.keyboardInput(key);
@@ -354,7 +354,7 @@ void render(void)
     } else if (gl.state == STATE_GAMEOVER) {
         gl.batt.gameOver();
         renderGameOverSprite();
-        
+        renderUsernameInput();
     }
     
     if (gl.keys['y'] && gl.keys['b']) {
