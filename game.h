@@ -511,7 +511,6 @@ void playSelection();
 void playClick();
 void physicsAudio();
 void playPoint();
-void playKill();
 void playScream();
 void playGrab();
 void playJump();

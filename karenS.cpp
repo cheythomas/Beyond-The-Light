@@ -285,12 +285,6 @@ void playPoint()
     }
 #endif
 }
-void playKill()
-{
-#ifdef ENABLE_AUDIO
-    alSourcePlay(alSource[4]);
-#endif
-}
 void playScream()
 {
 #ifdef ENABLE_AUDIO
