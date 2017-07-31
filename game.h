@@ -373,6 +373,7 @@ public:
     int keyCount;
     int spacebar;
     int hardSelection;
+    int ghostKilled;
     int lightning;
     int walkFrame;
     int walk;
@@ -424,6 +425,7 @@ public:
         spacebar = 0;
         hardSelection = 0;
         lightning = 0;
+        ghostKilled = 0;
         shock = 0;
         shockFrame = 0;
         shockImage = NULL;
