@@ -517,25 +517,36 @@ void renderHighScores()
 	globalSprite.scores[0]->setPos(x, y);
 	globalSprite.scores[0]->draw();
 	
-	int pts = gl.points;
+	int score = 0;
+	int lastscore = 0;
+	int bestscore = 0;
+	score = gl.points;
+	lastscore = gl.savescore;
+	bestscore = score;
+
+	if (score > lastscore) {
+		bestscore = score;
+	} else if (lastscore > score) {
+		bestscore = lastscore;
+	}			
 
 	Rect r;	
 	unsigned int c = 0x00FF0000;
 	r.left = gl.xres*0.33; // x
 	r.bot = gl.yres*.54;  // y axis
 	r.center = 0;
-	ggprint40(&r, 16, c, "Score                 %d", pts);
+	ggprint40(&r, 16, c, "Your score            %d", score);
+	r.bot = gl.yres*.40;  // y axis
+	ggprint40(&r, 16, c, "Best Score            %d", bestscore);
 
 	r.left = gl.xres*0.35; // x
 	r.bot = gl.yres*.04;  // y axis
 	r.center = 0;
 	ggprint16(&r, 16, c, "Press ESC for Main Menu");
-	// bug here
-	//if (gl.spacebar == 2) {
-	//	gl.state = STATE_GAMEPAUSE;
-	//}
-		
-	restart();	
+	
+	if (gl.escKey == 1) {	
+		restart();	
+	}
 }
 
 void redScreenFlash()
@@ -628,12 +639,14 @@ void hardMode()
 	}
 }
 
-void trackKills(int /*type*/)
+void trackKills(int)
 {
 	if (gl.hardSelection == 0) {
 		gl.points += 10;
+		gl.savescore += 10;
 	} else if (gl.hardSelection == 1) {
 		gl.points += 20;
+		gl.savescore += 20;
 	}
 	gl.ghostKilled++;
 }

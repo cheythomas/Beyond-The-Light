@@ -242,6 +242,9 @@ void checkKeys(XEvent *e)
 			}
         break;
     case XK_Escape:
+			if (gl.state == STATE_GAMEOVER) {
+				gl.escKey = 1;
+			}
         break;
     case XK_e:
         break;

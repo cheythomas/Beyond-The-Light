@@ -374,6 +374,8 @@ public:
     int hardSelection;
     int ghostKilled;
     int points;
+    int savescore;
+    int escKey;
     int lightning;
     int walkFrame;
     int walk;
@@ -427,6 +429,8 @@ public:
         lightning = 0;
         ghostKilled = 0;
         points = 0;
+        savescore = 0;
+        escKey = 0;
         shock = 0;
         shockFrame = 0;
         shockImage = NULL;
