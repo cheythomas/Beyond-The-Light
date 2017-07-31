@@ -625,6 +625,7 @@ void physicsGhosts()
 void lightningCollision(Enemy& en)
 {
     if (gl.lightning) {
+        playPoint();
         float x = gl.mortanaPos[0];
         float y = gl.mortanaPos[1];
         //center values from physicsLightSprite
@@ -681,13 +682,12 @@ void mortanaCollision()
             //Game over! %d\n", en.spriteId);
             gl.keepTrack = 10;
             gl.state = STATE_GAMEOVER;
-
             restart();
             return;
         }
         //check collision with lightning
         lightningCollision(en);
-        playPoint();
+    
         if (!en.alive) {
             it = gl.enemies.erase(it);
         }
@@ -980,7 +980,6 @@ void MainMenu::keyboardInput(int key)
                 gl.done = 1;
                 break;
             }
-
         }
         break;
     }

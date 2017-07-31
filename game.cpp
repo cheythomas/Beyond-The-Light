@@ -241,19 +241,23 @@ void checkKeys(XEvent *e)
         }
         break;
     case XK_h:
-        if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
-            gl.hardSelection = 1;
-        } else if (gl.hardSelection == 1) {
-            gl.hardSelection = 0;
+        if(gl.state == STATE_GAMEPLAY) {
+            if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
+                gl.hardSelection = 1;
+            } else if (gl.hardSelection == 1) {
+                gl.hardSelection = 0;
+            } 
         }
         break;
     case XK_Escape:
         break;
     case XK_j:
-        if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
-            gl.danceParty = 1;
-        } else if (gl.hardSelection == 1) {
-            gl.danceParty = 0;
+        if(gl.state == STATE_GAMEPLAY) {
+            if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
+                gl.danceParty = 1;
+            } else if (gl.hardSelection == 1) {
+                gl.danceParty = 0;
+            }
         }
         break;
     case XK_f:
@@ -315,7 +319,6 @@ void physics(void)
         }
         globalSprite.light[4]->physics();
         ghostRandom();
-
         mortanaCollision();
     }
 }
@@ -374,6 +377,8 @@ void render(void)
         glEnd();
         glDisable(GL_BLEND);
         glPopMatrix();
+
+
     }
 
 }
