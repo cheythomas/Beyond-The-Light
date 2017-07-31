@@ -25,6 +25,7 @@
 //macros
 #define MAX_BARS 3
 
+
 typedef double Flt;
 typedef double Vec[3];
 typedef Flt Matrix[4][4];
@@ -123,36 +124,24 @@ public:
     bool getReverse();
     float getAngle();
     void setAngle(float);
-    void collison();
+   // void collison();
     void GameOver();
     
 };
 
-void mortanaCollision();
 
 /*
  Enemy collision*/
 bool checkCircle(   double x1,  double y1, double x2, double y2, 
                     float r1, float r2);
-
-
+void mortanaCollision();
+void ghostRandom ();
 
     
     
 //restart functinality
 void restart();
     
-    
-        //nemyCollision; 
-//// going to intersect?
-//bool intersected;
-//// intersecting now?
-//bool intersect;
-//// 
-//Vec transVector;
-//void collision (Vec axis, float min, float max);
-
-
 
 
 
@@ -261,10 +250,9 @@ public:
         arr[MAX_BARS] = 540;
         bcount = 0;
     }
-    void chargeObject(); //was battappear
+    void energybarAppears(); //was battappear
     void drawBattery(void);
     void drawFlashlight();
-    void grabCharge(); //was grabBatt
     void healthBar(); //was delete
     void gameOver();
 };
@@ -379,8 +367,11 @@ public:
     int keyCount;
     int spacebar;
     int hardSelection;
+    int danceParty;
     int ghostKilled;
     int points;
+    int savescore;
+    int escKey;
     int lightning;
     int walkFrame;
     int walk;
@@ -432,9 +423,12 @@ public:
         keepTrack = 0;
         spacebar = 0;
         hardSelection = 0;
+        danceParty = 0;
         lightning = 0;
         ghostKilled = 0;
         points = 0;
+        savescore = 0;
+        escKey = 0;
         shock = 0;
         shockFrame = 0;
         shockImage = NULL;
@@ -508,6 +502,10 @@ void renderHighScores();
 void redScreenFlash();
 void hardMode();
 void trackKills(int);
+void renderText();
+void cheyRestart();
+void auroraRestart();
+void disco();
 
 void playSelection();
 void playClick();

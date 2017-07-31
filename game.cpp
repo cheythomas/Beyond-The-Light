@@ -1,4 +1,4 @@
-
+    
 #include "game.h"
 
 int main(void)
@@ -30,7 +30,7 @@ int main(void)
         }
 
         //Run physics at a fixed interval (60 times per second)
-        recordTime(&now);
+            recordTime(&now);
         double physicsCountDown = timeDiff(&last, &now);
         timeCopy(&last, &now);
         while (physicsCountDown >= physicsRate) {
@@ -165,7 +165,8 @@ void restart() {
     //when the game is over
     //example:
     //restartBattery();
-    
+    cheyRestart();    
+    auroraRestart();
 }
 
 void checkMouse(XEvent *e)
@@ -244,9 +245,14 @@ void checkKeys(XEvent *e)
 				gl.hardSelection = 0;
 			}
         break;
-    case XK_w:
+    case XK_Escape:                   
         break;
-    case XK_e:
+    case XK_j:
+			if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
+				gl.danceParty = 1;
+			} else if (gl.hardSelection == 1) {
+				gl.danceParty = 0;
+			}
         break;
     case XK_f:
         break;
@@ -291,7 +297,7 @@ void physics(void)
     //Only run physics when not in main menu
     //if(!gl.mainMenuOpen) {
     //   physicsCharacterSprites();
-    if (gl.state != STATE_STARTUP && gl.state != STATE_GAMEPAUSE) {
+    if (gl.state == STATE_GAMEPLAY) {
         physicsCharacterSprites();
         physicsGhosts();
         gl.camera[0] = -globalSprite.mortana->getPosX() + gl.xres / 2;
@@ -306,7 +312,10 @@ void physics(void)
             globalSprite.life[i]->physics();
         }
         globalSprite.light[4]->physics();
+        ghostRandom();
+     
         mortanaCollision();
+       //  ghostRandom();
     }
 }
 
@@ -323,21 +332,20 @@ void render(void)
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
        
-
         renderTutorial();
         gl.batt.chargeObject();
-//        renderTi(gl.select);
-        gl.batt.grabCharge();
+        gl.batt.grabCharge();       
         renderLifeBarSprite();
-//        gl.lev.renderBackground();
         gl.batt.chargeObject();
+        gl.batt.energybarAppears();
+        gl.lev.renderBackground();
         renderCharacterSprites();
         renderEnemySprites();
-        
-        hardMode(); 
+	hardMode(); 
+        disco(); 
+        renderText();
         renderLightSprite();
         redScreenFlash();
-
         glPopMatrix();
     } else if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {
         renderMenuBackground();
@@ -349,6 +357,7 @@ void render(void)
     } else if (gl.state == STATE_GAMEOVER) {
         gl.batt.gameOver();
         renderGameOverSprite();
+        
     }
     
     if (gl.keys['y'] && gl.keys['b']) {

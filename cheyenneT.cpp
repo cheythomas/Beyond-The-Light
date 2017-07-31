@@ -42,7 +42,7 @@ public:
 } timers;
 
 
-void Battery::chargeObject()
+void Battery::energybarAppears()
 {
 	// a energy bar on the ground
 	if (gl.keepTrack == 3 || gl.keepTrack == 9) {
@@ -74,22 +74,39 @@ void Battery::chargeObject()
 		glPopMatrix();
 
 		Rect r;
-		r.bot = 70; // y-axis
+		r.bot = 80; // y-axis
 		r.left = 691; // x-axis
 		r.center = 0;
 		unsigned int c = 0x00ffff44;
 		ggprint8b(&r, 16, c, "Press R to collect");
+		r.left = 2941; // x-axis
+		ggprint8b(&r, 16, c, "Press R to collect");
 	}
 }
 
-void Battery::grabCharge()
+void renderText()
 {
 	Rect r;
 	unsigned int c = 0x00ffff44;
-	r.left = -gl.camera[0] + 100; // x
-	r.bot = gl.yres-20;  // y axis
-	r.center = 0;
-	ggprint8b(&r, 16, c, "h - turn on/off Hard Mode");
+	if (gl.hardSelection == 0) {
+		r.left = -gl.camera[0] + 100; // x
+		r.bot = gl.yres-20;  // y axis
+		r.center = 0;
+		ggprint8b(&r, 16, c, "h - turn on/off Hard Mode");
+	
+		int pts = gl.points;
+		r.left = -gl.camera[0] + (gl.xres*.9); // x
+		r.bot = gl.yres*.04;  // y axis
+		r.center = 0;
+		ggprint16(&r, 16, c, "score: %d", pts);
+	} else if(gl.hardSelection == 1) {
+		int pts = gl.points;
+		r.left = -gl.camera[0] + (gl.xres*.9); // x
+		r.bot = gl.yres*.04;  // y axis
+		r.center = 0;
+		ggprint16(&r, 16, c, "score: %d", pts);
+	}
+
 }
 
 class energyBar : public Sprite {
@@ -281,7 +298,7 @@ void Battery::gameOver()
 	
 		if (gl.spacebar == 1) {
 			gl.state = STATE_HIGHSCORE;
-		}	
+		}
 	}
 }
 
@@ -398,7 +415,7 @@ void initCreditBackground()
 	globalSprite.credits[7] = new Sprite("creditThanks.png", 1, 1, 1, 1, 50, 200);
 	globalSprite.credits[8] = new Sprite("creditG.png", 1, 1, 1, 1, 30, 200);
 	globalSprite.credits[9] = new Sprite("creditCats.png", 1, 1, 1, 1, 30, 200);
-	globalSprite.credits[10] = new Sprite("creditParents.png", 1, 1, 1, 1, 30, 200);
+	globalSprite.credits[10] = new Sprite("creditJosie.png", 1, 1, 1, 1, 30, 200);
 }
 
 void renderCreditBackground()
@@ -445,7 +462,7 @@ void renderCreditBackground()
 		globalSprite.credits[0]->setPos(x, y);
 		x = gl.xres/2; //800 
 		y = gl.yres*.76;  //600
-		for (int i = 1; i < 10; i++) {
+		for (int i = 1; i < 11; i++) {
 			globalSprite.credits[i]->draw();
 			globalSprite.credits[i]->setPos(x, y);
 			if (i%2 == 1 && i < 8) {
@@ -504,30 +521,43 @@ void renderHighScores()
 	globalSprite.scores[0]->setPos(x, y);
 	globalSprite.scores[0]->draw();
 	
-	int pts = 0;
-	//pts = scorePoints();
+	int score = 0;
+	int lastscore = 0;
+	int bestscore = 0;
+	score = gl.points;
+	lastscore = gl.savescore;
+	bestscore = score;
+
+	if (score > lastscore) {
+		bestscore = score;
+	} else if (lastscore > score) {
+		bestscore = lastscore;
+	}			
 
 	Rect r;	
 	unsigned int c = 0x00FF0000;
 	r.left = gl.xres*0.33; // x
 	r.bot = gl.yres*.54;  // y axis
 	r.center = 0;
-	ggprint40(&r, 16, c, "Score             %d", pts);
+	ggprint40(&r, 16, c, "Your score            %d", score);
+	r.bot = gl.yres*.40;  // y axis
+	ggprint40(&r, 16, c, "Best Score            %d", bestscore);
 
 	r.left = gl.xres*0.35; // x
-	r.bot = gl.yres*.041;  // y axis
+	r.bot = gl.yres*.04;  // y axis
 	r.center = 0;
 	ggprint16(&r, 16, c, "Press ESC for Main Menu");
-	// bug here
-	//if (gl.spacebar == 2) {
-	//	gl.state = STATE_GAMEPAUSE;
-	//}
+	
+	if (gl.escKey == 1) {	
+		restart();	
+	}
 }
 
 void redScreenFlash()
 {
 	timers.recordTime(&timers.timeCurrent);
-	double timeSpan = timers.timeDiff(&timers.gameTime, &timers.timeCurrent);
+	double timeSpan = 
+	timers.timeDiff(&timers.gameTime, &timers.timeCurrent);
 	
 	float w, h, z, x, y;
 	w = gl.xres; // width size
@@ -562,7 +592,8 @@ void redScreenFlash()
 void hardMode()
 {
 	timers.recordTime(&timers.timeCurrent);
-	double timeSpan = timers.timeDiff(&timers.modeTime, &timers.timeCurrent);
+	double timeSpan = 
+		timers.timeDiff(&timers.modeTime, &timers.timeCurrent);
 	if (gl.hardSelection == 1) {
 		float w, h, z, x, y;
 		w = gl.xres; // width size
@@ -620,5 +651,97 @@ void trackKills(int)
 		gl.points += 20;
 	}
 	gl.ghostKilled++;
+	gl.savescore = gl.points;
 }
 
+void cheyRestart()
+{
+	gl.points = 0;
+	gl.keyCount = 0;
+	globalSprite.life[10]->draw();
+	gl.hardSelection = 0;
+}
+
+// special feature
+void disco()
+{
+	timers.recordTime(&timers.timeCurrent);
+	double timeSpan = 
+		timers.timeDiff(&timers.modeTime, &timers.timeCurrent);
+	if (gl.danceParty == 1) {
+		float w, h, z, x, y;
+		w = gl.xres; // width size
+		h = gl.yres; // length size
+		z = 0;
+		x = -gl.camera[0]; // x-axis
+		y = gl.yres/2; // y-axis
+		int flash = 0;
+
+		if (timeSpan > 0.5) {
+			timers.timeCopy(&timers.modeTime, &timers.timeCurrent);
+			flash++;
+		}
+		
+		if (gl.keepTrack >= 0) {
+			glColor4f(1.0, 0.0, 0.0, 0.4); 
+			glPushMatrix();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glTranslatef(x, y, z);
+			glBegin(GL_QUADS);
+				glVertex2i(-w, -h);
+				glVertex2i(-w,  h);
+				glVertex2i( w,  h);
+				glVertex2i( w, -h);
+			glEnd();
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		}
+		// flash screen
+		if (timeSpan > 0.2) {
+			glColor4f(0.0, 1.0, 0.0, 0.4);
+			glPushMatrix();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glTranslatef(x, y, z);
+			glBegin(GL_QUADS);
+				glVertex2i(-w, -h);
+				glVertex2i(-w,  h);
+				glVertex2i( w,  h);
+				glVertex2i( w, -h);
+			glEnd();
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		} 
+		if (timeSpan > 0.1) {
+			glColor4f(0.0, 0.0, 1.0, 0.4);
+			glPushMatrix();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glTranslatef(x, y, z);
+			glBegin(GL_QUADS);
+				glVertex2i(-w, -h);
+				glVertex2i(-w,  h);
+				glVertex2i( w,  h);
+				glVertex2i( w, -h);
+			glEnd();
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		}
+		if (timeSpan > 0.3) {
+			glColor4f(1.0, 1.0, 1.0, 0.4);
+			glPushMatrix();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glTranslatef(x, y, z);
+			glBegin(GL_QUADS);
+				glVertex2i(-w, -h);
+				glVertex2i(-w,  h);
+				glVertex2i( w,  h);
+				glVertex2i( w, -h);
+			glEnd();
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		}
+	}
+}

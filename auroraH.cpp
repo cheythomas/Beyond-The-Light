@@ -59,6 +59,7 @@
 #include <complex>
 #include <valarray>
 #include "game.h"
+//#include <random>
 
 // Facilitating sprite animations for team members
 //For simplifying sprite animations
@@ -380,9 +381,9 @@ void initCharacterSprites()
     globalSprite.blkcatsit->setRepeating(false);
 
     //add enemy characters
-    gl.enemies.push_back(Enemy(gl.xres / 2 + 250, 100, 0));
-    gl.enemies.push_back(Enemy(gl.xres / 2 + 300, 200, 1));
-    gl.enemies.push_back(Enemy(gl.xres / 2 + 350, 300, 2));
+//    gl.enemies.push_back(Enemy(gl.xres / 2 + 250, 100, 0));
+//    gl.enemies.push_back(Enemy(gl.xres / 2 + 300, 200, 1));
+//    gl.enemies.push_back(Enemy(gl.xres / 2 + 350, 300, 2));
 
 }
 
@@ -574,21 +575,31 @@ void renderEnemySprites()
     }
 }
 
+void moveGhostToMortana(Enemy& enemy)
+{    
+    float   mx = gl.mortanaPos[0],
+            my = gl.mortanaPos[1];
+    float   cx1 = enemy.x,
+            cy1 = enemy.y;
+
+    float movePixels = rnd() * 10;
+    float moveVerticalAlso = rnd() * 0.5;
+    //angle etween mortana and ghost
+    float angle = std::atan2(my - cy1, mx - cx1); 
+    //Find components of vector
+    float velX = movePixels* std::cos(angle) + moveVerticalAlso;
+    float velY = movePixels* std::sin(angle);
+    enemy.x += velX;
+    enemy.y += velY;    
+}
+
 void physicsPinkGhost(Enemy& enemy)
 {
     Sprite* pghost = globalSprite.pinkghost;
     pghost->setFrameIndex(enemy.frameIndex);
-    pghost->physics();
-    float cx1 = enemy.x,
-            cy1 = enemy.y;
-
-
-    cx1 += 1;
-
+    pghost->physics();    
     enemy.frameIndex = pghost->getFrameIndex();
-    enemy.x = cx1;
-    enemy.y = cy1;
-
+    moveGhostToMortana(enemy);
 }
 
 void physicsWhiteGhost(Enemy& enemy)
@@ -596,18 +607,9 @@ void physicsWhiteGhost(Enemy& enemy)
 
     Sprite* gs = globalSprite.whiteghost;
     gs->setFrameIndex(enemy.frameIndex);
-    gs->physics();
-    float cx2 = enemy.x,
-            cy2 = enemy.y;
-
-
-
-    cx2 += 1;
-
+    gs->physics();    
     enemy.frameIndex = gs->getFrameIndex();
-    enemy.x = cx2;
-    enemy.y = cy2;
-
+    moveGhostToMortana(enemy);
 }
 
 void physicsPacGhost(Enemy& enemy)
@@ -615,13 +617,8 @@ void physicsPacGhost(Enemy& enemy)
     Sprite* gs = globalSprite.pacghost;
     gs->setFrameIndex(enemy.frameIndex);
     gs->physics();
-    float cx2 = enemy.x,
-            cy2 = enemy.y;
-
-    cx2 += 1;
     enemy.frameIndex = gs->getFrameIndex();
-    enemy.x = cx2;
-    enemy.y = cy2;
+    moveGhostToMortana(enemy);
 }
 
 void physicsGhosts()
@@ -699,18 +696,32 @@ void mortanaCollision(){
                     mortanaRadius, radiusEnemy);
         
         if(Collision) {            
-            printf("There is a direct collision with Mortana and ghost: Game over! %d\n", en.spriteId);
+           // printf("There is a direct collision with Mortana and ghost: Game over! %d\n", en.spriteId);
             gl.keepTrack = 10;
             gl.state = STATE_GAMEOVER;
+            return;
         }
         //check collision with lightning
         lightningCollision(en);
-        if(!en.alive) {
+        if(!en.alive){
+            //gl.state = STATE_GAMEOVER;
             it = gl.enemies.erase(it);
-        }
-    }
+           gl.state = STATE_GAMEOVER;
+            
+        } 
+
+    } 
 }
 //generate randomness for ghosts 
+void ghostRandom (){
+    //Increase ghost random creation for every 100 points 
+    if (rand()% (60 - gl.points / 100) == 0){ //rate of spawning        
+        float x = (rand() % gl.xres)/2 + gl.mortanaPos[0];
+        float y =  (rand() % (gl.yres-350)) + 350;
+        Enemy en(x, y, rand () % 3);
+        gl.enemies.push_back(en);
+    }    
+}
 
 
 bool checkCircle(   double x1,  double y1, double x2, double y2, 
@@ -945,8 +956,14 @@ void MainMenu::keyboardInput(int key)
         }
      break;
     case XK_Escape:
-        if (gl.state == STATE_GAMEPAUSE) {
+        if(gl.state == STATE_STARTUP) {
+            gl.done = 1;
+        } else if(gl.state == STATE_GAMEPAUSE) {
             gl.state = STATE_GAMEPLAY;
+        } else if(gl.state == STATE_GAMEOVER) {
+            gl.state = STATE_STARTUP;
+            printf("Restarted the game!\n");
+            restart();
         } else {
             gl.state = STATE_GAMEPAUSE;
         }
@@ -985,3 +1002,14 @@ void MainMenu::keyboardInput(int key)
         break;
         }
     }
+
+
+void auroraRestart() {
+    //get rid of enemies
+    gl.enemies.clear();
+    gl.mortanaPos[0] = gl.xres / 2;
+    gl.mortanaPos[1] = 100;
+    // blkcat
+    gl.catPos[0] = gl.xres / 2;
+    gl.catPos[1] = 70;
+}
