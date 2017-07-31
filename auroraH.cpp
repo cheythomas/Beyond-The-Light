@@ -699,13 +699,14 @@ void mortanaCollision(){
            // printf("There is a direct collision with Mortana and ghost: Game over! %d\n", en.spriteId);
             gl.keepTrack = 10;
             gl.state = STATE_GAMEOVER;
+            return;
         }
         //check collision with lightning
         lightningCollision(en);
         if(!en.alive){
             //gl.state = STATE_GAMEOVER;
             it = gl.enemies.erase(it);
-           //gl.state = STATE_GAMEOVER;
+           gl.state = STATE_GAMEOVER;
             
         } 
 
@@ -955,8 +956,14 @@ void MainMenu::keyboardInput(int key)
         }
      break;
     case XK_Escape:
-        if (gl.state == STATE_GAMEPAUSE) {
+        if(gl.state == STATE_STARTUP) {
+            gl.done = 1;
+        } else if(gl.state == STATE_GAMEPAUSE) {
             gl.state = STATE_GAMEPLAY;
+        } else if(gl.state == STATE_GAMEOVER) {
+            gl.state = STATE_STARTUP;
+            printf("Restarted the game!\n");
+            restart();
         } else {
             gl.state = STATE_GAMEPAUSE;
         }
@@ -995,3 +1002,14 @@ void MainMenu::keyboardInput(int key)
         break;
         }
     }
+
+
+void auroraRestart() {
+    //get rid of enemies
+    gl.enemies.clear();
+    gl.mortanaPos[0] = gl.xres / 2;
+    gl.mortanaPos[1] = 100;
+    // blkcat
+    gl.catPos[0] = gl.xres / 2;
+    gl.catPos[1] = 70;
+}

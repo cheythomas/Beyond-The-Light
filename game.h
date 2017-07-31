@@ -495,6 +495,7 @@ void hardMode();
 void trackKills(int);
 void renderText();
 void cheyRestart();
+void auroraRestart();
 void disco();
 
 #endif /* GAME_H */

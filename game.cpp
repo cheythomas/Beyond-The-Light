@@ -1,4 +1,4 @@
-
+    
 #include "game.h"
 
 int main(void)
@@ -29,7 +29,7 @@ int main(void)
         }
 
         //Run physics at a fixed interval (60 times per second)
-        recordTime(&now);
+            recordTime(&now);
         double physicsCountDown = timeDiff(&last, &now);
         timeCopy(&last, &now);
         while (physicsCountDown >= physicsRate) {
@@ -162,7 +162,8 @@ void restart() {
     //when the game is over
     //example:
     //restartBattery();
-	cheyRestart();    
+    cheyRestart();    
+    auroraRestart();
 }
 
 void checkMouse(XEvent *e)
@@ -241,10 +242,7 @@ void checkKeys(XEvent *e)
 				gl.hardSelection = 0;
 			}
         break;
-    case XK_Escape:
-			if (gl.state == STATE_GAMEOVER) {
-				gl.escKey = 1;
-			}
+    case XK_Escape:                   
         break;
     case XK_j:
 			if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
@@ -296,7 +294,7 @@ void physics(void)
     //Only run physics when not in main menu
     //if(!gl.mainMenuOpen) {
     //   physicsCharacterSprites();
-    if (gl.state != STATE_STARTUP && gl.state != STATE_GAMEPAUSE) {
+    if (gl.state == STATE_GAMEPLAY) {
         physicsCharacterSprites();
         physicsGhosts();
         gl.camera[0] = -globalSprite.mortana->getPosX() + gl.xres / 2;
@@ -311,7 +309,7 @@ void physics(void)
             globalSprite.life[i]->physics();
         }
         globalSprite.light[4]->physics();
-       ghostRandom();
+        ghostRandom();
      
         mortanaCollision();
        //  ghostRandom();
