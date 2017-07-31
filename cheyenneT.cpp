@@ -535,20 +535,27 @@ void renderHighScores()
 	Rect r;	
 	unsigned int c = 0x00FF0000;
 	r.left = gl.xres*0.33; 
-	r.bot = gl.yres*.54;  
+	r.bot = gl.yres*.58;  
 	r.center = 0;
-	ggprint40(&r, 16, c, "Your score            %d", score);
-	r.bot = gl.yres*.40;  
-	ggprint40(&r, 16, c, "Best Score            %d", bestscore);
+	
+	ggprint40(&r, 16, c, "Overall Scores");
+	ggprint17(&r, 16, c, " ");
+	//printf("Rendering %d scores\n", gl.scores.size());
+	for (unsigned int i = 0; i < gl.scores.size(); i++) {
+		Score s = gl.scores[i];
+		ggprint17(&r, 32, c, "%s - %d", s.name.c_str(), s.score);
+	}
+	
+	r.bot = gl.yres*.32;  
+	ggprint40(&r, 16, c, "Your high score            %d", score);
+	r.bot = gl.yres*.20;  
+	ggprint40(&r, 16, c, "Best Score                     %d", bestscore);
 
 	r.left = gl.xres*0.35; 
 	r.bot = gl.yres*.04;  
 	r.center = 0;
 	ggprint16(&r, 16, c, "Press ESC for Main Menu");
 	
-	//if (gl.escKey == 1) {	
-	//	restart();	
-	//}
 }
 
 // Screen flashes once down to last life bar
@@ -652,6 +659,7 @@ void trackKills(int)
 	gl.savescore = gl.points;
 }
 
+// When game is over, reset values for Restart game/Play again
 void cheyRestart()
 {
 	gl.points = 0;
@@ -660,6 +668,7 @@ void cheyRestart()
 	gl.hardSelection = 0;
 }
 
+// special
 void disco()
 {
 	timers.recordTime(&timers.timeCurrent);
