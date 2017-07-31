@@ -126,7 +126,6 @@ public:
     
 };
 
-void lightningCollision();
 void mortanaCollision();
 
 /*
@@ -347,13 +346,14 @@ class Enemy {
 public:
 
     Enemy(float x, float y, int spriteId) :
-    x(x), y(y), spriteId(spriteId), frameIndex(0)
+    x(x), y(y), spriteId(spriteId), frameIndex(0), alive(true)
     {
     }
 
     float x, y;
     int spriteId;
     int frameIndex;
+    bool alive;
 };
 
 class Global {

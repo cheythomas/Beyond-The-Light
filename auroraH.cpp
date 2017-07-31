@@ -380,9 +380,9 @@ void initCharacterSprites()
     globalSprite.blkcatsit->setRepeating(false);
 
     //add enemy characters
-    gl.enemies.push_back(Enemy(gl.xres / 2, 100, 0));
-    gl.enemies.push_back(Enemy(gl.xres / 2, 200, 1));
-    gl.enemies.push_back(Enemy(gl.xres / 2, 300, 2));
+    gl.enemies.push_back(Enemy(gl.xres / 2 + 250, 100, 0));
+    gl.enemies.push_back(Enemy(gl.xres / 2 + 300, 200, 1));
+    gl.enemies.push_back(Enemy(gl.xres / 2 + 350, 300, 2));
 
 }
 
@@ -495,7 +495,6 @@ void physicsMortana()
         } else {
             //in the air            
             globalSprite.mortanaJump->physics();
-            printf("Flying(VelY: %f, Y: %f)!\n", velY, cy);
             velY -= 9.81;
             cy += 0.25 * velY;
             if (cy <= 100) {
@@ -648,41 +647,69 @@ void physicsGhosts()
 // **
 // COLLISION
 //**
+void lightningCollision(Enemy& en) {
+    if(gl.lightning) {
+        float x = gl.mortanaPos[0];
+        float y = gl.mortanaPos[1];    
+        //center values from physicsLightSprite
+        switch(gl.lightning) {
+            case 1:
+                x += 120;
+                break;
+            case 2:
+                x += 106;
+                y += 128;
+                break;
+            case 3:
+                y += 128;
+                break;
+            case 4:
+                x -= 106;
+                y += 90;
+                break;
+            case 5:
+                x -= 120;
+                break;
+            default:
+                break;
+        }
+        bool Collision = checkCircle(
+                    en.x, en.y, 
+                    x, y, 
+                    25, 75);
+        if(Collision) {
+            printf("A lighting hit a ghost (%d)!\n", en.spriteId);
+            en.alive = false;
+        }
+    }    
+}
+
 void mortanaCollision(){
     
-    for (unsigned int i = 0; i < gl.enemies.size(); i++){
-        Enemy& en = gl.enemies[i];
-        
-        float radiusEnemy = 0;
+    for (   std::vector<Enemy>::iterator it = gl.enemies.begin(), end = gl.enemies.end(); 
+            it != end; it++) {
+        Enemy& en = *it;        
+        float radiusEnemy = 25;
         float mortanaRadius = 75;
-        switch(en.spriteId) {
-            case 0: //pink
-                radiusEnemy = 25;
-                break;
-            case 1: //pac
-                radiusEnemy = 25;
-                break;
-            case 2: //white
-                radiusEnemy = 25;
-                break;            
-        }
         
         bool Collision = checkCircle(
                     en.x, en.y, 
                     gl.mortanaPos[0], gl.mortanaPos[1], 
                     mortanaRadius, radiusEnemy);
         
-        if(Collision) {
-            printf("There is a direct collision with Mortana and ghost %d\n", en.spriteId);
+        if(Collision) {            
+            printf("There is a direct collision with Mortana and ghost: Game over! %d\n", en.spriteId);
+            gl.keepTrack = 10;
+            gl.state = STATE_GAMEOVER;
+        }
+        //check collision with lightning
+        lightningCollision(en);
+        if(!en.alive) {
+            it = gl.enemies.erase(it);
         }
     }
 }
-void lightningCollision(){
-    
-    
-    
-    
-}
+
 
 bool checkCircle(   double x1,  double y1, double x2, double y2, 
                     float r1, float r2){

@@ -301,7 +301,6 @@ void physics(void)
         }
         globalSprite.light[4]->physics();
         mortanaCollision();
-        lightningCollision();
     }
 }
 
