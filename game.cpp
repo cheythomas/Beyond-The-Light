@@ -306,9 +306,10 @@ void physics(void)
             globalSprite.life[i]->physics();
         }
         globalSprite.light[4]->physics();
-        ghostRandom();
+       ghostRandom();
      
         mortanaCollision();
+       //  ghostRandom();
     }
 }
 
@@ -346,6 +347,7 @@ void render(void)
     } else if (gl.state == STATE_GAMEOVER) {
         gl.batt.gameOver();
         renderGameOverSprite();
+        
     }
   
 }

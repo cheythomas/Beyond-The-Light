@@ -696,16 +696,20 @@ void mortanaCollision(){
                     mortanaRadius, radiusEnemy);
         
         if(Collision) {            
-            printf("There is a direct collision with Mortana and ghost: Game over! %d\n", en.spriteId);
+           // printf("There is a direct collision with Mortana and ghost: Game over! %d\n", en.spriteId);
             gl.keepTrack = 10;
             gl.state = STATE_GAMEOVER;
         }
         //check collision with lightning
         lightningCollision(en);
-        if(!en.alive) {
+        if(!en.alive){
+            //gl.state = STATE_GAMEOVER;
             it = gl.enemies.erase(it);
-        }
-    }
+           gl.state = STATE_GAMEOVER;
+            
+        } 
+
+    } 
 }
 //generate randomness for ghosts 
 void ghostRandom (){
