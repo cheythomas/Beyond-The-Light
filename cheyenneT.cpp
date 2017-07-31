@@ -513,11 +513,11 @@ void renderHighScores()
 	r.left = gl.xres*0.35; // x
 	r.bot = gl.yres*.041;  // y axis
 	r.center = 0;
-	ggprint16(&r, 16, c, "Press spacebar for Main Menu");
-	
-	if (gl.spacebar == 2) {
-		gl.state = STATE_GAMEPAUSE;
-	}
+	ggprint16(&r, 16, c, "Press ESC for Main Menu");
+	// bug here
+	//if (gl.spacebar == 2) {
+	//	gl.state = STATE_GAMEPAUSE;
+	//}
 }
 
 void redScreenFlash()
