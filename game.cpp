@@ -167,6 +167,7 @@ void restart() {
     //restartBattery();
     cheyRestart();    
     auroraRestart();
+    printf("Restarted the game!\n");
 }
 
 void checkMouse(XEvent *e)

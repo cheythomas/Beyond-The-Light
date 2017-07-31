@@ -207,6 +207,7 @@ void renderLifeBarSprite()
 		globalSprite.life[10]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 10;
 		gl.state = STATE_GAMEOVER;
+		restart();
 	}
 	
 	int pressedR = 0;
@@ -224,6 +225,7 @@ void renderLifeBarSprite()
 				else if (gl.keepTrack > 0) {
 					ggprint8b(&r, 16, c, "nice!");
 					pressedR = 1;
+					playGrab();
 				}
 			}
 		}
@@ -238,7 +240,6 @@ void renderLifeBarSprite()
 }
 
 class GameOver : public Sprite {
-   
 	
 	public:
 	GameOver (const std::string & filename, float height, float width) :
@@ -256,13 +257,10 @@ void initGameOverSprite()
 
 void renderGameOverSprite()
 {     
-    
-
 	int x = gl.xres*0.538; //800 
 	int y = gl.yres*0.5;  //600
 
 	if (gl.keepTrack == 10) {
-
 		globalSprite.gameover->draw();
 		globalSprite.gameover->setPos(x, y);
 	}
@@ -524,8 +522,8 @@ void renderHighScores()
 	int score = 0;
 	int lastscore = 0;
 	int bestscore = 0;
-	score = gl.points;
-	lastscore = gl.savescore;
+	score = gl.savescore;
+	lastscore = score;
 	bestscore = score;
 
 	if (score > lastscore) {
@@ -548,9 +546,9 @@ void renderHighScores()
 	r.center = 0;
 	ggprint16(&r, 16, c, "Press ESC for Main Menu");
 	
-	if (gl.escKey == 1) {	
-		restart();	
-	}
+	//if (gl.escKey == 1) {	
+	//	restart();	
+	//}
 }
 
 void redScreenFlash()
