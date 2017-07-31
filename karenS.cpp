@@ -134,12 +134,9 @@ void renderBackgroundSprites()
     glEnd();
 }
 
-ALuint alBuffer[9]; //Number of Files
-ALuint alSource[9];
-bool played = false;
-bool muted = false;
+ALuint alBuffer[10];
+ALuint alSource[10];
 ALint statel;
-int blastsPlaying = 0;
 
 void setupAudio()
 {
@@ -151,7 +148,7 @@ void setupAudio()
     }
     alGetError();
 
-    float vec[9] = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f};
+    float vec[6] = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f};
     alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
     alListenerfv(AL_ORIENTATION, vec);
     alListenerf(AL_GAIN, 1.0f);
@@ -165,71 +162,80 @@ void setupAudio()
     alBuffer[6] = alutCreateBufferFromFile("./sound/scream.wav"); //girl die scream
     alBuffer[7] = alutCreateBufferFromFile("./sound/jump.wav"); //girl jumps
     alBuffer[8] = alutCreateBufferFromFile("./sound/grab.wav"); //grabs object
+    alBuffer[9] = alutCreateBufferFromFile("./sound/kitty.wav"); //grabs object
+
    
-    alGenSources(9, alSource);
+    alGenSources(10, alSource);
    
     alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
     alSourcef(alSource[0], AL_GAIN, 1.0f);
     alSourcef(alSource[0], AL_PITCH, 1.0f);
     alSourcef(alSource[0], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
-        printf("ERROR: settings\n");
+        printf("Audio setup error\n");
     }
     alSourcei(alSource[1], AL_BUFFER, alBuffer[1]);
     alSourcef(alSource[1], AL_GAIN, 1.0f);
     alSourcef(alSource[1], AL_PITCH, 1.0f);
     alSourcef(alSource[1], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
-        printf("ERROR: settings\n");
+        printf("Audio setup error\n");
     }  
     alSourcei(alSource[2], AL_BUFFER, alBuffer[2]);
     alSourcef(alSource[2], AL_GAIN, 1.0f);
     alSourcef(alSource[2], AL_PITCH, 1.0f);
     alSourcef(alSource[2], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
-        printf("ERROR: settings\n");
+        printf("Audio setup error\n");
     }
     alSourcei(alSource[3], AL_BUFFER, alBuffer[3]);
     alSourcef(alSource[3], AL_GAIN, 1.0f);
     alSourcef(alSource[3], AL_PITCH, 1.1f);
     alSourcef(alSource[3], AL_LOOPING, AL_TRUE);
     if (alGetError() != AL_NO_ERROR) {
-        printf("ERROR: settings\n");
+        printf("Audio setup error\n");
     }
     alSourcei(alSource[4], AL_BUFFER, alBuffer[4]);
     alSourcef(alSource[4], AL_GAIN, 0.3f);
     alSourcef(alSource[4], AL_PITCH, 1.0f);
     alSourcef(alSource[4], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
-        printf("ERROR: settings\n");
+        printf("Audio setup error\n");
     }  
     alSourcei(alSource[5], AL_BUFFER, alBuffer[5]);
     alSourcef(alSource[5], AL_GAIN, 1.0f);
     alSourcef(alSource[5], AL_PITCH, 1.0f);
     alSourcef(alSource[5], AL_LOOPING, AL_TRUE);
     if (alGetError() != AL_NO_ERROR) {
-        printf("ERROR: settings\n");
+        printf("Audio setup error\n");
     }
     alSourcei(alSource[6], AL_BUFFER, alBuffer[6]);
     alSourcef(alSource[6], AL_GAIN, 1.0f);
     alSourcef(alSource[6], AL_PITCH, 1.0f);
     alSourcef(alSource[6], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
-        printf("ERROR: settings\n");
+        printf("Audio setup error\n");
     }  
     alSourcei(alSource[7], AL_BUFFER, alBuffer[7]);
     alSourcef(alSource[7], AL_GAIN, 1.0f);
     alSourcef(alSource[7], AL_PITCH, 1.0f);
     alSourcef(alSource[7], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
-        printf("ERROR: settings\n");
+        printf("Audio setup error\n");
     }  
     alSourcei(alSource[8], AL_BUFFER, alBuffer[8]);
     alSourcef(alSource[8], AL_GAIN, 1.0f);
     alSourcef(alSource[8], AL_PITCH, 1.0f);
     alSourcef(alSource[8], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
-        printf("ERROR: settings\n");
+        printf("Audio setup error\n");
+    }  
+    alSourcei(alSource[9], AL_BUFFER, alBuffer[9]);
+    alSourcef(alSource[9], AL_GAIN, 0.15f);
+    alSourcef(alSource[9], AL_PITCH, 1.0f);
+    alSourcef(alSource[9], AL_LOOPING, AL_FALSE);
+    if (alGetError() != AL_NO_ERROR) {
+        printf("Audio setup error\n");
     }  
 #endif
 }
@@ -246,6 +252,8 @@ void cleanupAudio()
     alDeleteSources(1, &alSource[6]);
     alDeleteSources(1, &alSource[7]);
     alDeleteSources(1, &alSource[8]);
+    alDeleteSources(1, &alSource[9]);
+
 
     alDeleteBuffers(1, &alBuffer[0]);
     alDeleteBuffers(1, &alBuffer[1]);
@@ -256,6 +264,8 @@ void cleanupAudio()
     alDeleteSources(1, &alSource[6]);
     alDeleteSources(1, &alSource[7]);
     alDeleteSources(1, &alSource[8]);
+    alDeleteSources(1, &alSource[9]);
+
 
     ALCcontext *Context = alcGetCurrentContext();
     ALCdevice *Device = alcGetContextsDevice(Context);
@@ -306,6 +316,14 @@ void playGrab()
     }
 #endif
 }
+
+void playMeow()
+{
+#ifdef ENABLE_AUDIO
+    alSourcePlay(alSource[9]);
+#endif
+}
+
 void physicsAudio()
 {
 #ifdef ENABLE_AUDIO
