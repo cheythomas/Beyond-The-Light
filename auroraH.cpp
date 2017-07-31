@@ -5,7 +5,7 @@
 //Week 4:
 //Added initialization, physics and render funcs for Sprite
 //Added first sprite
-//characterGirl credit: 
+//characterGirl credit:
 //http://hordana.deviantart.com/art/Anime-girl-Walk-486317319
 //Tested main character sprite
 /**/
@@ -18,7 +18,7 @@
 
 /*********************************************************/
 //Week 7
-//Main menu: Game paused option, pauses game 
+//Main menu: Game paused option, pauses game
 //Main menu: Highlight option ready
 //Main menu: add enums to handle menu options
 //Add movement, keys to Mortana
@@ -37,7 +37,7 @@
 // Menu item and user tutorial
 // Connection for High Scores
 // Credits button
-// Collision detection for ghosts 
+// Collision detection for ghosts
 /*****************************************************/
 
 #include <stdio.h>
@@ -168,7 +168,7 @@ void Sprite::physics()
 
         double timeSpan = timeDiff(&time, &current);
         if (timeSpan > delay) {
-            //next frame            
+            //next frame
             if (!reverse) {
                 if (currentFrame + 1 < frameCount) {
                     ++currentFrame;
@@ -422,7 +422,7 @@ void physicsMortana()
                 catx = gl.catPos[0],
                 caty = gl.catPos[1];
         //printf("Pos(X: %f, Y: %f)\n", cx, cy);
-        if (cy <= 100) { //If on the ground check 
+        if (cy <= 100) { //If on the ground check
             m->setVisible(true);
             if (gl.keys[XK_Up]) {
                 velY += 100;
@@ -447,7 +447,7 @@ void physicsMortana()
                     mj->setDirection(1);
                 }
                 if (catx > cx - catDistance) {
-                    //cat is on the right side of mortana                    
+                    //cat is on the right side of mortana
                     catx -= 3;
                     catsit->setVisible(true);
                     catsit->physics();
@@ -482,7 +482,7 @@ void physicsMortana()
                 }
                 //pcatsit->reset();
             } else {
-                //let cat sit down   
+                //let cat sit down
                 catsit->setVisible(true);
                 catsit->physics();
                 if (catx < cx - catDistanceSit) {
@@ -494,7 +494,7 @@ void physicsMortana()
                 }
             }
         } else {
-            //in the air            
+            //in the air
             globalSprite.mortanaJump->physics();
             velY -= 9.81;
             cy += 0.25 * velY;
@@ -576,7 +576,7 @@ void renderEnemySprites()
 }
 
 void moveGhostToMortana(Enemy& enemy)
-{    
+{
     float   mx = gl.mortanaPos[0],
             my = gl.mortanaPos[1];
     float   cx1 = enemy.x,
@@ -585,19 +585,19 @@ void moveGhostToMortana(Enemy& enemy)
     float movePixels = rnd() * 10;
     float moveVerticalAlso = rnd() * 0.5;
     //angle etween mortana and ghost
-    float angle = std::atan2(my - cy1, mx - cx1); 
+    float angle = std::atan2(my - cy1, mx - cx1);
     //Find components of vector
     float velX = movePixels* std::cos(angle) + moveVerticalAlso;
     float velY = movePixels* std::sin(angle);
     enemy.x += velX;
-    enemy.y += velY;    
+    enemy.y += velY;
 }
 
 void physicsPinkGhost(Enemy& enemy)
 {
     Sprite* pghost = globalSprite.pinkghost;
     pghost->setFrameIndex(enemy.frameIndex);
-    pghost->physics();    
+    pghost->physics();
     enemy.frameIndex = pghost->getFrameIndex();
     moveGhostToMortana(enemy);
 }
@@ -607,7 +607,7 @@ void physicsWhiteGhost(Enemy& enemy)
 
     Sprite* gs = globalSprite.whiteghost;
     gs->setFrameIndex(enemy.frameIndex);
-    gs->physics();    
+    gs->physics();
     enemy.frameIndex = gs->getFrameIndex();
     moveGhostToMortana(enemy);
 }
@@ -647,7 +647,7 @@ void physicsGhosts()
 void lightningCollision(Enemy& en) {
     if(gl.lightning) {
         float x = gl.mortanaPos[0];
-        float y = gl.mortanaPos[1];    
+        float y = gl.mortanaPos[1];
         //center values from physicsLightSprite
         switch(gl.lightning) {
             case 1:
@@ -671,34 +671,35 @@ void lightningCollision(Enemy& en) {
                 break;
         }
         bool Collision = checkCircle(
-                    en.x, en.y, 
-                    x, y, 
+                    en.x, en.y,
+                    x, y,
                     25, 75);
         if(Collision) {
             printf("A lighting hit a ghost (%d)!\n", en.spriteId);
             en.alive = false;
             trackKills(en.spriteId);
         }
-    }    
+    }
 }
 
 void mortanaCollision(){
-    
-    for (   std::vector<Enemy>::iterator it = gl.enemies.begin(), end = gl.enemies.end(); 
+
+    for (   std::vector<Enemy>::iterator it = gl.enemies.begin(), end = gl.enemies.end();
             it != end; it++) {
-        Enemy& en = *it;        
+        Enemy& en = *it;
         float radiusEnemy = 25;
         float mortanaRadius = 75;
-        
+
         bool Collision = checkCircle(
-                    en.x, en.y, 
-                    gl.mortanaPos[0], gl.mortanaPos[1], 
+                    en.x, en.y,
+                    gl.mortanaPos[0], gl.mortanaPos[1],
                     mortanaRadius, radiusEnemy);
-        
-        if(Collision) {            
+
+        if(Collision) {
            // printf("There is a direct collision with Mortana and ghost: Game over! %d\n", en.spriteId);
             gl.keepTrack = 10;
             gl.state = STATE_GAMEOVER;
+            restart();
             return;
         }
         //check collision with lightning
@@ -706,26 +707,26 @@ void mortanaCollision(){
         if(!en.alive){
            // gl.state = STATE_GAMEOVER;
             it = gl.enemies.erase(it);
-        } 
+        }
 
-    } 
+    }
 }
-//generate randomness for ghosts 
+//generate randomness for ghosts
 void ghostRandom (){
-    //Increase ghost random creation for every 100 points 
-    if (rand()% (60 - gl.points / 100) == 0){ //rate of spawning        
+    //Increase ghost random creation for every 100 points
+    if (rand()% (60 - gl.points / 100) == 0){ //rate of spawning
         float x = (rand() % gl.xres)/2 + gl.mortanaPos[0];
         float y =  (rand() % (gl.yres-350)) + 350;
         Enemy en(x, y, rand () % 3);
         gl.enemies.push_back(en);
-    }    
+    }
 }
 
 
-bool checkCircle(   double x1,  double y1, double x2, double y2, 
+bool checkCircle(   double x1,  double y1, double x2, double y2,
                     float r1, float r2){
-    float distance = std::sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)); 
-    float distanceFromRadius = (distance - r1 - r2);  
+    float distance = std::sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
+    float distanceFromRadius = (distance - r1 - r2);
     return distanceFromRadius <= 0;
 }
 
@@ -759,7 +760,7 @@ MenuItem::MenuItem(std::string txt, int x, int y, int w, int h)
 
 void MenuItem::draw()
 {
-    // rendering boxes 
+    // rendering boxes
     glPushMatrix();
     if (highlight) {
         glColor3ub(255, 255, 0);
@@ -868,7 +869,7 @@ void Menu::add(MenuItem item)
 
 MainMenu::MainMenu()
 {
-    ////add all menu items    
+    ////add all menu items
 
 
     add(MenuItem("Play", 300, 400, 200, 60));
@@ -927,7 +928,7 @@ void renderTutorial()
 
 
 }
- 
+
 void monitorCTRLC(int key) {
 
     if( gl.state == STATE_CREDITS || gl.state == STATE_GAMEPLAY) {
