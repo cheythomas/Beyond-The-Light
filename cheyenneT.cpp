@@ -106,17 +106,17 @@ class energyBar : public Sprite {
 
 void initLifeBarSprite()
 {
-	globalSprite.life[0] = new Sprite("10.png", 1, 10, 1, 1, 15, 105);
-	globalSprite.life[1] = new Sprite("9.png", 1, 10, 1, 1, 15, 105);
-	globalSprite.life[2] = new Sprite("8.png", 1, 10, 1, 1, 15, 105);
-	globalSprite.life[3] = new Sprite("7.png", 1, 10, 1, 1, 15, 105);
-	globalSprite.life[4] = new Sprite("6.png", 1, 10, 1, 1, 15, 105);
-	globalSprite.life[5] = new Sprite("5.png", 1, 10, 1, 1, 15, 105);
-	globalSprite.life[6] = new Sprite("4.png", 1, 10, 1, 1, 15, 105);
-	globalSprite.life[7] = new Sprite("3.png", 1, 10, 1, 1, 15, 105);
-	globalSprite.life[8] = new Sprite("2.png", 1, 10, 1, 1, 15, 105);
-	globalSprite.life[9] = new Sprite("1.png", 1, 10, 1, 1, 15, 105);
-	globalSprite.life[10] = new Sprite("0.png", 1, 10, 1, 1, 15, 105);
+	globalSprite.life[0] = new Sprite("10.png", 1, 10, 1, 1, 40, 105);
+	globalSprite.life[1] = new Sprite("9.png", 1, 10, 1, 1, 40, 105);
+	globalSprite.life[2] = new Sprite("8.png", 1, 10, 1, 1, 40, 105);
+	globalSprite.life[3] = new Sprite("7.png", 1, 10, 1, 1, 40, 105);
+	globalSprite.life[4] = new Sprite("6.png", 1, 10, 1, 1, 40, 105);
+	globalSprite.life[5] = new Sprite("5.png", 1, 10, 1, 1, 40, 105);
+	globalSprite.life[6] = new Sprite("4.png", 1, 10, 1, 1, 40, 105);
+	globalSprite.life[7] = new Sprite("3.png", 1, 10, 1, 1, 40, 105);
+	globalSprite.life[8] = new Sprite("2.png", 1, 10, 1, 1, 40, 105);
+	globalSprite.life[9] = new Sprite("1.png", 1, 10, 1, 1, 40, 105);
+	globalSprite.life[10] = new Sprite("0.png", 1, 10, 1, 1, 40, 105);
 }
 
 void renderLifeBarSprite()
