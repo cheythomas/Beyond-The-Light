@@ -680,6 +680,7 @@ void lightningCollision(Enemy& en) {
         if(Collision) {
             printf("A lighting hit a ghost (%d)!\n", en.spriteId);
             en.alive = false;
+            trackKills(en.spriteId);
         }
     }    
 }
@@ -709,6 +710,7 @@ void mortanaCollision(){
         }
     }
 }
+//generate randomness for ghosts 
 
 
 bool checkCircle(   double x1,  double y1, double x2, double y2, 

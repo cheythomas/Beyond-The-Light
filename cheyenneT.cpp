@@ -608,7 +608,7 @@ void hardMode()
 	}
 }
 
-void trackKills(int type)
+void trackKills(int)
 {
 	if (gl.hardSelection == 0) {
 		gl.points += 10;

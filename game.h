@@ -461,10 +461,7 @@ void initCharacterSprites();
 void initBackgroundSprites();
 void physicsMortana();
 void monitorCTRLC(int);
-// enemy
-
-//instructions for user
-void renderTutorial();
+void renderTutorial();//instructions for user
 unsigned char *buildAlphaData(Ppmimage *img);
 
 /*
@@ -473,21 +470,6 @@ unsigned char *buildAlphaData(Ppmimage *img);
 void initEnemySprites();
 void physicsGhosts();
 void renderEnemySprites();
-
-/*
- ENEMY COLLISION
- */
-class Vec2 {
-    //public:
-    //enemy {
-    //float coord[3];
-    //struct{
-    // float x;
-    // float y;
-    //float z;
-    //  }
-    //  }
-};
 
 //function prototypes
 void renderBackground(void); //render prototype
@@ -501,8 +483,6 @@ void LightCollision();
 void displayColors(); //different colors for background
 void FlashlightPower(); //Displays how much power battery has
 void drawFlashlightPower(float); //displays the bar of battery life
-//void menuBackground(); //menu background
-
 void initLightSprite(); // for light/electicity to kill ghosts
 void initLifeBarSprite(); // 
 void initGameOverSprite(); // 
