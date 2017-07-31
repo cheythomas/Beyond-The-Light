@@ -17,6 +17,8 @@
 // Week 8: Made lightning gif to move with character sprite.
 //		Do the credits for the game. 
 //
+// Week 9: Made Highscore screen, Credit Screen. Changed gameOver to a state. 
+// 	Got
 #include "game.h"
 
 class myTimers {
@@ -41,10 +43,24 @@ public:
 	}
 } timers;
 
+//refactoring
+void Battery::drawBattery(float wid, float len, float x, float y, float z)
+{
+	glPushMatrix();
+	glTranslatef(x, y, z);
+	glBegin(GL_QUADS);
+		glVertex2i(-wid, -len);
+		glVertex2i(-wid,  len);
+		glVertex2i( wid,  len);
+		glVertex2i( wid, -len);
+	glEnd();
+	glPopMatrix();
+}
 
+
+// a energy bar on the ground
 void Battery::energybarAppears()
 {
-	// a energy bar on the ground
 	if (gl.keepTrack == 3 || gl.keepTrack == 6 || gl.keepTrack == 9) {
 		float w, h, z, x, y;
 		w = 34; // width size
@@ -52,26 +68,11 @@ void Battery::energybarAppears()
 		z = 0.0;
 		x = 740; // x-axis
 		y = 50; // y-axis
-		glColor3f(0.0, 1.0, 0.0); 
-		glPushMatrix();
-		glTranslatef(x, y, z);
-		glBegin(GL_QUADS);
-			glVertex2i(-w, -h);
-			glVertex2i(-w,  h);
-			glVertex2i( w,  h);
-			glVertex2i( w, -h);
-		glEnd();
-		glPopMatrix();
-		
-		glPushMatrix();
-		glTranslatef(3000, y, z);
-		glBegin(GL_QUADS);
-			glVertex2i(-w, -h);
-			glVertex2i(-w,  h);
-			glVertex2i( w,  h);
-			glVertex2i( w, -h);
-		glEnd();
-		glPopMatrix();
+		glColor3f(0.0, 1.0, 0.0);
+	       	
+		//refractoring	
+		drawBattery(w, h, x, y, z);
+		drawBattery(w, h, 3000, y, z);
 
 		Rect r;
 		r.bot = 80; // y-axis

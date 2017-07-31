@@ -251,7 +251,7 @@ public:
         bcount = 0;
     }
     void energybarAppears(); //was battappear
-    void drawBattery(void);
+    void drawBattery(float, float, float, float, float);
     void drawFlashlight();
     void healthBar(); //was delete
     void gameOver();
