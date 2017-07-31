@@ -432,13 +432,16 @@ void physicsMortana()
                 //reset animation
                 mj->reset();
                 m->reset();
+                playJump(); //plays jump sound
 
                 if (catsit->getFrameIndex() == 5) {
                     catsit->setVisible(true);
+                    playMeow(); // plays sound
                 } else {
                     cat->setVisible(true);
                 }
                 catsit->reset();
+                playMeow(); // plays cat sound
             } else if (gl.keys[XK_Right]) {
                 // mortana walking right
                 m->physics();
@@ -705,6 +708,7 @@ void mortanaCollision(){
         }
         //check collision with lightning
         lightningCollision(en);
+       // playPoint();
         if(!en.alive){
            // gl.state = STATE_GAMEOVER;
             it = gl.enemies.erase(it);
@@ -715,7 +719,7 @@ void mortanaCollision(){
 //generate randomness for ghosts
 void ghostRandom (){
     //Increase ghost random creation for every 100 points
-    if (rand()% (60 - gl.points / 50) == 0){ //rate of spawning
+    if (rand()% (60 - gl.points / 50) == 10){ //rate of spawning //0
         float x = (rand() % gl.xres)/2 + gl.mortanaPos[0];
         float y =  (rand() % (gl.yres-350)) + 350;
         Enemy en(x, y, rand () % 3);
@@ -839,7 +843,9 @@ bool Menu::setSelectedIndex(unsigned int index)
         menuItems[index].highlight = true;
         //save new index
         selectedItemIndex = index;
+        playSelection();
         return true;
+        
     } else {
         return false;
     }
@@ -847,6 +853,7 @@ bool Menu::setSelectedIndex(unsigned int index)
 
 unsigned int Menu::getSelectedIndex()
 {
+    playClick();
     return selectedItemIndex;
 }
 
