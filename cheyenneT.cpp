@@ -2,10 +2,9 @@
 // Date: 6-23-17
 // Purpose: Create light, battery, endgame, etc
 //
-// Week 4:
-// draw the battery and its battery bars, 4. 
-// write a function that shows the flashlight running out of bars
-// draw flashlight
+// Week 4: Draw the battery and its battery bars, 4. 
+// 	   write a function that shows the flashlight running out of bars
+//         draw flashlight
 //
 // Week 5: fixed functions
 // 
