@@ -270,7 +270,6 @@ void renderGameOverSprite()
 
 void Battery::gameOver()
 {
-	Rect r;
 	float h, w;
 	if (gl.keepTrack == 10) {
 		h = gl.yres;
@@ -288,11 +287,12 @@ void Battery::gameOver()
 		glEnd();
 		glDisable(GL_BLEND);
 		glPopMatrix();
-		unsigned int c = 0x00FF0000;
-		r.left = gl.xres*0.33; 
-		r.bot = gl.yres*.20;  
-		r.center = 0;
-		ggprint40(&r, 16, c, "Press spacebar");
+		//Rect r;
+		//unsigned int c = 0x00FF0000;
+		//r.left = gl.xres*0.33; 
+		//r.bot = gl.yres*.20;  
+		//r.center = 0;
+		//ggprint40(&r, 16, c, "Press spacebar");
 	
 		if (gl.spacebar == 1) {
 			gl.state = STATE_HIGHSCORE;
@@ -566,13 +566,13 @@ void redScreenFlash()
 	y = gl.yres/2; // y-axis
 	int flash = 0;
 
-	if (timeSpan > 1.4) {
+	if (timeSpan > 1.0) {
 		timers.timeCopy(&timers.gameTime, &timers.timeCurrent);
 		flash++;
 	}
 	// flashes screen
 	if (gl.keepTrack == 9 && flash >= 1) {
-		glColor4f(1.0, 0.0, 0.0, 0.3); 
+		glColor4f(1.0, 0.0, 0.0, 0.5); 
 		glPushMatrix();
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -593,7 +593,7 @@ void hardMode()
 	timers.recordTime(&timers.timeCurrent);
 	double timeSpan = 
 		timers.timeDiff(&timers.modeTime, &timers.timeCurrent);
-	if (gl.hardSelection == 1) {
+	if (gl.hardSelection == 1 && (gl.state == STATE_GAMEPLAY)) {
 		float w, h, z, x, y;
 		w = gl.xres; // width size
 		h = gl.yres; // length size
@@ -660,13 +660,12 @@ void cheyRestart()
 	gl.hardSelection = 0;
 }
 
-// special feature
 void disco()
 {
 	timers.recordTime(&timers.timeCurrent);
 	double timeSpan = 
 		timers.timeDiff(&timers.modeTime, &timers.timeCurrent);
-	if (gl.danceParty == 1) {
+	if (gl.danceParty == 1 && (gl.state == STATE_GAMEPLAY)) {
 		float w, h, z, x, y;
 		w = gl.xres; // width size
 		h = gl.yres; // length size
