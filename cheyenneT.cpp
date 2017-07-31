@@ -45,7 +45,7 @@ public:
 void Battery::energybarAppears()
 {
 	// a energy bar on the ground
-	if (gl.keepTrack == 3 || gl.keepTrack == 9) {
+	if (gl.keepTrack == 3 || gl.keepTrack == 6 || gl.keepTrack == 9) {
 		float w, h, z, x, y;
 		w = 34; // width size
 		h = 8; // length size
@@ -95,8 +95,8 @@ void renderText()
 		ggprint8b(&r, 16, c, "h - turn on/off Hard Mode");
 	
 		int pts = gl.points;
-		r.left = -gl.camera[0] + (gl.xres*.9); // x
-		r.bot = gl.yres*.04;  // y axis
+		r.left = -gl.camera[0] + (gl.xres*.89); // x
+		r.bot = gl.yres*.034;  // y axis
 		r.center = 0;
 		ggprint16(&r, 16, c, "score: %d", pts);
 	} else if(gl.hardSelection == 1) {
@@ -211,7 +211,7 @@ void renderLifeBarSprite()
 	}
 	
 	int pressedR = 0;
-	if (gl.keepTrack == 3 || gl.keepTrack == 9) {
+	if (gl.keepTrack == 3 || gl.keepTrack == 6 || gl.keepTrack == 9) {
 		if (pressedR == 0) {
 			Rect r;
 			r.bot = gl.yres-20; // y-axis
