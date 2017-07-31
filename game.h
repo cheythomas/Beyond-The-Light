@@ -68,6 +68,8 @@ inline void recordTime(struct timespec *t)
 class Sprite {
 protected:
     GLuint glTexture;
+    GLuint tempBackgroundTexture;
+    GLuint backgroundTexture;
     int frameCount;
     int rows;
     int cols;
@@ -160,6 +162,7 @@ void restart();
  *  by the name of globalSprite
  */
 struct GlobalSprite {
+    
     Sprite* mortana;
     Sprite* mortanaJump;
     Sprite* background[5];
@@ -179,7 +182,7 @@ struct GlobalSprite {
 
 };
 
-class Level {
+/*class Level {
 public:
     unsigned char arr[16][180];
     int nrows, ncols;
@@ -201,6 +204,7 @@ public:
         ftsz[1] = (Flt) tilesize[1];
         tile_base = 220.0;
 
+        if (gl.select == 1) {
         FILE *fpi = fopen("level1.txt", "r");
         if (fpi) {
             nrows = 0;
@@ -217,6 +221,7 @@ public:
             }
             fclose(fpi);
 
+        }
         }
 
 
@@ -240,7 +245,8 @@ public:
         }
     }
 
-};
+
+};*/
 
 extern GlobalSprite globalSprite;
 
@@ -368,7 +374,7 @@ public:
     Vec ball_pos;
     Vec ball_vel;
     Battery batt;
-    Level lev;
+//    Level lev;
     int keepTrack;
     int keyCount;
     int spacebar;
@@ -398,6 +404,7 @@ public:
     // physics for blk cat
     float catVelY;
     Vec catPos;
+    int select;
 
     //Physics variable ghosts
     float pinkghost;
@@ -437,6 +444,7 @@ public:
         mortanaPos[1] = 100;
         lightPos[0] = xres / 2;
         lightPos[1] = 100;
+        select = 0;
 
 
         // blkcat
@@ -480,6 +488,7 @@ void renderBackgroundSprites(); // for Sprite characters
 void physicsCharacterSprites(); //Temporary test function for moving sprites
 void drawLight(void);
 void LightCollision();
+void renderTi();
 void displayColors(); //different colors for background
 void FlashlightPower(); //Displays how much power battery has
 void drawFlashlightPower(float); //displays the bar of battery life
@@ -499,5 +508,16 @@ void renderHighScores();
 void redScreenFlash();
 void hardMode();
 void trackKills(int);
+
+void playSelection();
+void playClick();
+void physicsAudio();
+void playPoint();
+void playKill();
+void playScream();
+void playGrab();
+void playJump();
+void setupAudio();
+void cleanupAudio();
 
 #endif /* GAME_H */

@@ -221,6 +221,7 @@ void renderLifeBarSprite()
 }
 
 class GameOver : public Sprite {
+   
 	
 	public:
 	GameOver (const std::string & filename, float height, float width) :
@@ -238,10 +239,13 @@ void initGameOverSprite()
 
 void renderGameOverSprite()
 {     
+    
+
 	int x = gl.xres*0.538; //800 
 	int y = gl.yres*0.5;  //600
 
 	if (gl.keepTrack == 10) {
+
 		globalSprite.gameover->draw();
 		globalSprite.gameover->setPos(x, y);
 	}

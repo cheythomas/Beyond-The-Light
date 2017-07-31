@@ -5,6 +5,7 @@ int main(void)
 {
     initXWindows();
     initOpengl();
+    setupAudio();
     initMenuBackground(); //main menu background
     initCharacterSprites(); // function call inside initOpenGl
     initBackgroundSprites();
@@ -34,6 +35,7 @@ int main(void)
         timeCopy(&last, &now);
         while (physicsCountDown >= physicsRate) {
             physics();
+            physicsAudio();
             physicsCountDown -= physicsRate;
         }
 
@@ -42,6 +44,7 @@ int main(void)
     }
     cleanupXWindows();
     cleanup_fonts();
+    cleanupAudio();
     return 0;
 }
 
@@ -319,13 +322,14 @@ void render(void)
         // renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
+       
 
         renderTutorial();
         gl.batt.chargeObject();
-
+//        renderTi(gl.select);
         gl.batt.grabCharge();
         renderLifeBarSprite();
-        gl.lev.renderBackground();
+//        gl.lev.renderBackground();
         gl.batt.chargeObject();
         renderCharacterSprites();
         renderEnemySprites();
@@ -345,6 +349,29 @@ void render(void)
     } else if (gl.state == STATE_GAMEOVER) {
         gl.batt.gameOver();
         renderGameOverSprite();
+    }
+    
+    if (gl.keys['y'] && gl.keys['b']) {
+        glPushMatrix();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4f(1.0, 1.0, 0.0, 0.3);
+        glBegin(GL_QUAD_STRIP);
+        glVertex2i(0,0);
+        glVertex2i(100, 100);
+        glVertex2i(gl.xres, 0);
+        glVertex2i(gl.xres-100, 100);
+        glVertex2i(gl.xres, gl.yres);
+        glVertex2i(gl.xres-100, gl.yres-100);
+        glVertex2i(0, gl.yres);
+        glVertex2i(100, gl.yres-100);
+        glVertex2i(0, 0);
+        glVertex2i(100, 100);
+        glEnd();
+        glDisable(GL_BLEND);
+        glPopMatrix();
+        
+        
     }
   
 }
