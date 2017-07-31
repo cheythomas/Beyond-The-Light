@@ -960,8 +960,6 @@ void MainMenu::keyboardInput(int key)
             gl.state = STATE_GAMEPLAY;
         } else if(gl.state == STATE_GAMEOVER) {
             gl.state = STATE_STARTUP;
-            printf("Restarted the game!\n");
-            restart();
         } else {
             gl.state = STATE_GAMEPAUSE;
         }
