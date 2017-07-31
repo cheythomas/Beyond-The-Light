@@ -12,13 +12,13 @@
 // Week 6: added sprite, called functions, get game to gameover
 //
 // Week 7: added lightning sprite and health/energy bar. 
-//		   Got game over when once health/energy bar reaches empty.
+//	   Got game over when once health/energy bar reaches empty.
 //
 // Week 8: Made lightning gif to move with character sprite.
-//		Do the credits for the game. 
+//	   Do the credits for the game. 
 //
-// Week 9: Made Highscore screen, Credit Screen. Changed gameOver to a state. 
-// 	Got
+// Week 9: Made Highscore screen, added to Credit Screen. Changed gameOver to a state. 
+// 	   Produce scores and show live on screen. Added a hard mode gameplay.
 #include "game.h"
 
 class myTimers {
