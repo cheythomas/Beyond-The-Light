@@ -35,10 +35,11 @@
 //Week 9
 // Main menu Background
 // Menu item and user tutorial
-// Connection for High Scores
 // Credits button
-// Collision detection for ghosts
+// Collision detection
 /*****************************************************/
+//Week 10
+// Final collision
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -714,7 +715,7 @@ void mortanaCollision(){
 //generate randomness for ghosts
 void ghostRandom (){
     //Increase ghost random creation for every 100 points
-    if (rand()% (60 - gl.points / 100) == 0){ //rate of spawning
+    if (rand()% (60 - gl.points / 50) == 0){ //rate of spawning
         float x = (rand() % gl.xres)/2 + gl.mortanaPos[0];
         float y =  (rand() % (gl.yres-350)) + 350;
         Enemy en(x, y, rand () % 3);
