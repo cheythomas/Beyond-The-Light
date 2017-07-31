@@ -162,7 +162,7 @@ void restart() {
     //when the game is over
     //example:
     //restartBattery();
-    
+	cheyRestart();    
 }
 
 void checkMouse(XEvent *e)

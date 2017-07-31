@@ -499,4 +499,5 @@ void redScreenFlash();
 void hardMode();
 void trackKills(int);
 void renderText();
+void cheyRestart();
 #endif /* GAME_H */

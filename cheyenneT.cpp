@@ -294,7 +294,7 @@ void Battery::gameOver()
 	
 		if (gl.spacebar == 1) {
 			gl.state = STATE_HIGHSCORE;
-		}	
+		}
 	}
 }
 
@@ -534,6 +534,8 @@ void renderHighScores()
 	//if (gl.spacebar == 2) {
 	//	gl.state = STATE_GAMEPAUSE;
 	//}
+		
+	restart();	
 }
 
 void redScreenFlash()
@@ -636,3 +638,10 @@ void trackKills(int /*type*/)
 	gl.ghostKilled++;
 }
 
+void cheyRestart()
+{
+	gl.points = 0;
+	gl.keyCount = 0;
+	globalSprite.life[10]->draw();
+	gl.hardSelection = 0;
+}
