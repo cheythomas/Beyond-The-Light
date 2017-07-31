@@ -709,14 +709,16 @@ void mortanaCollision()
         if (Collision) {
             // printf("There is a direct collision with Mortana and ghost:
             //Game over! %d\n", en.spriteId);
+           
             gl.keepTrack = 10;
             gl.state = STATE_GAMEOVER;
+           
             restart();
             return;
         }
         //check collision with lightning
         lightningCollision(en);
-        // playPoint();
+         playPoint();
         if (!en.alive) {
             // gl.state = STATE_GAMEOVER;
             it = gl.enemies.erase(it);
