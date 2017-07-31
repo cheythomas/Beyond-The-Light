@@ -705,7 +705,7 @@ void mortanaCollision(){
         if(!en.alive){
             //gl.state = STATE_GAMEOVER;
             it = gl.enemies.erase(it);
-           gl.state = STATE_GAMEOVER;
+           //gl.state = STATE_GAMEOVER;
             
         } 
 
