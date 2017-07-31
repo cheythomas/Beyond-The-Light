@@ -124,26 +124,23 @@ public:
     bool getReverse();
     float getAngle();
     void setAngle(float);
-   // void collison();
+    // void collison();
     void GameOver();
-    
+
 };
 
 
 /*
  Enemy collision*/
-bool checkCircle(   double x1,  double y1, double x2, double y2, 
-                    float r1, float r2);
+bool checkCircle(double x1, double y1, double x2, double y2,
+        float r1, float r2);
 void mortanaCollision();
-void ghostRandom ();
+void ghostRandom();
 
-    
-    
+
+
 //restart functinality
 void restart();
-    
-
-
 
 /*
  * This creates a class called GlobalSprite, has one variable of type Sprite*,
@@ -151,7 +148,6 @@ void restart();
  *  by the name of globalSprite
  */
 struct GlobalSprite {
-    
     Sprite* mortana;
     Sprite* mortanaJump;
     Sprite* background[5];
@@ -227,7 +223,7 @@ public:
         char *p = str;
         while (*p) {
             if (*p == 10 || *p == 13) {
-                *p = '\0';
+ *p = '\0';
                 break;
             }
             ++p;
@@ -251,7 +247,7 @@ public:
         bcount = 0;
     }
     void energybarAppears(); //was battappear
-    void drawBattery(void);
+    void drawBattery(float, float, float, float, float);
     void drawFlashlight();
     void healthBar(); //was delete
     void gameOver();
@@ -373,7 +369,7 @@ public:
     Vec ball_pos;
     Vec ball_vel;
     Battery batt;
-//    Level lev;
+    //    Level lev;
     int keepTrack;
     int keyCount;
     int spacebar;
@@ -473,7 +469,7 @@ void initCharacterSprites();
 void initBackgroundSprites();
 void physicsMortana();
 void monitorCTRLC(int);
-void renderTutorial();//instructions for user
+void renderTutorial(); //instructions for user
 unsigned char *buildAlphaData(Ppmimage *img);
 
 /*
@@ -516,7 +512,7 @@ void renderText();
 void cheyRestart();
 void auroraRestart();
 void disco();
-
+//Sound function prototypes
 void playSelection();
 void playClick();
 void physicsAudio();

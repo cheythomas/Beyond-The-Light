@@ -16,7 +16,7 @@
 // Settings
 // Exit game
 
-/*********************************************************/
+/********************************************************/
 //Week 7
 //Main menu: Game paused option, pauses game
 //Main menu: Highlight option ready
@@ -26,7 +26,7 @@
 // Up allows for jump
 // Movement physics calculations
 
-/*****************************************************/
+/******************************************************/
 //Week 8
 // Render Character Enemy Sprites
 // Physics for cat companion
@@ -39,28 +39,13 @@
 // Collision detection
 /*****************************************************/
 //Week 10
-// Final collision
+// Final Phase:
+//Final collision
+// Final sound additions
+//****************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <time.h>
-#include <math.h>
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
-#include <GL/glx.h>
-#include "log.h"
-#include "ppm.h"
-#include "fonts.h"
-
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <complex>
-#include <valarray>
 #include "game.h"
-//#include <random>
+
 
 // Facilitating sprite animations for team members
 //For simplifying sprite animations
@@ -132,8 +117,6 @@ angle(0)
     //create openGL IMAGE
     //use build AlphaData to convert transparent
     //save result in class variables
-
-
     Ppmimage *ppmImage = ppm6GetImage(outputFile.c_str());
     origHeight = ppmImage->height;
     origWidth = ppmImage->width;
@@ -151,7 +134,6 @@ angle(0)
 
     free(imageData);
     ppm6CleanupImage(ppmImage);
-    //unlink(outputFile.c_str());
     recordTime(&time);
 }
 
@@ -191,7 +173,6 @@ void Sprite::physics()
 
 void Sprite::draw()
 {
-
     if (visible) {
         //Calculate the sprite frame and size
         //and location
@@ -216,8 +197,6 @@ void Sprite::draw()
 
         glColor3f(1.0, 1.0, 1.0);
         glBindTexture(GL_TEXTURE_2D, glTexture);
-
-        //
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, 0.0f);
         glColor4ub(255, 255, 255, 255);
@@ -381,11 +360,6 @@ void initCharacterSprites()
     globalSprite.blkcatsit->setFrameIndex(5);
     globalSprite.blkcatsit->setRepeating(false);
 
-    //add enemy characters
-//    gl.enemies.push_back(Enemy(gl.xres / 2 + 250, 100, 0));
-//    gl.enemies.push_back(Enemy(gl.xres / 2 + 300, 200, 1));
-//    gl.enemies.push_back(Enemy(gl.xres / 2 + 350, 300, 2));
-
 }
 
 void renderCharacterSprites()
@@ -402,6 +376,7 @@ void physicsCharacterSprites()
     physicsMortana();
 
 }
+
 //physics mortana and blk cat
 
 void physicsMortana()
@@ -432,13 +407,16 @@ void physicsMortana()
                 //reset animation
                 mj->reset();
                 m->reset();
+                playJump(); //plays jump sound
 
                 if (catsit->getFrameIndex() == 5) {
                     catsit->setVisible(true);
+                    playMeow();
                 } else {
                     cat->setVisible(true);
                 }
                 catsit->reset();
+                playMeow();
             } else if (gl.keys[XK_Right]) {
                 // mortana walking right
                 m->physics();
@@ -481,7 +459,7 @@ void physicsMortana()
                     cat->setDirection(1);
                     catsit->setDirection(1);
                 }
-                //pcatsit->reset();
+
             } else {
                 //let cat sit down
                 catsit->setVisible(true);
@@ -510,8 +488,6 @@ void physicsMortana()
                 cat->setVisible(true);
             }
         }
-
-
         m->setPos(cx, cy);
         mj->setPos(cx, cy);
         cat->setPos(catx, caty);
@@ -578,18 +554,18 @@ void renderEnemySprites()
 
 void moveGhostToMortana(Enemy& enemy)
 {
-    float   mx = gl.mortanaPos[0],
+    float mx = gl.mortanaPos[0],
             my = gl.mortanaPos[1];
-    float   cx1 = enemy.x,
+    float cx1 = enemy.x,
             cy1 = enemy.y;
 
     float movePixels = rnd() * 10;
     float moveVerticalAlso = rnd() * 0.5;
-    //angle etween mortana and ghost
+    //angle between mortana and ghost
     float angle = std::atan2(my - cy1, mx - cx1);
     //Find components of vector
-    float velX = movePixels* std::cos(angle) + moveVerticalAlso;
-    float velY = movePixels* std::sin(angle);
+    float velX = movePixels * std::cos(angle) + moveVerticalAlso;
+    float velY = movePixels * std::sin(angle);
     enemy.x += velX;
     enemy.y += velY;
 }
@@ -645,37 +621,39 @@ void physicsGhosts()
 // **
 // COLLISION
 //**
-void lightningCollision(Enemy& en) {
-    if(gl.lightning) {
+
+void lightningCollision(Enemy& en)
+{
+    if (gl.lightning) {
         float x = gl.mortanaPos[0];
         float y = gl.mortanaPos[1];
         //center values from physicsLightSprite
-        switch(gl.lightning) {
-            case 1:
-                x += 120;
-                break;
-            case 2:
-                x += 106;
-                y += 128;
-                break;
-            case 3:
-                y += 128;
-                break;
-            case 4:
-                x -= 106;
-                y += 90;
-                break;
-            case 5:
-                x -= 120;
-                break;
-            default:
-                break;
+        switch (gl.lightning) {
+        case 1:
+            x += 120;
+            break;
+        case 2:
+            x += 106;
+            y += 128;
+            break;
+        case 3:
+            y += 128;
+            break;
+        case 4:
+            x -= 106;
+            y += 90;
+            break;
+        case 5:
+            x -= 120;
+            break;
+        default:
+            break;
         }
         bool Collision = checkCircle(
-                    en.x, en.y,
-                    x, y,
-                    25, 75);
-        if(Collision) {
+                en.x, en.y,
+                x, y,
+                25, 75);
+        if (Collision) {
             printf("A lighting hit a ghost (%d)!\n", en.spriteId);
             en.alive = false;
             trackKills(en.spriteId);
@@ -683,49 +661,55 @@ void lightningCollision(Enemy& en) {
     }
 }
 
-void mortanaCollision(){
+void mortanaCollision()
+{
 
-    for (   std::vector<Enemy>::iterator it = gl.enemies.begin(), end = gl.enemies.end();
+    for (std::vector<Enemy>::iterator it = gl.enemies.begin(),
+            end = gl.enemies.end();
             it != end; it++) {
         Enemy& en = *it;
         float radiusEnemy = 25;
         float mortanaRadius = 75;
 
         bool Collision = checkCircle(
-                    en.x, en.y,
-                    gl.mortanaPos[0], gl.mortanaPos[1],
-                    mortanaRadius, radiusEnemy);
+                en.x, en.y,
+                gl.mortanaPos[0], gl.mortanaPos[1],
+                mortanaRadius, radiusEnemy);
 
-        if(Collision) {
-           // printf("There is a direct collision with Mortana and ghost: Game over! %d\n", en.spriteId);
+        if (Collision) {
+            // printf("There is a direct collision with Mortana and ghost:
+            //Game over! %d\n", en.spriteId);
             gl.keepTrack = 10;
             gl.state = STATE_GAMEOVER;
+
             restart();
             return;
         }
         //check collision with lightning
         lightningCollision(en);
-        if(!en.alive){
-           // gl.state = STATE_GAMEOVER;
+        playPoint();
+        if (!en.alive) {
             it = gl.enemies.erase(it);
         }
 
     }
 }
 //generate randomness for ghosts
-void ghostRandom (){
+
+void ghostRandom()
+{
     //Increase ghost random creation for every 100 points
-    if (rand()% (60 - gl.points / 50) == 0){ //rate of spawning
-        float x = (rand() % gl.xres)/2 + gl.mortanaPos[0];
-        float y =  (rand() % (gl.yres-350)) + 350;
-        Enemy en(x, y, rand () % 3);
+    if (rand() % (60 - gl.points / 50) == 10) { //rate of spawning //0
+        float x = (rand() % gl.xres) / 2 + gl.mortanaPos[0];
+        float y = (rand() % (gl.yres - 350)) + 350;
+        Enemy en(x, y, rand() % 3);
         gl.enemies.push_back(en);
     }
 }
 
-
-bool checkCircle(   double x1,  double y1, double x2, double y2,
-                    float r1, float r2){
+bool checkCircle(double x1, double y1, double x2, double y2,
+        float r1, float r2)
+{
     float distance = std::sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
     float distanceFromRadius = (distance - r1 - r2);
     return distanceFromRadius <= 0;
@@ -847,6 +831,7 @@ bool Menu::setSelectedIndex(unsigned int index)
 
 unsigned int Menu::getSelectedIndex()
 {
+    playClick();
     return selectedItemIndex;
 }
 
@@ -871,13 +856,10 @@ void Menu::add(MenuItem item)
 MainMenu::MainMenu()
 {
     ////add all menu items
-
-
     add(MenuItem("Play", 300, 400, 200, 60));
     add(MenuItem("High Scores", 300, 330, 200, 60));
     add(MenuItem("Credits", 300, 260, 200, 60));
     add(MenuItem("Exit", 300, 190, 200, 60));
-    // add(MenuItem("Game Paused", 300, 150, 200, 60));
 
 }
 
@@ -930,14 +912,15 @@ void renderTutorial()
 
 }
 
-void monitorCTRLC(int key) {
+void monitorCTRLC(int key)
+{
 
-    if( gl.state == STATE_CREDITS || gl.state == STATE_GAMEPLAY) {
-        if(key == XK_c && gl.keys[XK_Control_L]) {
-            if(gl.state == STATE_GAMEPLAY) {
+    if (gl.state == STATE_CREDITS || gl.state == STATE_GAMEPLAY) {
+        if (key == XK_c && gl.keys[XK_Control_L]) {
+            if (gl.state == STATE_GAMEPLAY) {
                 gl.state = STATE_CREDITS;
             } else {
-               gl.state = STATE_GAMEPLAY;
+                gl.state = STATE_GAMEPLAY;
             }
         }
     }
@@ -954,13 +937,13 @@ void MainMenu::keyboardInput(int key)
         } else {
             gl.state = STATE_GAMEPLAY;
         }
-     break;
+        break;
     case XK_Escape:
-        if(gl.state == STATE_STARTUP) {
+        if (gl.state == STATE_STARTUP) {
             gl.done = 1;
-        } else if(gl.state == STATE_GAMEPAUSE) {
+        } else if (gl.state == STATE_GAMEPAUSE) {
             gl.state = STATE_GAMEPLAY;
-        } else if(gl.state == STATE_GAMEOVER) {
+        } else if (gl.state == STATE_GAMEOVER) {
             gl.state = STATE_STARTUP;
         } else {
             gl.state = STATE_GAMEPAUSE;
@@ -969,16 +952,19 @@ void MainMenu::keyboardInput(int key)
         if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
             gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex()
                     - 1 % gl.mainMenu.getSize());
+            playSelection();
         }
         break;
     case XK_Down:
         if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
             gl.mainMenu.setSelectedIndex(gl.mainMenu.getSelectedIndex()
                     + 1 % gl.mainMenu.getSize());
+            playSelection();
         }
         break;
     case XK_Return:
         if (gl.state == STATE_GAMEPAUSE || gl.state == STATE_STARTUP) {
+            playClick();
             switch (gl.mainMenu.getSelectedIndex()) {
                 // This is not ready, goes back to play mode
             case 0:
@@ -992,17 +978,16 @@ void MainMenu::keyboardInput(int key)
                 break;
             case 3:
                 gl.done = 1;
-
                 break;
-
             }
+
         }
         break;
-        }
     }
+}
 
-
-void auroraRestart() {
+void auroraRestart()
+{
     //get rid of enemies
     gl.enemies.clear();
     gl.mortanaPos[0] = gl.xres / 2;

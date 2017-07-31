@@ -1,4 +1,4 @@
-    
+
 #include "game.h"
 
 int main(void)
@@ -30,7 +30,7 @@ int main(void)
         }
 
         //Run physics at a fixed interval (60 times per second)
-            recordTime(&now);
+        recordTime(&now);
         double physicsCountDown = timeDiff(&last, &now);
         timeCopy(&last, &now);
         while (physicsCountDown >= physicsRate) {
@@ -159,12 +159,13 @@ void init()
 
         }
 
-void restart() {
+void restart()
+{
     //add your own function if you have to reset anything
     //when the game is over
     //example:
     //restartBattery();
-    cheyRestart();    
+    cheyRestart();
     auroraRestart();
     printf("Restarted the game!\n");
 }
@@ -223,8 +224,8 @@ void checkKeys(XEvent *e)
         //it checks if main menu is open
         gl.mainMenu.keyboardInput(key);
         //renderCreditSprite.keyboardInput(key);
-        
-       monitorCTRLC(key);
+
+        monitorCTRLC(key);
     }
 
     if (shift) {
@@ -232,28 +233,28 @@ void checkKeys(XEvent *e)
     switch (key) {
         break;
     case XK_space:
-			if (gl.keepTrack == 10) {
-				gl.spacebar = 1;
-			}
-			if (gl.state == STATE_HIGHSCORE) {
-				gl.spacebar = 2;
-			}
+        if (gl.keepTrack == 10) {
+            gl.spacebar = 1;
+        }
+        if (gl.state == STATE_HIGHSCORE) {
+            gl.spacebar = 2;
+        }
         break;
     case XK_h:
-			if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
-				gl.hardSelection = 1;
-			} else if (gl.hardSelection == 1) {
-				gl.hardSelection = 0;
-			}
+        if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
+            gl.hardSelection = 1;
+        } else if (gl.hardSelection == 1) {
+            gl.hardSelection = 0;
+        }
         break;
-    case XK_Escape:                   
+    case XK_Escape:
         break;
     case XK_j:
-			if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
-				gl.danceParty = 1;
-			} else if (gl.hardSelection == 1) {
-				gl.danceParty = 0;
-			}
+        if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
+            gl.danceParty = 1;
+        } else if (gl.hardSelection == 1) {
+            gl.danceParty = 0;
+        }
         break;
     case XK_f:
         break;
@@ -314,15 +315,13 @@ void physics(void)
         }
         globalSprite.light[4]->physics();
         ghostRandom();
-     
+
         mortanaCollision();
-       //  ghostRandom();
     }
 }
 
 void render(void)
 {
-
     //Clear the screen
     glClearColor(0, 0, 0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -332,14 +331,13 @@ void render(void)
         // renderTutorial();
         glTranslatef(gl.camera[0], 0, 0);
         renderBackgroundSprites();
-       
         renderTutorial();
-        gl.batt.energybarAppears();   
+        gl.batt.energybarAppears();
         renderLifeBarSprite();
         renderCharacterSprites();
         renderEnemySprites();
-	hardMode(); 
-        disco(); 
+        hardMode();
+        disco();
         renderText();
         renderLightSprite();
         redScreenFlash();
@@ -356,29 +354,27 @@ void render(void)
         renderGameOverSprite();
         renderUsernameInput();
     }
-    
+
     if (gl.keys['y'] && gl.keys['b']) {
         glPushMatrix();
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glColor4f(1.0, 1.0, 0.0, 0.3);
         glBegin(GL_QUAD_STRIP);
-        glVertex2i(0,0);
+        glVertex2i(0, 0);
         glVertex2i(100, 100);
         glVertex2i(gl.xres, 0);
-        glVertex2i(gl.xres-100, 100);
+        glVertex2i(gl.xres - 100, 100);
         glVertex2i(gl.xres, gl.yres);
-        glVertex2i(gl.xres-100, gl.yres-100);
+        glVertex2i(gl.xres - 100, gl.yres - 100);
         glVertex2i(0, gl.yres);
-        glVertex2i(100, gl.yres-100);
+        glVertex2i(100, gl.yres - 100);
         glVertex2i(0, 0);
         glVertex2i(100, 100);
         glEnd();
         glDisable(GL_BLEND);
         glPopMatrix();
-        
-        
     }
-  
+
 }
 
