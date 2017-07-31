@@ -321,15 +321,12 @@ void render(void)
         renderBackgroundSprites();
 
         renderTutorial();
-        gl.batt.chargeObject();
-
-        gl.batt.grabCharge();
+        gl.batt.energybarAppears();
         renderLifeBarSprite();
         gl.lev.renderBackground();
-        gl.batt.chargeObject();
         renderCharacterSprites();
         renderEnemySprites();
-        
+        renderText();
         hardMode(); 
         renderLightSprite();
         redScreenFlash();
