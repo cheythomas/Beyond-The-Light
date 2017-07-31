@@ -575,7 +575,7 @@ void hardMode()
 		// darken screen
 		//if (gl.keepTrack >= 0 && flash >= 1) {
 		if (gl.keepTrack >= 0) {
-			glColor4f(0.0, 0.0, 0.0, 0.9); 
+			glColor4f(0.0, 0.0, 0.0, 0.87); 
 			glPushMatrix();
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
