@@ -74,10 +74,12 @@ void Battery::energybarAppears()
 		glPopMatrix();
 
 		Rect r;
-		r.bot = 70; // y-axis
+		r.bot = 80; // y-axis
 		r.left = 691; // x-axis
 		r.center = 0;
 		unsigned int c = 0x00ffff44;
+		ggprint8b(&r, 16, c, "Press R to collect");
+		r.left = 2941; // x-axis
 		ggprint8b(&r, 16, c, "Press R to collect");
 	}
 }
