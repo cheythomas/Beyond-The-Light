@@ -255,10 +255,9 @@ public:
         arr[MAX_BARS] = 540;
         bcount = 0;
     }
-    void chargeObject(); //was battappear
+    void energybarAppears(); //was battappear
     void drawBattery(void);
     void drawFlashlight();
-    void grabCharge(); //was grabBatt
     void healthBar(); //was delete
     void gameOver();
 };
@@ -499,5 +498,5 @@ void renderHighScores();
 void redScreenFlash();
 void hardMode();
 void trackKills(int);
-
+void renderText();
 #endif /* GAME_H */
