@@ -515,8 +515,8 @@ void renderHighScores()
 	r.center = 0;
 	ggprint16(&r, 16, c, "Press spacebar for Main Menu");
 	
-	if (gl.spacebar == 0) {
-		gl.state = STATE_STARTUP;
+	if (gl.spacebar == 2) {
+		gl.state = STATE_GAMEPAUSE;
 	}
 }
 

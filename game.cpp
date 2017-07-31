@@ -231,7 +231,7 @@ void checkKeys(XEvent *e)
 				gl.spacebar = 1;
 			}
 			if (gl.state == STATE_HIGHSCORE) {
-				gl.spacebar = 0;
+				gl.spacebar = 2;
 			}
         break;
     case XK_h:
