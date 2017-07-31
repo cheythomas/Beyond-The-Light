@@ -643,12 +643,11 @@ void trackKills(int)
 {
 	if (gl.hardSelection == 0) {
 		gl.points += 10;
-		gl.savescore += 10;
 	} else if (gl.hardSelection == 1) {
 		gl.points += 20;
-		gl.savescore += 20;
 	}
 	gl.ghostKilled++;
+	gl.savescore = gl.points;
 }
 
 void cheyRestart()
@@ -657,4 +656,88 @@ void cheyRestart()
 	gl.keyCount = 0;
 	globalSprite.life[10]->draw();
 	gl.hardSelection = 0;
+}
+
+// special feature
+void disco()
+{
+	timers.recordTime(&timers.timeCurrent);
+	double timeSpan = 
+		timers.timeDiff(&timers.modeTime, &timers.timeCurrent);
+	if (gl.danceParty == 1) {
+		float w, h, z, x, y;
+		w = gl.xres; // width size
+		h = gl.yres; // length size
+		z = 0;
+		x = -gl.camera[0]; // x-axis
+		y = gl.yres/2; // y-axis
+		int flash = 0;
+
+		if (timeSpan > 0.5) {
+			timers.timeCopy(&timers.modeTime, &timers.timeCurrent);
+			flash++;
+		}
+		
+		if (gl.keepTrack >= 0) {
+			glColor4f(1.0, 0.0, 0.0, 0.4); 
+			glPushMatrix();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glTranslatef(x, y, z);
+			glBegin(GL_QUADS);
+				glVertex2i(-w, -h);
+				glVertex2i(-w,  h);
+				glVertex2i( w,  h);
+				glVertex2i( w, -h);
+			glEnd();
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		}
+		// flash screen
+		if (timeSpan > 0.2) {
+			glColor4f(0.0, 1.0, 0.0, 0.4);
+			glPushMatrix();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glTranslatef(x, y, z);
+			glBegin(GL_QUADS);
+				glVertex2i(-w, -h);
+				glVertex2i(-w,  h);
+				glVertex2i( w,  h);
+				glVertex2i( w, -h);
+			glEnd();
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		} 
+		if (timeSpan > 0.1) {
+			glColor4f(0.0, 0.0, 1.0, 0.4);
+			glPushMatrix();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glTranslatef(x, y, z);
+			glBegin(GL_QUADS);
+				glVertex2i(-w, -h);
+				glVertex2i(-w,  h);
+				glVertex2i( w,  h);
+				glVertex2i( w, -h);
+			glEnd();
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		}
+		if (timeSpan > 0.3) {
+			glColor4f(1.0, 1.0, 1.0, 0.4);
+			glPushMatrix();
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glTranslatef(x, y, z);
+			glBegin(GL_QUADS);
+				glVertex2i(-w, -h);
+				glVertex2i(-w,  h);
+				glVertex2i( w,  h);
+				glVertex2i( w, -h);
+			glEnd();
+			glDisable(GL_BLEND);
+			glPopMatrix();
+		}
+	}
 }
