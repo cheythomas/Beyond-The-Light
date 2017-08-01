@@ -702,6 +702,13 @@ void ghostRandom()
     if (rand() % (60 - gl.points / 50) == 0) { //rate of spawn
         float x = (rand() % gl.xres) + gl.camera[0];
         float y = (rand() % (gl.yres - 350)) + 350;
+        //if mortana is going to the left, bias to the left
+        float bias = 600;
+        if(gl.keys[XK_Left]) {
+            x -= bias;
+        } else if(gl.keys[XK_Right]) { //else if she's going to the right, bias right
+            x += bias;
+        }
         Enemy en(x, y, rand() % 3);
         gl.enemies.push_back(en);
     }
