@@ -658,6 +658,7 @@ void lightningCollision(Enemy& en)
             printf("A lighting hit a ghost (%d)!\n", en.spriteId);
             en.alive = false;
             trackKills(en.spriteId);
+            playGhostDeath();
         }
     }
 }
