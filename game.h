@@ -519,6 +519,7 @@ void physicsAudio();
 void playPoint();
 void playScream();
 void playMeow();
+void playGhostDeath();
 void playGrab();
 void playJump();
 void setupAudio();

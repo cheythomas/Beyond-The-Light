@@ -138,8 +138,8 @@ void renderBackgroundSprites()
     glEnd();
 }
 
-ALuint alBuffer[10];
-ALuint alSource[10];
+ALuint alBuffer[11];
+ALuint alSource[11];
 ALint statel;
 
 void setupAudio()
@@ -158,9 +158,9 @@ void setupAudio()
     alListenerf(AL_GAIN, 1.0f);
     
     //click up and down
-    alBuffer[0] = alutCreateBufferFromFile("./sound/click.wav"); 
+    alBuffer[0] = alutCreateBufferFromFile("./sound/select.wav"); 
     //select
-    alBuffer[1] = alutCreateBufferFromFile("./sound/select.wav"); 
+    alBuffer[1] = alutCreateBufferFromFile("./sound/click.wav"); 
     //blast lightning
     alBuffer[2] = alutCreateBufferFromFile("./sound/Blast.wav"); 
     //Game menu
@@ -177,8 +177,10 @@ void setupAudio()
     alBuffer[8] = alutCreateBufferFromFile("./sound/grab.wav"); 
     //grabs object
     alBuffer[9] = alutCreateBufferFromFile("./sound/kitty.wav"); 
+    //ghost
+    alBuffer[10] = alutCreateBufferFromFile("./sound/ghostdeath.wav"); 
 
-    alGenSources(10, alSource);
+    alGenSources(11, alSource);
 
     alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
     alSourcef(alSource[0], AL_GAIN, 1.0f);
@@ -195,7 +197,7 @@ void setupAudio()
         printf("Audio setup error\n");
     }
     alSourcei(alSource[2], AL_BUFFER, alBuffer[2]);
-    alSourcef(alSource[2], AL_GAIN, 1.0f);
+    alSourcef(alSource[2], AL_GAIN, 0.5f);
     alSourcef(alSource[2], AL_PITCH, 1.0f);
     alSourcef(alSource[2], AL_LOOPING, AL_FALSE);
     if (alGetError() != AL_NO_ERROR) {
@@ -250,9 +252,16 @@ void setupAudio()
     if (alGetError() != AL_NO_ERROR) {
         printf("Audio setup error\n");
     }
+    alSourcei(alSource[10], AL_BUFFER, alBuffer[10]);
+    alSourcef(alSource[10], AL_GAIN, 1.0f);
+    alSourcef(alSource[10], AL_PITCH, 1.0f);
+    alSourcef(alSource[10], AL_LOOPING, AL_FALSE);
+    if (alGetError() != AL_NO_ERROR) {
+        printf("Audio setup error\n");
+    }
 #endif
 }
-
+//cleanup audio
 void cleanupAudio()
 {
 #ifdef ENABLE_AUDIO
@@ -266,6 +275,7 @@ void cleanupAudio()
     alDeleteSources(1, &alSource[7]);
     alDeleteSources(1, &alSource[8]);
     alDeleteSources(1, &alSource[9]);
+    alDeleteSources(1, &alSource[10]);
 
 
     alDeleteBuffers(1, &alBuffer[0]);
@@ -278,7 +288,7 @@ void cleanupAudio()
     alDeleteSources(1, &alSource[7]);
     alDeleteSources(1, &alSource[8]);
     alDeleteSources(1, &alSource[9]);
-
+    alDeleteSources(1, &alSource[10]);
 
     ALCcontext *Context = alcGetCurrentContext();
     ALCdevice *Device = alcGetContextsDevice(Context);
@@ -306,9 +316,9 @@ void playPoint()
 {
 #ifdef ENABLE_AUDIO
     alGetSourcei(alSource[2], AL_SOURCE_STATE, &statel);
-    if (statel != AL_PLAYING) {
+    //if (statel != AL_PLAYING) {
         alSourcePlay(alSource[2]);
-    }
+    //}
 #endif
 }
 
@@ -340,6 +350,16 @@ void playMeow()
 {
 #ifdef ENABLE_AUDIO
     alSourcePlay(alSource[9]);
+#endif
+}
+
+void playGhostDeath()
+{
+#ifdef ENABLE_AUDIO
+   //alGetSourcei(alSource[10], AL_SOURCE_STATE, &statel);
+   //if (statel != AL_PLAYING) {
+        alSourcePlay(alSource[10]);
+    //}
 #endif
 }
 
@@ -593,53 +613,18 @@ void checkUserNameInput(int key)
         }
     }
 }
-
-//void applyBackgroundMovement(void)
-//{
-
-//float gx = globalSprite.characterGirl->getPosX();
-//float gy = globalSprite.characterGirl->getPosY();
-
-//globalSprite.background[0]->setPos()
-//}
-
-
-/*void Level::renderalGetSourceBackground(void)
+/*
+void Level::renderBackground(void)
 {
-    if (gl.select == 1) {
-        FILE *fpi2 = fopen("level1.txt", "r");
-        if (fpi2) {
-            nrows = 0;
-            char line[100];
-            while (fgets(line, 100, fpi2) != NULL) {
-                removeCrLf(line);
-                int slen = strlen(line);
-                ncols = slen;
-
-                for (int j = 0; j < slen; j++) {
-                    arr[nrows][j] = line[j];
-                }
-                ++nrows;
-            }
-            fclose(fpi2);
-
-        }  
-    }
-    
     Flt dd = ftsz[0];
     Flt offy = tile_base;
     int ncols_to_render = gl.xres / tilesize[0] + 2;
     int col = (int) (gl.camera[0] / dd);
     col = col % ncols;
-
     Flt cdd = gl.camera[0] / dd;
-
     Flt flo = floor(cdd);
-
     Flt dec = (cdd - flo);
-
     Flt offx = -dec * dd;
-
     for (int j = 0; j < ncols_to_render; j++) {
         int row = nrows - 1;
         for (int i = 0; i < nrows; i++) {
@@ -669,6 +654,7 @@ void checkUserNameInput(int key)
             if (arr[row][col] == 'b') {
                 glColor3f(0.9, 0.2, 0.2);
                 glPushMatrix();
+                glBindTexture(GL_TEXTURE_2D, 0);
                 Vec tr = {(Flt) j * dd + offx, (Flt) i * ftsz[i] + offy, 0};
                 glTranslated(tr[0], tr[1], tr[2]);
                 int tx = tilesize[0];
@@ -688,4 +674,35 @@ void checkUserNameInput(int key)
         ++col;
         col = col % ncols;
     }
-} */
+} 
+
+void Level::MortanaMoves(void) {
+    gl.mortanaPos[1] += gl.mortanaPos[1];
+    gl.mortanaPos[1] -= 0.7;
+    Flt dd = ftsz[0];
+    int col = (int)(gl.camera[0] / dd) + (500.0 / tilesize[0] + 1);
+    col = col % ncols;
+    int hgt = 0;
+    //check for saved height value
+    if (dynamicHeight[col] != -1) {
+        //set hgt to array value
+        hgt = dynamicHeight[col];
+    }
+    else {  
+        for (int i = 0; i < nrows; i++) {
+            if (arr[i][col] != ' ') {
+                hgt = i;
+                break;
+            }
+        }
+        printf("col saved: %i\n", col);
+        dynamicHeight[col] = hgt;
+    }
+    //height of ball is (nrows-1-i)*tile_height + starting point
+    Flt h= tilesize[1]*(nrows - hgt) + tile_base;
+    if (gl.ball_pos[1] <= h) {
+        gl.ball_vel[1] = 0.0;
+        gl.ball_pos[1] = h;
+    }
+}*/
+    
