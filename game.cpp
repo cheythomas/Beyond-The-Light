@@ -3,9 +3,10 @@
 
 int main(void)
 {
+    srand(time(NULL));
     initXWindows();
     initOpengl();
-    setupAudio();
+    setupAudio();    
     initMenuBackground(); //main menu background
     initCharacterSprites(); // function call inside initOpenGl
     initBackgroundSprites();
