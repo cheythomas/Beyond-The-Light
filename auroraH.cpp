@@ -625,7 +625,6 @@ void physicsGhosts()
 void lightningCollision(Enemy& en)
 {
     if (gl.lightning) {
-        playPoint();
         float x = gl.mortanaPos[0];
         float y = gl.mortanaPos[1];
         //center values from physicsLightSprite
@@ -942,7 +941,7 @@ void MainMenu::keyboardInput(int key)
     case XK_P:
         if (gl.state == STATE_GAMEPLAY) {
             gl.state = STATE_GAMEPAUSE;
-        } else {
+        } else if(gl.state != STATE_GAMEOVER) {
             gl.state = STATE_GAMEPLAY;
         }
         break;
