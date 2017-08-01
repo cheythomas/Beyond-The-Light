@@ -315,10 +315,10 @@ void playSelection()
 void playPoint()
 {
 #ifdef ENABLE_AUDIO
-    alGetSourcei(alSource[2], AL_SOURCE_STATE, &statel);
-    //if (statel != AL_PLAYING) {
+   // alGetSourcei(alSource[2], AL_SOURCE_STATE, &statel);
+  // if (statel != AL_PLAYING) {
         alSourcePlay(alSource[2]);
-    //}
+  //  }
 #endif
 }
 
@@ -359,7 +359,7 @@ void playGhostDeath()
    //alGetSourcei(alSource[10], AL_SOURCE_STATE, &statel);
    //if (statel != AL_PLAYING) {
         alSourcePlay(alSource[10]);
-    //}
+   //}
 #endif
 }
 
@@ -613,96 +613,3 @@ void checkUserNameInput(int key)
         }
     }
 }
-/*
-void Level::renderBackground(void)
-{
-    Flt dd = ftsz[0];
-    Flt offy = tile_base;
-    int ncols_to_render = gl.xres / tilesize[0] + 2;
-    int col = (int) (gl.camera[0] / dd);
-    col = col % ncols;
-    Flt cdd = gl.camera[0] / dd;
-    Flt flo = floor(cdd);
-    Flt dec = (cdd - flo);
-    Flt offx = -dec * dd;
-    for (int j = 0; j < ncols_to_render; j++) {
-        int row = nrows - 1;
-        for (int i = 0; i < nrows; i++) {
-            if (arr[row][col] == 'w') {
-                glColor3f(0.8, 0.8, 0.6);
-                glPushMatrix();
-                glBindTexture(GL_TEXTURE_2D, 0);
-                Vec tr = {(Flt) j * dd + offx, (Flt) i * ftsz[1] + offy, 0};
-                glTranslated(tr[0], tr[1], tr[2]);
-                int tx = tilesize[0];
-                int ty = tilesize[1];
-                glBegin(GL_QUADS);
-                glTexCoord2f(0.0, 1.0);
-                glVertex2i(0, 0);
-                glTexCoord2f(0.0, 1.0);
-                glVertex2i(0, ty);
-                glTexCoord2f(0.0, 1.0);
-                glVertex2i(tx, ty);
-                glTexCoord2f(0.0, 1.0);
-                glVertex2i(tx, 0);
-                glEnd();
-                glPopMatrix();
-                glBindTexture(GL_TEXTURE_2D, 0);
-
-            }
-
-            if (arr[row][col] == 'b') {
-                glColor3f(0.9, 0.2, 0.2);
-                glPushMatrix();
-                glBindTexture(GL_TEXTURE_2D, 0);
-                Vec tr = {(Flt) j * dd + offx, (Flt) i * ftsz[i] + offy, 0};
-                glTranslated(tr[0], tr[1], tr[2]);
-                int tx = tilesize[0];
-                int ty = tilesize[1];
-                glBegin(GL_QUADS);
-                glVertex2i(0, 0);
-                glVertex2i(0, ty);
-                glVertex2i(tx, ty);
-                glVertex2i(tx, 0);
-                glEnd();
-                glPopMatrix();
-                glBindTexture(GL_TEXTURE_2D, 0);
-            }
-            --row;
-
-        }
-        ++col;
-        col = col % ncols;
-    }
-} 
-
-void Level::MortanaMoves(void) {
-    gl.mortanaPos[1] += gl.mortanaPos[1];
-    gl.mortanaPos[1] -= 0.7;
-    Flt dd = ftsz[0];
-    int col = (int)(gl.camera[0] / dd) + (500.0 / tilesize[0] + 1);
-    col = col % ncols;
-    int hgt = 0;
-    //check for saved height value
-    if (dynamicHeight[col] != -1) {
-        //set hgt to array value
-        hgt = dynamicHeight[col];
-    }
-    else {  
-        for (int i = 0; i < nrows; i++) {
-            if (arr[i][col] != ' ') {
-                hgt = i;
-                break;
-            }
-        }
-        printf("col saved: %i\n", col);
-        dynamicHeight[col] = hgt;
-    }
-    //height of ball is (nrows-1-i)*tile_height + starting point
-    Flt h= tilesize[1]*(nrows - hgt) + tile_base;
-    if (gl.ball_pos[1] <= h) {
-        gl.ball_vel[1] = 0.0;
-        gl.ball_pos[1] = h;
-    }
-}*/
-    
