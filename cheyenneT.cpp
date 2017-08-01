@@ -339,20 +339,22 @@ void physicsLightSprite()
 		l->setVisible(false);
 	} else {
 		if (gl.keys[XK_d] || gl.keys[XK_D] || gl.keys[XK_a] || gl.keys[XK_A]) {
+			playPoint();
 			l->setVisible(true);
-			if (mortDir == 1) {	
+			if (mortDir == 1) {	/* FACING RIGHT DIR: forward attack */
 				l->setPos(cmx + 120, cmy);
 				l->setAngle(0);
 				gl.lightning = 1;
-			} else {
+			} else { /* FACING LEFT: forward attack*/
 				l->setPos(cmx - 120, cmy);		
 				l->setAngle(180);
 				gl.lightning = 5;
 			}
 			keyPressed = true;
 		} else if (gl.keys[XK_w] || gl.keys[XK_W]) {
+			playPoint();
 			l->setVisible(true);	
-			if (mortDir == 1) {	
+			if (mortDir == 1) {	/* ATTACK UPWARD */
 				l->setPos(cmx, cmy + 128);
 			} else {
 				l->setPos(cmx, cmy + 128);		
@@ -361,17 +363,19 @@ void physicsLightSprite()
 			keyPressed = true;
 			gl.lightning = 3;
 		} else if (gl.keys[XK_q] || gl.keys[XK_Q]) {
+			playPoint();
 			l->setVisible(true);	
-			if (mortDir == 1) {	
+			if (mortDir == 1) {	/* FACING RIGHT: attack left diagonally */
 				l->setPos(cmx - 150*0.707, cmy +128*0.707);
-			} else {
+			} else { /* FACING LEFT */ 
 				l->setPos(cmx - 150*0.707, cmy +128*0.707);		
 			}
 			l->setAngle(135);
 			keyPressed = true;
 			gl.lightning = 4;
 		} else if (gl.keys[XK_e] || gl.keys[XK_E]) {
-			l->setVisible(true);	
+			playPoint();
+			l->setVisible(true); /* attack right diagonally */
 			if (mortDir == 1) {	
 				l->setPos(cmx + 150*0.707, cmy + 128*0.707);
 			} else {
@@ -541,7 +545,6 @@ void renderHighScores()
 	r.bot = gl.yres*.24;  
 	ggprint40(&r, 16, c, "Your high score            %d", score);
 	r.bot = gl.yres*.20;  
-	//ggprint40(&r, 16, c, "Best Score                     %d", bestscore);
 
 	r.left = gl.xres*0.33; 
 	r.bot = gl.yres*.04;  
