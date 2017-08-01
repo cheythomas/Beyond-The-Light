@@ -96,13 +96,13 @@ void renderText()
 		ggprint8b(&r, 16, c, "h - turn on/off Hard Mode");
 	
 		int pts = gl.points;
-		r.left = -gl.camera[0] + (gl.xres*.89); // x
+		r.left = -gl.camera[0] + (gl.xres*.84); // x
 		r.bot = gl.yres*.034;  // y axis
 		r.center = 0;
 		ggprint16(&r, 16, c, "score: %d", pts);
 	} else if(gl.hardSelection == 1) {
 		int pts = gl.points;
-		r.left = -gl.camera[0] + (gl.xres*.9); // x
+		r.left = -gl.camera[0] + (gl.xres*.84); // x
 		r.bot = gl.yres*.04;  // y axis
 		r.center = 0;
 		ggprint16(&r, 16, c, "score: %d", pts);
