@@ -420,14 +420,14 @@ void physicsMortana()
             } else if (gl.keys[XK_Right]) {
                 // mortana walking right
                 m->physics();
-                cx += 3;
+                cx += 1;
                 if (m->getDirection() == 0) {
                     m->setDirection(1);
                     mj->setDirection(1);
                 }
                 if (catx > cx - catDistance) {
                     //cat is on the right side of mortana
-                    catx -= 3;
+                    catx -= 1;
                     catsit->setVisible(true);
                     catsit->physics();
                 } else {
@@ -446,10 +446,10 @@ void physicsMortana()
                     m->setDirection(0);
                     mj->setDirection(0);
                 }
-                cx -= 3;
+                cx -= 1;
                 if (catx < cx + catDistance) {
                     //cat is on the left side of mortana
-                    catx += 3;
+                    catx += 1;
                     catsit->setVisible(true);
                     catsit->physics();
                 } else {
@@ -466,10 +466,10 @@ void physicsMortana()
                 catsit->physics();
                 if (catx < cx - catDistanceSit) {
                     //Mortana is not moving but the cat is on the right side
-                    catx += 3;
+                    catx += 1;
                 } else if (catx > cx + catDistanceSit) {
                     //mortana is not moving but the cat is on the left side
-                    catx -= 3;
+                    catx -= 1;
                 }
             }
         } else {
@@ -700,7 +700,7 @@ void ghostRandom()
 {
     //Increase ghost random creation for every 100 points
     if (rand() % (60 - gl.points / 50) == 10) { //rate of spawning //0
-        float x = (rand() % gl.xres) / 2 + gl.mortanaPos[0];
+        float x = (rand() % gl.xres) + gl.camera[0];
         float y = (rand() % (gl.yres - 350)) + 350;
         Enemy en(x, y, rand() % 3);
         gl.enemies.push_back(en);
