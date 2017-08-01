@@ -60,22 +60,23 @@ void Battery::drawBattery(float wid, float len, float x, float y, float z)
 // a energy bar on the ground
 void Battery::energybarAppears()
 {
-	if (gl.keepTrack == 3 || gl.keepTrack == 6 || gl.keepTrack == 9) {
+	if (gl.keepTrack == 3 || gl.keepTrack == 5 || gl.keepTrack == 7
+			|| gl.keepTrack == 9 || gl.keepTrack == 10) {
 		float w, h, z, x, y;
-		w = 34; // width size
-		h = 8; // length size
+		w = 34; 
+		h = 8;
 		z = 0.0;
-		x = 740; // x-axis
-		y = 50; // y-axis
+		x = 740; 
+		y = 50; 
 		glColor3f(0.0, 1.0, 0.0);
 	       	
-		//refractoring	
+		//refractored	
 		drawBattery(w, h, x, y, z);
 		drawBattery(w, h, 4000, y, z);
 		drawBattery(w, h, 2000, y, z);
 
 		Rect r;
-		r.bot = 80; // y-axis
+		r.bot = 80; 
 		r.left = 691; // x-axis
 		r.center = 0;
 		unsigned int c = 0x00ffff44;
@@ -213,7 +214,8 @@ void renderLifeBarSprite()
 
 	// adds a life bar after R key press	
 	int pressedR = 0;
-	if (gl.keepTrack == 3 || gl.keepTrack == 6 || gl.keepTrack == 9) {
+	if (gl.keepTrack == 3 || gl.keepTrack == 5 || gl.keepTrack == 7
+			|| gl.keepTrack == 9 || gl.keepTrack == 10) {
 		if (pressedR == 0) {
 			Rect r;
 			r.bot = gl.yres-20; // y-axis
@@ -556,11 +558,11 @@ void redScreenFlash()
 	timers.timeDiff(&timers.gameTime, &timers.timeCurrent);
 	
 	float w, h, z, x, y;
-	w = gl.xres; // width size
-	h = gl.yres; // length size
+	w = gl.xres;
+	h = gl.yres; 
 	z = 0;
-	x = -gl.camera[0]; // x-axis
-	y = gl.yres/2; // y-axis
+	x = -gl.camera[0]; 
+	y = gl.yres/2; 
 	int flash = 0;
 
 	if (timeSpan > 1.0) {
