@@ -144,67 +144,67 @@ void renderLifeBarSprite()
 	int y = gl.yres-20;  //600
 	
 	// full to empty
-	if (gl.keyCount == 0 || 76 > gl.keyCount) {
+	if (gl.keyCount == 0 || 101 > gl.keyCount) {
 		globalSprite.life[0]->draw();
 		globalSprite.life[0]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 0;
 	}
 
-	if (gl.keyCount > 75) {
+	if (gl.keyCount > 100) {
 		globalSprite.life[1]->draw();
 		globalSprite.life[1]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 1;
 	}
 	
-	if (gl.keyCount > 150 || gl.keepTrack == 3) {
+	if (gl.keyCount > 200) {
 		globalSprite.life[2]->draw();
 		globalSprite.life[2]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 2;
 	}
 	
-	if (gl.keyCount > 225) {
+	if (gl.keyCount > 300) {
 		globalSprite.life[3]->draw();
 		globalSprite.life[3]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 3;
 	}
 	
-	if (gl.keyCount > 300) {
+	if (gl.keyCount > 400) {
 		globalSprite.life[4]->draw();
 		globalSprite.life[4]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 4;
 	}
 	
-	if (gl.keyCount > 375) {
+	if (gl.keyCount > 500) {
 		globalSprite.life[5]->draw();
 		globalSprite.life[5]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 5;
 	}
 	
-	if (gl.keyCount > 450) {
+	if (gl.keyCount > 600) {
 		globalSprite.life[6]->draw();
 		globalSprite.life[6]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 6;
 	}
 	
-	if (gl.keyCount > 525) {
+	if (gl.keyCount > 700) {
 		globalSprite.life[7]->draw();
 		globalSprite.life[7]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 7;
 	}
 	
-	if (gl.keyCount > 600) {
+	if (gl.keyCount > 800) {
 		globalSprite.life[8]->draw();
 		globalSprite.life[8]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 8;
 	}
 	
-	if (gl.keyCount > 675) {
+	if (gl.keyCount > 900) {
 		globalSprite.life[9]->draw();
 		globalSprite.life[9]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 9;
 	}
 	
-	if (gl.keyCount == 750 || gl.keyCount > 750) { 
+	if (gl.keyCount == 1000 || gl.keyCount > 1000) { 
 		globalSprite.life[10]->draw();
 		globalSprite.life[10]->setPos(-gl.camera[0] + x, y);
 		gl.keepTrack = 10;
@@ -234,7 +234,7 @@ void renderLifeBarSprite()
 			}
 		}
 		if (pressedR == 1) {
-			gl.keyCount -= 75;
+			gl.keyCount -= 100;
 			gl.keepTrack = gl.keepTrack - 1;
 			globalSprite.life[gl.keepTrack]->draw();
 		} 
