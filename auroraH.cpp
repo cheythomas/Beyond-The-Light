@@ -698,8 +698,8 @@ void mortanaCollision()
 
 void ghostRandom()
 {
-    //Increase ghost random creation for every 100 points
-    if (rand() % (60 - gl.points / 50) == 10) { //rate of spawning //0
+    //Increase ghost random creation linearly
+    if (rand() % (60 - gl.points / 50) == 0) { //rate of spawn
         float x = (rand() % gl.xres) + gl.camera[0];
         float y = (rand() % (gl.yres - 350)) + 350;
         Enemy en(x, y, rand() % 3);
