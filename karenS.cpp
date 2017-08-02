@@ -99,14 +99,14 @@ void initBackgroundSprites()
     globalSprite.background[0] = new Sprite("bg.png", 1, 1, 1, 1, 1200, 5000);
     globalSprite.background[1] = new Sprite("moon.png", 1, 1, 1, 1, 100, 100);
     globalSprite.background[1]->setPos(5000 / 2, 0.8 * gl.yres);
-    globalSprite.background[2] = new SpriteWrapAround("mountain-fg.png", 513, 
-    5000);
+    globalSprite.background[2] = new SpriteWrapAround("mountain-fg.png", 513,
+            5000);
     globalSprite.background[2]->setPos(5000 / 2, 360);
-    globalSprite.background[3] = new SpriteWrapAround("mountain-bg.png", 703, 
-    5000);
+    globalSprite.background[3] = new SpriteWrapAround("mountain-bg.png", 703,
+            5000);
     globalSprite.background[3]->setPos(5000 / 2, 360);
-    globalSprite.background[4] = new SpriteWrapAround("treeline.png", 770, 
-    5000);
+    globalSprite.background[4] = new SpriteWrapAround("treeline.png", 770,
+            5000);
     globalSprite.background[4]->setPos(5000 / 2, 200);
 
 }
@@ -117,7 +117,7 @@ void renderBackgroundSprites()
         if (i == 0) {
             globalSprite.background[i]->setPos(-gl.camera[0], 600);
         } else if (i == 1) {
-            globalSprite.background[i]->setPos(-gl.camera[0] + gl.xres * 0.66, 
+            globalSprite.background[i]->setPos(-gl.camera[0] + gl.xres * 0.66,
                     gl.yres * 0.8);
         } else if (i == 2) {
             globalSprite.background[i]->setPos(-gl.camera[0]*0.1, 360);
@@ -156,29 +156,29 @@ void setupAudio()
     alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
     alListenerfv(AL_ORIENTATION, vec);
     alListenerf(AL_GAIN, 1.0f);
-    
+
     //click up and down
-    alBuffer[0] = alutCreateBufferFromFile("./sound/select.wav"); 
+    alBuffer[0] = alutCreateBufferFromFile("./sound/select.wav");
     //select
-    alBuffer[1] = alutCreateBufferFromFile("./sound/click.wav"); 
+    alBuffer[1] = alutCreateBufferFromFile("./sound/click.wav");
     //blast lightning
-    alBuffer[2] = alutCreateBufferFromFile("./sound/Blast.wav"); 
+    alBuffer[2] = alutCreateBufferFromFile("./sound/Blast.wav");
     //Game menu
-    alBuffer[3] = alutCreateBufferFromFile("./sound/MainMenu.wav"); 
+    alBuffer[3] = alutCreateBufferFromFile("./sound/MainMenu.wav");
     // Background Music
-    alBuffer[4] = alutCreateBufferFromFile("./sound/theme1b.wav"); 
+    alBuffer[4] = alutCreateBufferFromFile("./sound/theme1b.wav");
     //game over
-    alBuffer[5] = alutCreateBufferFromFile("./sound/gameover.wav"); 
+    alBuffer[5] = alutCreateBufferFromFile("./sound/gameover.wav");
     //girl die scream
-    alBuffer[6] = alutCreateBufferFromFile("./sound/scream.wav"); 
+    alBuffer[6] = alutCreateBufferFromFile("./sound/scream.wav");
     //girl jumps
     alBuffer[7] = alutCreateBufferFromFile("./sound/jump.wav");
     //grabs object
-    alBuffer[8] = alutCreateBufferFromFile("./sound/grab.wav"); 
+    alBuffer[8] = alutCreateBufferFromFile("./sound/grab.wav");
     //grabs object
-    alBuffer[9] = alutCreateBufferFromFile("./sound/kitty.wav"); 
+    alBuffer[9] = alutCreateBufferFromFile("./sound/kitty.wav");
     //ghost
-    alBuffer[10] = alutCreateBufferFromFile("./sound/ghostdeath.wav"); 
+    alBuffer[10] = alutCreateBufferFromFile("./sound/ghostdeath.wav");
 
     alGenSources(11, alSource);
 
@@ -262,6 +262,7 @@ void setupAudio()
 #endif
 }
 //cleanup audio
+
 void cleanupAudio()
 {
 #ifdef ENABLE_AUDIO
@@ -307,7 +308,7 @@ void playClick()
 
 void playSelection()
 {
-#ifdef ENABLE_AUDIO    
+#ifdef ENABLE_AUDIO
     alSourcePlay(alSource[1]);
 #endif
 }
@@ -315,10 +316,10 @@ void playSelection()
 void playPoint()
 {
 #ifdef ENABLE_AUDIO
-   // alGetSourcei(alSource[2], AL_SOURCE_STATE, &statel);
-  // if (statel != AL_PLAYING) {
-        alSourcePlay(alSource[2]);
-  //  }
+    // alGetSourcei(alSource[2], AL_SOURCE_STATE, &statel);
+    // if (statel != AL_PLAYING) {
+    alSourcePlay(alSource[2]);
+    //  }
 #endif
 }
 
@@ -356,10 +357,10 @@ void playMeow()
 void playGhostDeath()
 {
 #ifdef ENABLE_AUDIO
-   //alGetSourcei(alSource[10], AL_SOURCE_STATE, &statel);
-   //if (statel != AL_PLAYING) {
-        alSourcePlay(alSource[10]);
-   //}
+    //alGetSourcei(alSource[10], AL_SOURCE_STATE, &statel);
+    //if (statel != AL_PLAYING) {
+    alSourcePlay(alSource[10]);
+    //}
 #endif
 }
 
@@ -403,7 +404,6 @@ char *get_ip(char *host);
 char *build_get_query(char *host, const char *page);
 //char was made into a constant to fix the error of deprecated conversation
 
-
 std::string submit(std::string username, int score)
 {
     struct sockaddr_in *remote;
@@ -428,7 +428,7 @@ std::string submit(std::string username, int score)
         exit(1);
     }
     remote->sin_port = htons(PORT);
-    if (connect(sock, (struct sockaddr *) remote, 
+    if (connect(sock, (struct sockaddr *) remote,
             sizeof (struct sockaddr)) < 0) {
         perror("Could not connect");
         exit(1);
@@ -468,7 +468,7 @@ std::string submit(std::string username, int score)
         }
         if (htmlstart) {
             result = htmlcontent;
-            //include the "%s" to solve the issue of making it 
+            //include the "%s" to solve the issue of making it
             //a string literal.
         }
         //memset(buf, 0, tmpres);
@@ -514,11 +514,10 @@ char *get_ip(char *host)
         herror("Can't get IP host by name");
         exit(1);
     }
-    //for the bottom, we add 1 onto iplen so that we can fix the 
+    //for the bottom, we add 1 onto iplen so that we can fix the
     //failed hostname
     if (inet_ntop(AF_INET, (void *) hent->h_addr_list[0],
-        ip, iplen + 1) == NULL)
- {
+            ip, iplen + 1) == NULL) {
         perror("Can't resolve host with inet_ntop");
         exit(1);
     }
@@ -530,17 +529,17 @@ char *build_get_query(char *host, const char *page)
 {
     char *query;
     const char *getpage = page;
-    //added a constant to char to solve problem of deprecated conversion 
-    //from string constant to char the following char *tpl was made into a 
+    //added a constant to char to solve problem of deprecated conversion
+    //from string constant to char the following char *tpl was made into a
     //constant to fix the error to pass string literals.
     const char *tpl = "GET /%s HTTP/1.0\r\nHost: %s\r\nUser-Agent: %s\r\n\r\n";
     if (getpage[0] == '/') {
         getpage = getpage + 1;
-        fprintf(stderr, "Removing leading \"/\", converting %s to %s\n", 
+        fprintf(stderr, "Removing leading \"/\", converting %s to %s\n",
                 page, getpage);
     }
     // -5 is to consider the %s %s %s in tpl and the ending \0
-    query = (char *) malloc(strlen(host) + strlen(getpage) + strlen(USERAGENT) 
+    query = (char *) malloc(strlen(host) + strlen(getpage) + strlen(USERAGENT)
             + strlen(tpl) - 5);
     sprintf(query, tpl, getpage, host, USERAGENT);
     return query;
@@ -550,50 +549,50 @@ void updateScores(std::string username, int score)
 {
     //delete all scores
     gl.scores.clear();
-    
+
     //Send current and fetch new high scores
     std::string text = submit(username, score);
     printf("Scores are: %s\n", text.c_str());
-    
+
     std::stringstream ss(text);
     std::string u;
     int s;
-    while(ss >> u >> s) {
-        gl.scores.push_back(Score(u,s));
+    while (ss >> u >> s) {
+        gl.scores.push_back(Score(u, s));
     }
 }
 
 void renderUsernameInput()
 {
     glPushMatrix();
-    glColor3f(0,0,0);
+    glColor3f(0, 0, 0);
     glBegin(GL_QUADS);
-    glVertex2i(gl.xres/2-150, gl.yres/2-250);
-    glVertex2i(gl.xres/2-150, gl.yres/2-200);
-    glVertex2i(gl.xres/2+150, gl.yres/2-200);
-    glVertex2i(gl.xres/2+150, gl.yres/2-250);
+    glVertex2i(gl.xres / 2 - 150, gl.yres / 2 - 250);
+    glVertex2i(gl.xres / 2 - 150, gl.yres / 2 - 200);
+    glVertex2i(gl.xres / 2 + 150, gl.yres / 2 - 200);
+    glVertex2i(gl.xres / 2 + 150, gl.yres / 2 - 250);
     glEnd();
-    
+
     Rect r;
     r.center = 1;
-    r.left = gl.xres/2;
-    r.bot = gl.yres/2-245;
+    r.left = gl.xres / 2;
+    r.bot = gl.yres / 2 - 245;
     ggprint16(&r, 0, 0xffffff, gl.username.c_str());
-   
+
     r.center = 0;
-    r.bot = gl.yres/2-200;
-    r.left = gl.xres/2-150;
+    r.bot = gl.yres / 2 - 200;
+    r.left = gl.xres / 2 - 150;
     ggprint16(&r, 0, 0xff00ff, "Enter username and press ENTER to submit!");
-    
+
     glPopMatrix();
 }
 
-void checkUserNameInput(int key) 
+void checkUserNameInput(int key)
 {
-    if(gl.state == STATE_GAMEOVER) {
-        switch(key) {
+    if (gl.state == STATE_GAMEOVER) {
+        switch (key) {
         case XK_Return:
-            if(!gl.username.empty()) {
+            if (!gl.username.empty()) {
                 updateScores(gl.username, gl.savescore);
             }
             gl.state = STATE_HIGHSCORE;
@@ -602,14 +601,165 @@ void checkUserNameInput(int key)
             gl.username = "";
             break;
         case XK_BackSpace:
-            if(!gl.username.empty()) {
-                gl.username = gl.username.substr(0, gl.username.size()-1);
+            if (!gl.username.empty()) {
+                gl.username = gl.username.substr(0, gl.username.size() - 1);
             }
             break;
         default:
-            if(key >= 97 && key <= 122) {
-                gl.username += (char)key;
+            if (key >= 97 && key <= 122) {
+                gl.username += (char) key;
             }
         }
     }
+}
+
+void initRavenSprite()
+{
+    for (int i = 0; i < 5; i++) {
+        globalSprite.raven[i] =
+                new Sprite("raven.gif", 8, 3, 8, 1.0f / 8.0f, 60, 100);
+        float x = rand() % 300;
+        float y = gl.yres * 3.0 / 4.0 + rand() % 150;
+        globalSprite.raven[i]->setPos(x, y);
+        globalSprite.raven[i]->setDirection(1);
+        globalSprite.raven[i]->setFrameIndex(
+                rand() % globalSprite.raven[i]->getFrameCount());
+    }
+}
+
+void physicsRaven()
+{
+
+    for (int i = 0; i < 5; i++) {
+        Sprite* r = globalSprite.raven[i];
+        float y = r->getPosY();
+        float x = r->getPosX();
+        if (x < (gl.mortanaPos[0] - gl.xres) && r->getDirection() == 0) {
+            r->setDirection(1);
+        } else if (x > (gl.mortanaPos[0] + gl.xres) &&
+                r->getDirection() == 1) {
+            r->setDirection(0);
+        }
+        if (r->getDirection() == 1) {
+            x += 3;
+        } else {
+            x -= 3;
+        }
+        r->physics();
+        r->setPos(x, y);
+    }
+}
+
+void renderRavenSprites()
+{
+    for (int i = 0; i < 5; i++) {
+        Sprite* r = globalSprite.raven[i];
+        r->draw();
+    }
+}
+
+void initSpells()
+{
+    gl.spells[0] = new Spell(XK_c, 1,
+            new Sprite("particle.gif", 64, 8, 8, 0.035, 92, 92));
+    gl.spells[1] = new Spell(XK_v, 4,
+            new Sprite("flame.gif", 16, 4, 4, 0.070, 92, 92));
+    gl.spells[2] = new Spell(XK_b, 1,
+            new Sprite("blood.gif", 18, 6, 3, 0.3, 250, 250));
+}
+
+Spell::Spell(int key, int t, Sprite * sprite) :
+sprite(sprite), running(false), times(0), timesMax(t), key(key)
+{
+    sprite->setRepeating(false);
+    sprite->setVisible(false);
+}
+
+Spell::~Spell()
+{
+    delete sprite;
+}
+
+void Spell::render()
+{
+    for (int i = 0; i < elementCount; i++) {
+        sprite->setPos(arr[i][0], arr[i][1]);
+        sprite->draw();
+    }
+}
+
+void Spell::physics()
+{
+    if (running) {
+        sprite->physics();
+        float angle = M_PI / elementCount; //angle of each
+        float speed = 6;
+
+        float currentAngle = angle / 2;
+        for (int i = 0; i < elementCount; i++) {
+            //Covert speed to vector components
+            //so they move at same speed in different directions
+            float xcomponent = speed * cos(currentAngle);
+            float ycomponent = speed * sin(currentAngle);
+            arr[i][0] += xcomponent;
+            arr[i][1] += ycomponent;
+            //collision checking
+            currentAngle += angle;
+            sprite->setAngle(currentAngle);
+            //Help from Aurora
+            //similar code uses iterator for vector
+            float ghostRadius = 25;
+            float radiusEstimate = (sprite->getWidth() + sprite->getHeight()) / 4;
+
+            for (std::vector<Enemy>::iterator it = gl.enemies.begin(), end = gl.enemies.end(); it != end; it++) {
+                Enemy& en = *it;
+                if (checkCircle(en.x, en.y, arr[i][0], arr[i][1], ghostRadius, radiusEstimate)) {
+                    //There is collision
+                    it = gl.enemies.erase(it);
+                    playGhostDeath();
+                    trackKills(en.spriteId);
+                }
+            }
+        }
+
+        if (sprite->getFrameIndex() + 1 == sprite->getFrameCount()) {
+            times++;
+            if (times >= timesMax) {
+                running = false;
+                sprite->setVisible(false);
+            } else {
+                sprite->setFrameIndex(0);
+            }
+        }
+    }
+}
+
+void Spell::input(int k)
+{
+    if (gl.state == STATE_GAMEPLAY && !running && key == k &&
+            gl.spellLimit > 0) {
+        running = true;
+        sprite->setVisible(true);
+        //reset ball positions
+        float distance = 65;
+        float angle = M_PI / elementCount; //angle of each
+        float currentAngle = angle / 2;
+        for (int i = 0; i < elementCount; i++) {
+            //Covert speed to vector components
+            //so they move at same speed in different directions
+            float xcomponent = distance * cos(currentAngle);
+            float ycomponent = distance * sin(currentAngle);
+            arr[i][0] = gl.mortanaPos[0] + xcomponent;
+            arr[i][1] = gl.mortanaPos[1] + ycomponent;
+            currentAngle += angle;
+        }
+        sprite->setFrameIndex(0);
+        gl.spellLimit--;
+        times = 0;
+    }
+}
+
+void karenRestart()
+{
+    gl.spellLimit = 3;
 }

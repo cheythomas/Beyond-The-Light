@@ -6,6 +6,7 @@ int main(void)
     srand(time(NULL));
     initXWindows();
     initOpengl();
+    setupAudio();
     setupAudio();    
     initMenuBackground(); //main menu background
     initCharacterSprites(); // function call inside initOpenGl
@@ -14,8 +15,10 @@ int main(void)
     initCreditBackground();
     initLifeBarSprite();
     initHighScores();
+    initRavenSprite();
     initEnemySprites();
     initGameOverSprite();
+    initSpells();
     init();
     struct timespec now, last;
     recordTime(&last);
@@ -168,6 +171,7 @@ void restart()
     //restartBattery();
     cheyRestart();
     auroraRestart();
+    karenRestart();
     printf("Restarted the game!\n");
 }
 
@@ -227,6 +231,9 @@ void checkKeys(XEvent *e)
         //renderCreditSprite.keyboardInput(key);
 
         monitorCTRLC(key);
+        for(int i = 0; i < 3; i++) {
+            gl.spells[i]->input(key);
+        }
     }
 
     if (shift) {
@@ -321,6 +328,10 @@ void physics(void)
         globalSprite.light[4]->physics();
         ghostRandom();
         mortanaCollision();
+        for(int i = 0; i < 3; i++) {
+            gl.spells[i]->physics();
+        }
+        physicsRaven();
     }
 }
 
@@ -339,12 +350,16 @@ void render(void)
         gl.batt.energybarAppears();
         renderLifeBarSprite();
         renderCharacterSprites();
+        renderRavenSprites();
         renderEnemySprites();
         hardMode();
         disco();
         renderText();
         renderLightSprite();
         redScreenFlash();
+        for(int i = 0; i < 3; i++) {
+            gl.spells[i]->render();
+        }
         glPopMatrix();
     } else if (gl.state == STATE_STARTUP || gl.state == STATE_GAMEPAUSE) {
         renderMenuBackground();

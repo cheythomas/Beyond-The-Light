@@ -99,7 +99,7 @@ public:
             float width
             );
 
-    ~Sprite();
+    virtual ~Sprite();
 
     void setPos(float x, float y);
     void setSize(float height, float width);
@@ -165,75 +165,9 @@ struct GlobalSprite {
     Sprite* blkcatsit;
     Sprite* backgroundMenu;
     Sprite* pacghost;
+    Sprite* raven[5];
 
 };
-
-/*class Level {
-public:
-    unsigned char arr[16][180];
-    int nrows, ncols;
-    int tilesize[2];
-    Flt ftsz[2];
-    Flt tile_base;
-    int dynamicHeight[180];
-    void renderBackground(void);
-
-    Level()
-    {
-        for (int i = 0; i < 180; i++) {
-            dynamicHeight[i] = -1;
-            //lev = 0;
-        }
-        tilesize[0] = 32;
-        tilesize[1] = 32;
-        ftsz[0] = (Flt) tilesize[0];
-        ftsz[1] = (Flt) tilesize[1];
-        tile_base = 220.0;
-
-        if (gl.select == 1) {
-        FILE *fpi = fopen("level1.txt", "r");
-        if (fpi) {
-            nrows = 0;
-            char line[100];
-            while (fgets(line, 100, fpi) != NULL) {
-                removeCrLf(line);
-                int slen = strlen(line);
-                ncols = slen;
-
-                for (int j = 0; j < slen; j++) {
-                    arr[nrows][j] = line[j];
-                }
-                ++nrows;
-            }
-            fclose(fpi);
-
-        }
-        }
-
-
-        for (int i = 0; i < nrows; i++) {
-            for (int j = 0; j < ncols; j++) {
-                printf("%c", arr[i][j]);
-            }
-            printf("\n");
-        }
-    }
-
-    void removeCrLf(char *str)
-    {
-        char *p = str;
-        while (*p) {
-            if (*p == 10 || *p == 13) {
- *p = '\0';
-                break;
-            }
-            ++p;
-        }
-    }
-
-
-};*/
-
 extern GlobalSprite globalSprite;
 
 class Battery {
@@ -333,6 +267,26 @@ enum State {
 
 };
 
+class Spell
+{
+    const static int elementCount = 14;
+
+    Sprite* sprite;
+    Vec arr[elementCount];
+    bool running;
+    int times;
+    int timesMax;
+    int key;
+public:
+    Spell(int key, int timesMax, Sprite* sprite);
+    virtual ~Spell();
+
+    void physics();
+    void render();
+    void input(int);
+
+};
+
 class Enemy {
 public:
 
@@ -410,9 +364,9 @@ public:
     std::vector<Enemy> enemies;
     std::vector<Score> scores;
     std::string username;
-    
+    Spell* spells[3];
     float lightVelY;
-
+    int spellLimit;
     ~Global()
     {
         logClose();
@@ -451,6 +405,8 @@ public:
         // blkcat
         catPos[0] = xres / 2;
         catPos[1] = 70;
+
+        spellLimit = 5;
     }
 };
 
@@ -472,7 +428,11 @@ void physicsMortana();
 void monitorCTRLC(int);
 void renderTutorial(); //instructions for user
 unsigned char *buildAlphaData(Ppmimage *img);
+void initRavenSprite();
+void physicsRaven();
+void renderRavenSprites();
 
+void initSpells();
 /*
  ENEMY
  */
@@ -512,6 +472,7 @@ void trackKills(int);
 void renderText();
 void cheyRestart();
 void auroraRestart();
+void karenRestart();
 void disco();
 //Sound function prototypes
 void playSelection();
@@ -528,5 +489,6 @@ void cleanupAudio();
 void updateScores(std::string, int);
 void renderUsernameInput();
 void checkUserNameInput(int);
+void physicsRaven();
 
 #endif /* GAME_H */
