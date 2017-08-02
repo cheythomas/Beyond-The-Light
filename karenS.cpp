@@ -138,8 +138,8 @@ void renderBackgroundSprites()
     glEnd();
 }
 
-ALuint alBuffer[11];
-ALuint alSource[11];
+ALuint alBuffer[12];
+ALuint alSource[12];
 ALint statel;
 
 void setupAudio()
@@ -180,7 +180,11 @@ void setupAudio()
     //ghost
     alBuffer[10] = alutCreateBufferFromFile("./sound/ghostdeath.wav");
 
-    alGenSources(11, alSource);
+    alBuffer[11] = alutCreateBufferFromFile("./sound/spell.wav");
+ 
+
+
+    alGenSources(12, alSource);
 
     alSourcei(alSource[0], AL_BUFFER, alBuffer[0]);
     alSourcef(alSource[0], AL_GAIN, 1.0f);
@@ -259,6 +263,13 @@ void setupAudio()
     if (alGetError() != AL_NO_ERROR) {
         printf("Audio setup error\n");
     }
+    alSourcei(alSource[11], AL_BUFFER, alBuffer[11]);
+    alSourcef(alSource[11], AL_GAIN, 0.3f);
+    alSourcef(alSource[11], AL_PITCH, 1.0f);
+    alSourcef(alSource[11], AL_LOOPING, AL_FALSE);
+    if (alGetError() != AL_NO_ERROR) {
+        printf("Audio setup error\n");
+    }
 #endif
 }
 //cleanup audio
@@ -277,7 +288,7 @@ void cleanupAudio()
     alDeleteSources(1, &alSource[8]);
     alDeleteSources(1, &alSource[9]);
     alDeleteSources(1, &alSource[10]);
-
+    alDeleteSources(1, &alSource[11]);
 
     alDeleteBuffers(1, &alBuffer[0]);
     alDeleteBuffers(1, &alBuffer[1]);
@@ -285,12 +296,14 @@ void cleanupAudio()
     alDeleteBuffers(1, &alBuffer[3]);
     alDeleteBuffers(1, &alBuffer[4]);
     alDeleteBuffers(1, &alBuffer[5]);
-    alDeleteSources(1, &alSource[6]);
-    alDeleteSources(1, &alSource[7]);
-    alDeleteSources(1, &alSource[8]);
-    alDeleteSources(1, &alSource[9]);
-    alDeleteSources(1, &alSource[10]);
+    alDeleteBuffers(1, &alBuffer[6]);
+    alDeleteBuffers(1, &alBuffer[7]);
+    alDeleteBuffers(1, &alBuffer[8]);
+    alDeleteBuffers(1, &alBuffer[9]);
+    alDeleteBuffers(1, &alBuffer[0]);
+    alDeleteBuffers(1, &alBuffer[11]);
 
+ 
     ALCcontext *Context = alcGetCurrentContext();
     ALCdevice *Device = alcGetContextsDevice(Context);
     alcMakeContextCurrent(NULL);
@@ -349,8 +362,12 @@ void playGrab()
 
 void playMeow()
 {
+  
 #ifdef ENABLE_AUDIO
+    alGetSourcei(alSource[10], AL_SOURCE_STATE, &statel);
+    if (statel != AL_PLAYING) {
     alSourcePlay(alSource[9]);
+    }
 #endif
 }
 
@@ -360,6 +377,15 @@ void playGhostDeath()
     //alGetSourcei(alSource[10], AL_SOURCE_STATE, &statel);
     //if (statel != AL_PLAYING) {
     alSourcePlay(alSource[10]);
+    //}
+#endif
+}
+void playSpell()
+{
+#ifdef ENABLE_AUDIO
+    //alGetSourcei(alSource[10], AL_SOURCE_STATE, &statel);
+    //if (statel != AL_PLAYING) {
+    alSourcePlay(alSource[11]);
     //}
 #endif
 }
@@ -756,10 +782,12 @@ void Spell::input(int k)
         sprite->setFrameIndex(0);
         gl.spellLimit--;
         times = 0;
+        playSpell();
     }
 }
 
 void karenRestart()
 {
     gl.spellLimit = 3;
+    
 }
