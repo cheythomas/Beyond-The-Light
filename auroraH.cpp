@@ -329,6 +329,12 @@ float Sprite::getAngle()
 {
     return angle;
 }
+int Sprite::getFrameCount()
+{
+    return frameCount;
+}
+
+
 
 void initCharacterSprites()
 {

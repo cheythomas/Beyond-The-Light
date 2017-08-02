@@ -118,6 +118,7 @@ public:
     void setDirection(int);
     void setFrameIndex(int);
     int getFrameIndex();
+    int getFrameCount();
     bool getRepeating();
     void setRepeating(bool);
     void setReverse(bool);
