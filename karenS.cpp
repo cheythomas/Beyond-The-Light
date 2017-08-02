@@ -1,17 +1,26 @@
 //Modified by: Karen Salinas
-//Modified Date: 6/24/2017
+//Modified Date: 8/2/2017
 //Week 4
 //On this program, I am in charge of the background.
-//===============================================================
+//=========================================================================
 //Week 8
 //Changed made: Added code for tiles, still need to edit
 //
-//===============================================================
+//=========================================================================
 //Week 9
 //Changes made: Fixed parallax scrolling
 //              Added the ground by rendering it
 //              Tiles are currently being fixed
-//===============================================================
+//==========================================================================
+//Week 10:
+//Changes made : Added OpenAl
+//               Added 12 sounds to sprites that related to sound
+//               Server connection to php file that gets to score.data
+//               And is in Cheyennes rendered function to highest score  
+//               Added additional functions, like spell that attacks enemy
+//               Added additional sprite of flock of birds that follow girl
+//===========================================================================
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,26 +48,22 @@
 #include <AL/al.h>
 #include <AL/alut.h>
 #include <AL/alc.h>
-
 #define HOST "www.google.com"
 #define PAGE "/"
 #define PORT 80
 #define USERAGENT "HTMLGET 1.0"
-
 using namespace std;
-
-#include <iostream>
 
 class SpriteWrapAround : public Sprite {
 public:
-
     SpriteWrapAround(
             const std::string & filename,
             float height,
             float width) : Sprite(filename, 1, 1, 1, 1, height, width)
     {
     }
-
+//background uses camera positions to wrap around
+//Gl quads are used for the coordinates the camera 
     void draw()
     {
         //Calculate the sprite frame and size
@@ -80,37 +85,37 @@ public:
         glColor4ub(255, 255, 255, 255);
 
         glBegin(GL_QUADS);
-        glTexCoord2f(xc0, 1);
-        glVertex2i(camX, cy - h2);
-        glTexCoord2f(xc0, 0);
-        glVertex2i(camX, cy + h2);
-        glTexCoord2f(xc1, 0);
+        glTexCoord2f(xc0,                1);
+        glVertex2i(camX,           cy - h2);
+        glTexCoord2f(xc0,                0);
+        glVertex2i(camX,           cy + h2);
+        glTexCoord2f(xc1,                0);
         glVertex2i(gl.xres + camX, cy + h2);
-        glTexCoord2f(xc1, 1);
+        glTexCoord2f(xc1,                1);
         glVertex2i(gl.xres + camX, cy - h2);
         glEnd();
         glBindTexture(GL_TEXTURE_2D, 0);
         glPopMatrix();
     }
 };
-
+//background sprites used for parallax scroll
 void initBackgroundSprites()
 {
     globalSprite.background[0] = new Sprite("bg.png", 1, 1, 1, 1, 1200, 5000);
     globalSprite.background[1] = new Sprite("moon.png", 1, 1, 1, 1, 100, 100);
-    globalSprite.background[1]->setPos(5000 / 2, 0.8 * gl.yres);
+    globalSprite.background[1] -> setPos(5000 / 2, 0.8 * gl.yres);
     globalSprite.background[2] = new SpriteWrapAround("mountain-fg.png", 513,
             5000);
-    globalSprite.background[2]->setPos(5000 / 2, 360);
+    globalSprite.background[2] -> setPos(5000 / 2, 360);
     globalSprite.background[3] = new SpriteWrapAround("mountain-bg.png", 703,
             5000);
-    globalSprite.background[3]->setPos(5000 / 2, 360);
+    globalSprite.background[3] -> setPos(5000 / 2, 360);
     globalSprite.background[4] = new SpriteWrapAround("treeline.png", 770,
             5000);
-    globalSprite.background[4]->setPos(5000 / 2, 200);
+    globalSprite.background[4] -> setPos(5000 / 2, 200);
 
 }
-
+//renders  background sprites
 void renderBackgroundSprites()
 {
     for (int i = 0; i < 5; i++) {
@@ -141,7 +146,7 @@ void renderBackgroundSprites()
 ALuint alBuffer[12];
 ALuint alSource[12];
 ALint statel;
-
+//sets up audio and all audio included
 void setupAudio()
 {
 #ifdef ENABLE_AUDIO
@@ -181,7 +186,7 @@ void setupAudio()
     alBuffer[10] = alutCreateBufferFromFile("./sound/ghostdeath.wav");
 
     alBuffer[11] = alutCreateBufferFromFile("./sound/spell.wav");
- 
+
 
 
     alGenSources(12, alSource);
@@ -273,7 +278,6 @@ void setupAudio()
 #endif
 }
 //cleanup audio
-
 void cleanupAudio()
 {
 #ifdef ENABLE_AUDIO
@@ -303,7 +307,7 @@ void cleanupAudio()
     alDeleteBuffers(1, &alBuffer[0]);
     alDeleteBuffers(1, &alBuffer[11]);
 
- 
+
     ALCcontext *Context = alcGetCurrentContext();
     ALCdevice *Device = alcGetContextsDevice(Context);
     alcMakeContextCurrent(NULL);
@@ -311,7 +315,7 @@ void cleanupAudio()
     alcCloseDevice(Device);
 #endif
 }
-
+//function that is called for select.wav
 void playClick()
 {
 #ifdef ENABLE_AUDIO
@@ -325,7 +329,7 @@ void playSelection()
     alSourcePlay(alSource[1]);
 #endif
 }
-
+//function that is called for Blast.wav
 void playPoint()
 {
 #ifdef ENABLE_AUDIO
@@ -335,21 +339,21 @@ void playPoint()
     //  }
 #endif
 }
-
+//function called for scream.wav
 void playScream()
 {
 #ifdef ENABLE_AUDIO
     alSourcePlay(alSource[6]);
 #endif
 }
-
+//function that is called for jump.wav
 void playJump()
 {
 #ifdef ENABLE_AUDIO
     alSourcePlay(alSource[7]);
 #endif
 }
-
+//function that is called for grab.wav
 void playGrab()
 {
 #ifdef ENABLE_AUDIO
@@ -359,18 +363,18 @@ void playGrab()
     }
 #endif
 }
-
+//function called for kitty.wav
 void playMeow()
 {
-  
+
 #ifdef ENABLE_AUDIO
     alGetSourcei(alSource[10], AL_SOURCE_STATE, &statel);
     if (statel != AL_PLAYING) {
-    alSourcePlay(alSource[9]);
+        alSourcePlay(alSource[9]);
     }
 #endif
 }
-
+//function called for ghostdeath.wav
 void playGhostDeath()
 {
 #ifdef ENABLE_AUDIO
@@ -380,16 +384,15 @@ void playGhostDeath()
     //}
 #endif
 }
+//function called for spell.wav
 void playSpell()
 {
 #ifdef ENABLE_AUDIO
-    //alGetSourcei(alSource[10], AL_SOURCE_STATE, &statel);
-    //if (statel != AL_PLAYING) {
     alSourcePlay(alSource[11]);
-    //}
+
 #endif
 }
-
+//Enables audio to menus states
 void physicsAudio()
 {
 #ifdef ENABLE_AUDIO
@@ -425,6 +428,9 @@ void physicsAudio()
 #endif
 }
 
+//changed the std string instead of a char pointer, 
+// and then changed the function signature to accept two
+//parameters, which is the input and value
 int create_tcp_socket();
 char *get_ip(char *host);
 char *build_get_query(char *host, const char *page);
@@ -570,7 +576,8 @@ char *build_get_query(char *host, const char *page)
     sprintf(query, tpl, getpage, host, USERAGENT);
     return query;
 }
-
+//Takes strings from the http server connection, in which allows
+//user to input their information that is then sent onto scores.php
 void updateScores(std::string username, int score)
 {
     //delete all scores
@@ -587,6 +594,7 @@ void updateScores(std::string username, int score)
         gl.scores.push_back(Score(u, s));
     }
 }
+//Renders the username input in the GameOver() sprite screen
 
 void renderUsernameInput()
 {
@@ -613,6 +621,7 @@ void renderUsernameInput()
     glPopMatrix();
 }
 
+//These are where user is allowed to enter keys for the username string
 void checkUserNameInput(int key)
 {
     if (gl.state == STATE_GAMEOVER) {
@@ -638,13 +647,14 @@ void checkUserNameInput(int key)
         }
     }
 }
-
+//Sets the amount of ravens that are used within the game, and sets their
+//their distance from each other
 void initRavenSprite()
 {
     for (int i = 0; i < 5; i++) {
         globalSprite.raven[i] =
                 new Sprite("raven.gif", 8, 3, 8, 1.0f / 8.0f, 60, 100);
-        float x = rand() % 300;
+        float x = rand() % 400;
         float y = gl.yres * 3.0 / 4.0 + rand() % 150;
         globalSprite.raven[i]->setPos(x, y);
         globalSprite.raven[i]->setDirection(1);
@@ -652,7 +662,9 @@ void initRavenSprite()
                 rand() % globalSprite.raven[i]->getFrameCount());
     }
 }
-
+//Function for the physics of the raven and their position within 
+//x and y, it follows Mortana and is set to 5 ravens to make the 
+//illusion of flock of birds in the sky.
 void physicsRaven()
 {
 
@@ -684,6 +696,7 @@ void renderRavenSprites()
     }
 }
 
+//The array of spells used in the program and their key functions
 void initSpells()
 {
     gl.spells[0] = new Spell(XK_c, 1,
@@ -705,7 +718,7 @@ Spell::~Spell()
 {
     delete sprite;
 }
-
+//Function renders/draws the spell and sets it into x and y position
 void Spell::render()
 {
     for (int i = 0; i < elementCount; i++) {
@@ -713,7 +726,10 @@ void Spell::render()
         sprite->draw();
     }
 }
-
+//The function of within the physics of the spell sprites allows that allows
+//the sprites to move at the same speed in different directions.
+//The physics function is also called to kill the ghost when they are near
+// the sprite and allows it to call the function prototype to trackKills
 void Spell::physics()
 {
     if (running) {
@@ -735,11 +751,14 @@ void Spell::physics()
             //Help from Aurora
             //similar code uses iterator for vector
             float ghostRadius = 25;
-            float radiusEstimate = (sprite->getWidth() + sprite->getHeight()) / 4;
+            float radiusEstimate =
+                    (sprite->getWidth() + sprite->getHeight()) / 4;
 
-            for (std::vector<Enemy>::iterator it = gl.enemies.begin(), end = gl.enemies.end(); it != end; it++) {
+            for (std::vector<Enemy>::iterator it = gl.enemies.begin(),
+                    end = gl.enemies.end(); it != end; it++) {
                 Enemy& en = *it;
-                if (checkCircle(en.x, en.y, arr[i][0], arr[i][1], ghostRadius, radiusEstimate)) {
+                if (checkCircle(en.x, en.y, arr[i][0], arr[i][1], ghostRadius,
+                        radiusEstimate)) {
                     //There is collision
                     it = gl.enemies.erase(it);
                     playGhostDeath();
@@ -759,7 +778,9 @@ void Spell::physics()
         }
     }
 }
-
+//This function allows input for keys and also positions the sprite in 
+//half radius around Mortana and sets a distance apart from Mortana.
+//Apart from that, the spell sprite follows Mortana when she walks
 void Spell::input(int k)
 {
     if (gl.state == STATE_GAMEPLAY && !running && key == k &&
@@ -785,9 +806,9 @@ void Spell::input(int k)
         playSpell();
     }
 }
-
+//This function limits the amount of times the user can input keys of the spell
 void karenRestart()
 {
     gl.spellLimit = 3;
-    
+
 }
