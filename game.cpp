@@ -7,7 +7,7 @@ int main(void)
     initXWindows();
     initOpengl();
     setupAudio();
-    setupAudio();    
+    setupAudio();
     initMenuBackground(); //main menu background
     initCharacterSprites(); // function call inside initOpenGl
     initBackgroundSprites();
@@ -159,9 +159,9 @@ void checkResize(XEvent *e)
 }
 
 void init()
-        {
+{
 
-        }
+}
 
 void restart()
 {
@@ -231,7 +231,7 @@ void checkKeys(XEvent *e)
         //renderCreditSprite.keyboardInput(key);
 
         monitorCTRLC(key);
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             gl.spells[i]->input(key);
         }
     }
@@ -249,18 +249,18 @@ void checkKeys(XEvent *e)
         }
         break;
     case XK_h:
-        if(gl.state == STATE_GAMEPLAY) {
+        if (gl.state == STATE_GAMEPLAY) {
             if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
                 gl.hardSelection = 1;
             } else if (gl.hardSelection == 1) {
                 gl.hardSelection = 0;
-            } 
+            }
         }
         break;
     case XK_Escape:
         break;
     case XK_j:
-        if(gl.state == STATE_GAMEPLAY) {
+        if (gl.state == STATE_GAMEPLAY) {
             if (gl.keepTrack >= 0 && gl.hardSelection == 0) {
                 gl.danceParty = 1;
             } else if (gl.hardSelection == 1) {
@@ -328,7 +328,7 @@ void physics(void)
         globalSprite.light[4]->physics();
         ghostRandom();
         mortanaCollision();
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             gl.spells[i]->physics();
         }
         physicsRaven();
@@ -357,7 +357,7 @@ void render(void)
         renderText();
         renderLightSprite();
         redScreenFlash();
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             gl.spells[i]->render();
         }
         glPopMatrix();

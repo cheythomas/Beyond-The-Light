@@ -329,12 +329,11 @@ float Sprite::getAngle()
 {
     return angle;
 }
+
 int Sprite::getFrameCount()
 {
     return frameCount;
 }
-
-
 
 void initCharacterSprites()
 {
@@ -693,7 +692,7 @@ void mortanaCollision()
         }
         //check collision with lightning
         lightningCollision(en);
-    
+
         if (!en.alive) {
             it = gl.enemies.erase(it);
         }
@@ -710,9 +709,9 @@ void ghostRandom()
         float y = (rand() % (gl.yres - 350)) + 350;
         //if mortana is going to the left, bias to the left
         float bias = 600;
-        if(gl.keys[XK_Left]) {
+        if (gl.keys[XK_Left]) {
             x -= bias;
-        } else if(gl.keys[XK_Right]) { //else if she's going to the right, bias right
+        } else if (gl.keys[XK_Right]) { //else if she's going to the right, bias right
             x += bias;
         }
         Enemy en(x, y, rand() % 3);
@@ -947,7 +946,7 @@ void MainMenu::keyboardInput(int key)
     case XK_P:
         if (gl.state == STATE_GAMEPLAY) {
             gl.state = STATE_GAMEPAUSE;
-        } else if(gl.state != STATE_GAMEOVER) {
+        } else if (gl.state != STATE_GAMEOVER) {
             gl.state = STATE_GAMEPLAY;
         }
         break;

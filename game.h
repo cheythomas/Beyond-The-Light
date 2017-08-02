@@ -267,8 +267,7 @@ enum State {
 
 };
 
-class Spell
-{
+class Spell {
     const static int elementCount = 14;
 
     Sprite* sprite;
@@ -303,6 +302,7 @@ public:
 
 class Score {
 public:
+
     Score(std::string name, int score) :
     name(name), score(score)
     {
@@ -367,6 +367,7 @@ public:
     Spell* spells[3];
     float lightVelY;
     int spellLimit;
+
     ~Global()
     {
         logClose();
